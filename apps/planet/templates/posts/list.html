@@ -1,0 +1,30 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags feedjack_extension_tags %}
+
+{% block page_title %}{% trans 'Posts list' %} - {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{% trans 'Posts list' %} - {{ site.title }}" />
+    <meta name="description" content="{% trans 'Posts list' %} - {{ site.title }}' %}" />
+{% endblock %}
+
+{% block content %}
+    {% autopaginate posts 50 %}
+    {% for post in posts %}
+        <div class="entry {% cycle 'even' 'odd' %}">
+            <h3><a href="{% url post_show post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+                    {{ post.title|striptags|safe }}
+                </a>
+            </h3>
+            <div class="details">
+                {% post_details post %}
+            </div>
+            <div class="content">
+                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_show post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+            </div>
+        <!-- End .entry -->
+        </div>
+    {% endfor %}
+
+    {% paginate %}
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags feedjack_extension_tags  %}
+
+{% block page_title %}{% trans "Tags cloud" %} - {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{% trans 'Tags cloud' %} - {{ site.title }}" />
+    <meta name="description" content="{% trans 'Tags cloud' %} - {{ site.title }}' %}" />
+{% endblock %}
+
+{% block content %}
+<h2>{% trans "Tags cloud" %}</h2>
+<div class="tags cloud">
+    {% autopaginate tags_cloud 200 %}
+    {% for tag in tags_cloud %}
+        <a href="{% url tag_show tag.name %}" style="font-size: {% normalize_number tag.count max_posts_count %}px;">{{ tag }}</a>
+    {% endfor %}
+    {% paginate %}
+</div>
+{% endblock %}

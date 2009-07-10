@@ -1,0 +1,9 @@
+{% load i18n feedjack_extension_tags  %}
+{% if related_tags %}
+    <h4>{% trans "Related tags" %}</h4>
+    <div class="tags related">
+        {% for tag in related_tags %}
+            <a class="tag" href="{% url tag_show tag.name %}" style="font-size: {% normalize_number tag.post__count max_posts_count %}px;">{{ tag }}</a>
+        {% endfor %}
+    </div>
+{% endif %}

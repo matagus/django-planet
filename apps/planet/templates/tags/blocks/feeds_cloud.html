@@ -1,0 +1,9 @@
+{% load i18n feedjack_extension_tags  %}
+{% if tags_cloud %}
+<h4>{% trans "Tags cloud for blog" %} {{ feed.name }}</h4>
+<div class="tags cloud">
+    {% for tag in tags_cloud %}
+        <a class="tag" href="{% url by_tag_feed_show feed.pk tag.name %}" style="font-size: {% normalize_number tag.count max_posts_count %}px;">{{ tag }}</a>
+    {% endfor %}
+</div>
+{% endif %}

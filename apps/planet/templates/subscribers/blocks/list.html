@@ -1,0 +1,13 @@
+{% load i18n %}
+{% if subscribers %}
+    <h2>{% trans "Authrs" %}</h2>
+    <ul class="suscribers">
+        {% for subscriber in subscribers %}
+            <li>
+                <a class="nombre" href="{% url subscriber_show subscriber.pk %}" title="{% trans 'Author of' %} {{ subscriber.feed.title }}">
+                    {{ subscriber.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

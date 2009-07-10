@@ -1,0 +1,88 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags feedjack_extension_tags %}
+
+{% block page_title %}{{ tag }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{{ tag }} {% trans 'tag in' %} {{ site.title }}" />
+    <meta name="description" content="{{ tag }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
+{% endblock %}
+
+{% block head_feeds %}
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url tag_rss_feed tag %}" />
+{% endblock %}
+
+{% block rss_feed %}
+    <a href="{% url tag_rss_feed tag %}" title="{% trans 'Suscribe to RSS feed for tag' %} {{ tag }}">
+        <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Tag" %}: {{ tag }}</h2>
+    {% autopaginate posts 20 %}
+    {% for post in posts %}
+        <div class="entry {% cycle 'even' 'odd' %}">
+            <h3><a href="{% url post_show post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+                    {{ post.title|striptags|safe }}
+                </a>
+            </h3>
+            <div>
+                <p class="date">
+                    {% trans 'published' %}
+                    {% if post.author %}
+                        {% trans 'by ' %}
+                        <a href="{% url subscriber_show post.feed.subscriber_set.all.0.pk %}" title="{% trans 'See all posts for this author' %}">
+                            {{ post.author }}
+                        </a>
+                    {% endif %}
+                    &nbsp;{% trans 'in' %} <a href="{% url feed_show post.feed.pk %}" title="{% trans 'See all posts for this blog' %}">
+                        {{ post.feed.name }}
+                    </a> 
+                    &nbsp;{% trans 'at' %} {{ post.date_modified|date:"g:i A" }}
+                </p>
+                <p class="tags list">
+                    {% for tag in post.tags.all %}
+                        {% if forloop.first %} {% trans "under" %} {% endif %}
+                        <a href="{% url tag_show tag.name %}" title="{% trans 'See more other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if post.comments %}
+                        <a href="{{ post.comments }}" title="{% trans 'Comments' %}">
+                            ({% trans "Comments" %})
+                        </a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="content">
+                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_show post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+            </div>
+        <!-- End .entry -->
+        </div>
+    {% endfor %}
+
+    {% paginate %}
+{% endblock %}
+
+{% block menu_extra %}
+    <li>
+        <a href="{% url tag_subscribers_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+            {% trans 'People talking about this' %}
+        </a>
+    </li>
+    <li>
+        <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
+            {% trans 'Blogs talking about this' %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block right_column %}
+    <div>
+        {% related_tags_for tag %}
+    </div>
+    <div>
+        {# bug in sqlite3 feeds_about tag #}
+    </div>
+    <div>
+        {% tags_cloud 10 %}
+    </div>
+{% endblock %}

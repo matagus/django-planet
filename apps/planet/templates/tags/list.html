@@ -1,0 +1,21 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags feedjack_extension_tags  %}
+
+{% block page_title %}{% trans "Tags list" %} - {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{% trans 'Tags list' %} - {{ site.title }}" />
+    <meta name="description" content="{% trans 'Tags list' %} - {{ site.title }}' %}" />
+{% endblock %}
+
+{% block content %}
+<h2>{% trans "Tags" %}</h2>
+<div class="tags list">
+    {% autopaginate tags_list 50 %}
+    <ul>
+    {% for tag in tags_list %}
+        <li><a href="{% url tag_show tag.name %}" class="tag">{{ tag }}</a></li>
+    {% endfor %}
+    </ul>
+    {% paginate %}
+</div>
+{% endblock %}

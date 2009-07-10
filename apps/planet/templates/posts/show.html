@@ -1,0 +1,45 @@
+{% extends "base_site.html" %}
+{% load i18n feedjack_extension_tags %}
+
+{% block page_title %}{{ post.title|safe }} - {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{{ post.title|safe }} - {{ site.title }}" />
+    <meta name="description" content="{{ post.title|safe }} - {{ site.title }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="entry">
+        <h2>{{ post.title|striptags|safe }}</h2>
+        <div class="details">
+            {% post_details post %}
+        </div>
+        <p id="comments_link">
+        {% if post.comments %}
+            <a href="{{ post.comments }}" title="{% trans 'Comments' %}">
+                ({% trans "Comments" %})
+            </a>
+        {% endif %}
+        </p>
+        <div class="content">
+            {{ post.content|safe }}
+        </div>
+        <ul>
+            <li>
+                {% trans 'Read the original entry' %}: <a href="{{ post.link }}">{{ post.title|safe }}</a>
+            </li>
+            <li>
+                {% trans "Visit the blog" %} <a href="{{ post.feed.link }}">{{ post.feed.name }}</a>
+            </li>
+            <li>
+                <a href="{% url feed_show post.feed.pk %}">{% trans "See more posts from this blog" %}</a>
+            </li>
+        </ul>
+    <!-- End .entry -->
+    </div>
+{% endblock %}
+
+{% block right_column %}
+    {% tags_cloud_for_feed post.feed %}
+
+    {% tags_cloud 10 %}
+{% endblock %}

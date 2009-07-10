@@ -1,0 +1,26 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags %}
+
+{% block page_title %}{% trans 'Authors list' %} - {{ block.super }}{% endblock %}
+{% block extrameta %}
+    <meta name="DC.title" content="{% trans 'Authors list' %} - {{ site.title }}" />
+    <meta name="description" content="{% trans 'Authors list' %} - {{ site.title }}' %}" />
+{% endblock %}
+
+{% block content %}
+<h2>{% trans "Authors" %}</h2>
+<div class="suscribers list">
+    {% autopaginate subscribers_list 40 %}
+    {% for subscriber in subscribers_list %}
+        <p>
+            <a href="{{ subscriber.feed.feed_url }}" title="{% trans 'Subscribe to the feed of the author of' %} {{ subscriber.feed.title }}">
+                <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
+            </a>
+            <a class="nombre" href="{% url subscriber_show subscriber.pk %}" title="{% trans 'Author of' %} {{ subscriber.feed.title }}">
+                {{ subscriber.name }}
+            </a>
+        </p>
+    {% endfor %}
+    {% paginate %}
+</div>
+{% endblock %}

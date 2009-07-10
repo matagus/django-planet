@@ -1,0 +1,20 @@
+{% extends "base_site.html" %}
+{% load i18n pagination_tags %}
+
+{% block content %}
+<h2>{% trans 'Blogs talking about' %} {{ tag }}</h2>
+<div class="blogs list">
+    {% autopaginate feeds_list 40 %}
+    {% for feed in feeds_list %}
+        <p>
+            <a href="{{ feed.feed_url }}" title="{% trans 'Subscribe to feed of' %} {{ feed.title }}">
+                <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
+            </a>
+            <a class="nombre" href="{% url by_tag_feed_show feed.pk,tag.name %}" title="{{ feed.name }}">
+                {{ feed.name }}
+            </a>
+        </p>
+    {% endfor %}
+    {% paginate %}
+</div>
+{% endblock %}

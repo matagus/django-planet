@@ -1,0 +1,13 @@
+{% load i18n %}
+{% ifnotequal subscribers|lenght 1 %}
+<h4>{% trans "Blogs talking about" %} {{ tag }}</h4>
+<ul class="suscribers list">
+    {% for subscriber in subscribers %}
+        <li>
+            <a class="nombre" href="{% url by_tag_subscriber_show subscriber.pk,tag.name %}" title="{% trans 'Author of' %} {{ subscriber.feed.title }}">
+                {{ subscriber.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endifnotequal %}
