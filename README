@@ -3,8 +3,12 @@ django planet
 =============
 
 This is a generic application for Django projects aiming to provide a planet
-feed aggregator app.
+feed aggregator app. It has born from the fusion of Feedjack [1] and my
+feedjack-extension [2] app.
 
 For installation instructions, see the file INSTALL in this directory.
+
+[1] http://code.google.com/p/feedjack/
+[2] http://code.google.com/p/feedjack-extension/
 
 * * * * * WARNING: it does not cointain woking code yet! * * * * *
