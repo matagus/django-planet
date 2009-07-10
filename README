@@ -1,0 +1,10 @@
+=============
+django planet
+=============
+
+This is a generic application for Django projects aiming to provide a planet
+feed aggregator app.
+
+For installation instructions, see the file INSTALL in this directory.
+
+* * * * * WARNING: it does not cointain woking code yet! * * * * *
