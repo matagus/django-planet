@@ -1,5 +1,7 @@
 Thanks for downloading django-planet.
 
+Django-planet requires at least Django 1.0.
+
 In order to integrate django-planet to your django project
 you'll need to install also django-atompub [1], django-pagination [2] and
 feedparser [3].
