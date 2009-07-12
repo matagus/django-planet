@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Based on Feedjack urls.py by Gustavo Picón
-urls.py
 """
 
 from django.conf.urls.defaults import patterns, url
@@ -34,7 +32,7 @@ urlpatterns = patterns('planet.views',
     url(r'^search/$', "search", name="search"),
 )
 
-urlpatterns += patterns('feedjack_extension.feeds',
+urlpatterns += patterns('planet.feeds',
     url(r'^posts/rss20.xml$', "rss_feed", name="default_feed"),
     url(r'^posts/feeds/rss/$', "rss_feed", name="rss_feed"),
     url(r'^feeds/rss/tags/(?P<tag>.*)/$', "rss_feed", name="tag_rss_feed"),

@@ -9,7 +9,7 @@ class FeedManager(models.Manager):
     """
     def get_query_set(self):
         qs = super(FeedManager, self).get_query_set()
-        return qs.filter(site=settings.SITE_ID)
+        return qs.filter(site=settings.SITE_ID, is_active=True)
 
 
 class FeedLinkManager(models.Manager):

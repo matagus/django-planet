@@ -12,14 +12,14 @@ from django.shortcuts import get_object_or_404, Http404
 from django.template.defaultfilters import linebreaks, escape, capfirst
 from django.utils.translation import ugettext_lazy as _
 
-from atompub import atomformat
-from planet.models import Post, Site, Subscriber, Feed
+import atom
+from planet.models import Post, Author, Feed
 from tagging.models import Tag
 
 
 ITEMS_PER_FEED = getattr(settings, 'PLANET_ITEMS_PER_FEED', 50)
 
-class BasePostFeed(atomformat.Feed):
+class BasePostFeed(atom.Feed):
     def __init__(self, *args, **kwargs):
         super(BasePostFeed, self).__init__(args, kwargs)
         self.site = Site.objects.get(pk=settings.SITE_ID)

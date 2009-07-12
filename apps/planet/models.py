@@ -24,8 +24,11 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _ 
+from django.contrib.sites.models import Site
 
-from planet.managers import FeedManager, AuthorManager, BlogManager, PostManager
+from planet.managers import (FeedManager, AuthorManager, BlogManager,
+    PostManager, GeneratorManager, PostLinkManager, FeedLinkManager,
+    EnclosureManager)
 
 
 class Blog(models.Model):
@@ -71,7 +74,7 @@ class Feed(models.Model):
     A model to store detailed info about a parsed Atom or RSS feed
     """
     # a feed belongs to a blog
-    blog = models.ForeignKey(Blog, null=False, blank=False)
+    blog = models.ForeignKey("planet.Blog", null=False, blank=False)
     # a site where this feed is published
     site = models.ForeignKey(Site)
     # url to retrieve this feed
@@ -85,7 +88,7 @@ class Feed(models.Model):
     # rights or license attribute from Feedparser's Feed object
     rights = models.CharField(_("Rights"), max_length=255, blank=True, null=True)
     # generator_detail attribute from Feedparser's Feed object
-    generator = models.ForeignKey(Generator, blank=True, null=True)
+    generator = models.ForeignKey("planet.Generator", blank=True, null=True)
     # info attribute from Feedparser's Feed object
     info = models.CharField(_(""), max_length=255, blank=True, null=True)
     # language name or code. language attribute from Feedparser's Feed object
@@ -112,7 +115,7 @@ class Feed(models.Model):
     class Meta:
         verbose_name = _("Feed")
         verbose_name_plural = _("Feeds")
-        ordering = ('name', 'url',)
+        ordering = ('title', 'url',)
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.url)
@@ -122,21 +125,21 @@ class PostAuthorData(models.Model):
     """
     This is the intermediate model that holds the information of the post authors
     """
-    post = models.ForeignKey(Post)
-    author = models.ForeignKey(Author)
+    post = models.ForeignKey("planet.Post")
+    author = models.ForeignKey("planet.Author")
     # True if this author is a contributor. False to tell he is the original
     # author of ths post
     is_contributor = models.BooleanField(_("Is Contributor?"), default=False)
     date_created = models.DateField(_("Date created"), auto_now_add=True)
-
+    
 
 class Post(models.Model):
     """
     A feed contains a collection of posts. This model stores them.
     """
-    feed = models.ForeignKey(Feed, null=False, blank=False)
+    feed = models.ForeignKey("planet.Feed", null=False, blank=False)
     title = models.CharField(_("Title"), max_length=255)
-    authors = models.ManyToManyField(Post, through=PostAuthorData)    
+    authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
     url = models.URLField(_("Url"))
     guid = models.CharField(_("Guid"), max_length=200, db_index=True)
     content = models.TextField(_("Content"), blank=True)
@@ -169,7 +172,7 @@ class Author(models.Model):
     class Meta:
         verbose_name = _("Author")
         verbose_name_plural = _("Authors")
-        ordering = ('name', 'blog')
+        ordering = ('name', 'email')
 
     def __unicode__(self):
         return u"%s (%s)" % (self.name, self.post.feed.blog,)
@@ -179,7 +182,7 @@ class FeedLink(models.Model):
     """
     Stores data contained in feedparser's feed.links for a given feed
     """
-    feed = models.ForeignKey(Feed)
+    feed = models.ForeignKey("planet.Feed")
     rel = models.CharField(_("Relation"), max_length=20)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
@@ -201,7 +204,7 @@ class PostLink(models.Model):
     """
     Stores data contained in feedparser's feed.entries[i].links for a given feed
     """
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey("planet.Post")
     rel = models.CharField(_("Relation"), max_length=20)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
@@ -223,7 +226,7 @@ class Enclosure(models.Model):
     """
     Stores data contained in feedparser's feed.entries[i].enclosures for a given feed
     """
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey("planet.Post")
     length = models.CharField(_("Length"), max_length=20)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
