@@ -26,6 +26,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _ 
 from django.contrib.sites.models import Site
 
+import tagging
+
 from planet.managers import (FeedManager, AuthorManager, BlogManager,
     PostManager, GeneratorManager, PostLinkManager, FeedLinkManager,
     EnclosureManager)
@@ -41,6 +43,7 @@ class Blog(models.Model):
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
 
     site_objects = BlogManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Blog")
@@ -54,19 +57,21 @@ class Generator(models.Model):
     """
     The software or website that has built a feed
     """
-    name = models.CharField(_("Name"), max_length=100, blank=True, null=True)
-    link = models.URLField(_("Url")) 
+    name = models.CharField(_("Name"), max_length=100)
+    link = models.URLField(_("Url"), blank=True, null=True) 
     version = models.CharField(_("Version"), max_length=5, blank=True, null=True)
 
     site_objects = GeneratorManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Generator")
         verbose_name_plural = _("Generators")
         ordering = ('name', 'version',)
+        unique_together = (("name", "link", "version"), )
 
     def __unicode__(self):
-        return u'%s %s (%s)' % (self.name, self.version, self.link)
+        return u'%s %s (%s)' % (self.name, self.version or "", self.link or "--")
 
 
 class Feed(models.Model):
@@ -79,8 +84,6 @@ class Feed(models.Model):
     site = models.ForeignKey(Site)
     # url to retrieve this feed
     url = models.URLField(_("Url"), unique=True)
-    # link attribute from Feedparser's Feed object
-    link = models.URLField(_("Url"))
     # title attribute from Feedparser's Feed object
     title = models.CharField(_("Title"), max_length=255)
     # subtitle attribute from Feedparser's Feed object. aka tagline
@@ -101,7 +104,7 @@ class Feed(models.Model):
     image_url = models.URLField(_("Image URL"), blank=True, null=True)
 
     # etag attribute from Feedparser's Feed object
-    etag = models.CharField(_("Etag"), max_length=50, blank=True)
+    etag = models.CharField(_("Etag"), max_length=50, blank=True, null=True)
     # modified attribute from Feedparser's Feed object
     last_modified = models.DateTimeField(_("Last modified"), null=True, blank=True)
     # datetime when the feed was checked by last time
@@ -111,6 +114,7 @@ class Feed(models.Model):
         help_text=_("If disabled, this feed will not be further updated.") )
 
     site_objects = FeedManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Feed")
@@ -118,7 +122,7 @@ class Feed(models.Model):
         ordering = ('title', 'url',)
 
     def __unicode__(self):
-        return u'%s (%s)' % (self.name, self.url)
+        return u'%s (%s)' % (self.title, self.url)
 
 
 class PostAuthorData(models.Model):
@@ -131,6 +135,16 @@ class PostAuthorData(models.Model):
     # author of ths post
     is_contributor = models.BooleanField(_("Is Contributor?"), default=False)
     date_created = models.DateField(_("Date created"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Post Author Data")
+        verbose_name_plural = _("Post Author Data")
+        ordering = ("author", "post", "is_contributor")
+
+    def __unicode__(self):
+        author_type = self.is_contributor and "Contributor" or "Author"
+        return u'%s (%s - %s)' % (
+            self.author.name, author_type, self.post.title)
     
 
 class Post(models.Model):
@@ -142,13 +156,14 @@ class Post(models.Model):
     authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
     url = models.URLField(_("Url"))
     guid = models.CharField(_("Guid"), max_length=200, db_index=True)
-    content = models.TextField(_("Content"), blank=True)
-    comments_url = models.URLField(_("Comments URL"), blank=True)
+    content = models.TextField(_("Content"))
+    comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
     
     date_modified = models.DateTimeField(_("Date modified"), null=True, blank=True)
     date_created = models.DateField(_("Date created"), auto_now_add=True)
 
     site_objects = PostManager()
+    objects = models.Manager()
     
     class Meta:
         verbose_name = _("Post")
@@ -157,7 +172,10 @@ class Post(models.Model):
         unique_together = (('feed', 'guid'),)
 
     def __unicode__(self):
-        return u"%s" % self.title
+        return u"%s [%s]" % (self.title, self.feed.title)
+
+# each Post object now will have got a .tags attribute!
+tagging.register(Post)
 
 
 class Author(models.Model):
@@ -168,6 +186,7 @@ class Author(models.Model):
     email = models.EmailField(_("Author email"), blank=True)
     
     site_objects = AuthorManager()
+    objects = models.Manager()
     
     class Meta:
         verbose_name = _("Author")
@@ -175,7 +194,7 @@ class Author(models.Model):
         ordering = ('name', 'email')
 
     def __unicode__(self):
-        return u"%s (%s)" % (self.name, self.post.feed.blog,)
+        return u"%s (%s)" % (self.name, self.email,)
 
 
 class FeedLink(models.Model):
@@ -186,18 +205,18 @@ class FeedLink(models.Model):
     rel = models.CharField(_("Relation"), max_length=20)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
-    title = models.CharField(_("Title"), max_length=255) 
 
     site_objects = FeedLinkManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Feed Link")
         verbose_name_plural = _("Feed Links")
-        ordering = ("feed", "title", "rel")
+        ordering = ("feed", "rel", "mime_type")
         unique_together = (("feed", "rel", "mime_type"), )
 
     def __unicode__(self):
-        return u"%s %s (%s)" % (self.title, self.rel, self.feed)
+        return u"%s %s (%s)" % (self.feed.title, self.rel, self.mime_type)
 
 
 class PostLink(models.Model):
@@ -211,6 +230,7 @@ class PostLink(models.Model):
     title = models.CharField(_("Title"), max_length=255) 
 
     site_objects = PostLinkManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Post Link")
@@ -232,6 +252,7 @@ class Enclosure(models.Model):
     link = models.URLField(_("Url")) 
 
     site_objects = EnclosureManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _("Post Enclosure")
