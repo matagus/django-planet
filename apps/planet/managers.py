@@ -41,7 +41,7 @@ class AuthorManager(models.Manager):
     """
     def get_query_set(self):
         qs = super(AuthorManager, self).get_query_set()
-        return qs.filter(blog__feed__site=settings.SITE_ID).distinct()
+        return qs.filter(post__feed__site=settings.SITE_ID).distinct()
 
 
 class PostManager(models.Manager):
