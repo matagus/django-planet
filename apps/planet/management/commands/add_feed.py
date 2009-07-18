@@ -154,7 +154,8 @@ class Command(BaseCommand):
                 if author_dict:
                     author, created = Author.objects.get_or_create(
                         name=author_dict.get("name", ""),
-                        email=author_dict.get("email", "")
+                        email=author_dict.get("email", ""),
+                        profile_url=author_dict.get("href")
                     )
                     try:
                         PostAuthorData.objects.get(author=author, post=post)
@@ -166,7 +167,8 @@ class Command(BaseCommand):
                 for contributor_dict in entry.get("contributors", []):
                     contributor, created = Author.objects.get_or_create(
                         name=author_dict.get("name", ""),
-                        email=author_dict.get("email", "")
+                        email=author_dict.get("email", ""),
+                        profile_url=contributor_dict.get("href")
                     )
                     try:
                         PostAuthorData.objects.get(author=contributor, post=post)
