@@ -18,7 +18,7 @@ Summary of changes with respect to feedjack and feedjack-extension code:
     * Link model was dropped.
     * Site models replaced by django.contrib.sites.Site model :)
     * Tag model replaced by tagging.Tag model.
-    * Added Blog model (a Blog may have several Feed objects related).
+    * Added Blog model (a Blog may have several related Feed objects).
     * Subscriber model renamed to Author, and was modifyed since a Blog may
       have several authors. Authors may be of two types: author or contributor.
     * Feed model was changed. New attributes added to store info provided by
