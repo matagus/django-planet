@@ -1,13 +1,13 @@
-{% load i18n feedjack_extension_tags %}
+{% load i18n tagging_tags planet_tags %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <title>{% block page_title %}{{ site.title }}{% endblock %}</title>
-    <meta name="DC.title" content="{{ site.title }}" />
+    <title>{% block page_title %}{{ site.name }}{% endblock %}</title>
+    <meta name="DC.title" content="{{ site.name }}" />
     <meta name="keywords" content="" />
     <meta name="description" content="{{ site.description }}" />
-    <meta name="generator" content="Feedjack Extension code.google.com/p/feedjack-extension">
+    <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
     <meta http-equiv="content-language" content="en" />
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8">
     {% block extrameta %}{% endblock %}
@@ -38,7 +38,7 @@
 <body>
 <div id="header">
     <div class="tit">
-        <h1><a href="{{ site.url }}" title="{{ site.name }}">{{ site.name }}</a></h1>
+        <h1><a href="{% url planet_index %}" title="{{ site.name }}">{{ site.name }}</a></h1>
     </div>
 </div>
 
@@ -62,10 +62,13 @@
                     <a href="{% url posts_list %}">{% trans 'Posts' %}</a>
                 </li>
                 <li>
-                    <a href="{% url subscribers_list %}">{% trans 'Authors' %}</a>
+                    <a href="{% url authors_list %}">{% trans 'Authors' %}</a>
                 </li>
                 <li>
-                    <a href="{% url feeds_list %}">{% trans 'Blogs' %}</a>
+                    <a href="{% url blogs_list %}">{% trans 'Blogs' %}</a>
+                </li>
+                <li>
+                    <a href="{% url feeds_list %}">{% trans 'Feeds' %}</a>
                 </li>
                 <li>
                     <a href="{% url tags_cloud %}">{% trans 'Tag Cloud' %}</a>
@@ -75,7 +78,7 @@
             </ul>
         </div>
         <div id="search">
-            <form name="search_form" id="search_form" action="{% url search %}" method="GET">
+            <form name="search_form" id="search_form" action="{% url planet_search %}" method="GET">
                 <label>{% trans 'Search in' %}</label>
                 {{ search_form }}
                 <button name="search" value="go">{% trans 'ok' %}</button>
@@ -83,19 +86,9 @@
         </div>
 
         {% block right_column %}
-            {% tags_cloud 5 %}
+            {% tag_cloud_for_model planet.Post as tags_cloud with steps=9 min_count=3 distribution=log %}
+            {% include 'tags/blocks/cloud.html' %}
         {% endblock %}
-
-        {% if links %}
-            <h4>{% trans "Links" %}</h4>
-            <ul class="planetarium">
-                {% for link in links %}
-                    <li>
-                        <a href="{{ link.link }}">{{ link.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
 
         <div id="buttons">
             {% block rss_feed %}
@@ -103,9 +96,10 @@
                 <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
             </a>
             {% endblock %}
-            {% block atom_feed %}
             
+            {% block atom_feed %}
             {% endblock %}
+            
             <a href="{% url opml %}" title="OPML">
                 <img src="{{ MEDIA_URL }}feedjack/custom/img/button-opml.png"/>
             </a>
@@ -146,7 +140,7 @@
         </div>
     {% endif %}
 
-    <p id="powered">{% blocktrans %}A <a href="http://code.google.com/p/feedjack-extension/" class="love_feedjack" title="Feedjack Powered">Feedjack Extension</a> powered Planet{% endblocktrans %}</p>
+    <p id="powered">{% blocktrans %}A <a href="http://github.com/matagus/django-planet/tree" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
 </div>
 </body>
 

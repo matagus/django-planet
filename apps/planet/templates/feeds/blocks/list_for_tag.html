@@ -4,7 +4,7 @@
     <ul class="blogs list">
         {% for feed in feeds_list %}
             <li>
-                <a class="nombre" href="{% url by_tag_feed_show feed.pk,tag.name %}" title="{{ feed.name }}">
+                <a class="nombre" href="{% url by_tag_feed_detail feed.pk,tag.name %}" title="{{ feed.name }}">
                     {{ feed.name }}
                 </a>
             </li>

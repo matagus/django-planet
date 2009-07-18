@@ -3,18 +3,18 @@
 
 {% block content %}
 <h2>{% trans 'Authors talking about' %} {{ tag }}</h2>
-<div class="suscribers">
-    {% autopaginate subscribers 40 %}
-    {% for subscriber in subscribers %}
+<div class="authors">
+    {% autopaginate authors 40 %}
+    {% for author in authors %}
         <p>
-            <a href="{{ subscriber.feed.feed_url }}" title="{% trans 'Subscribe to feed of' %} {{ subscriber.feed.title }}">
-                <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
-            </a>
-            <a class="nombre" href="{% url by_tag_subscriber_show subscriber.pk,tag.name %}" title="{{ subscriber.name }}">
-                {{ subscriber.name }}
+            <a class="nombre" href="{% url by_tag_author_detail author.pk,tag.name %}" title="{{ author.name }}">
+                {{ author.name }}
             </a>
         </p>
     {% endfor %}
     {% paginate %}
 </div>
+{% endblock %}
+
+{% block right_column %}
 {% endblock %}

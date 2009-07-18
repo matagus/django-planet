@@ -1,18 +1,18 @@
 {% extends "base_site.html" %}
-{% load i18n pagination_tags planet_tags %}
+{% load i18n pagination_tags tagging_tags planet_tags %}
 
-{% block page_title %}{% trans "Blog" %}: {{ subscriber.name }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
+{% block page_title %}{% trans "Blog" %}: {{ author.name }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Blog' %}: {{ subscriber.name }} - {% trans 'Posts in' %} {{ site.title }}" />
-    <meta name="description" content="{% trans 'Blog' %} {{ subscriber.name }} {{ subscriber.feed.tagline|safe }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
+    <meta name="DC.title" content="{% trans 'Blog' %}: {{ author.name }} - {% trans 'Posts in' %} {{ site.title }}" />
+    <meta name="description" content="{% trans 'Blog' %} {{ author.name }} {{ author.feed.tagline|safe }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ subscriber.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url subscriber_rss_feed subscriber.pk %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ author.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url author_rss_feed author.pk %}" />
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url subscriber_rss_feed subscriber.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ subscriber.name }}">
+    <a href="{% url author_rss_feed author.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ author.name }}">
         <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
     </a>
 {% endblock %}
@@ -20,7 +20,7 @@
 {% block menu_extra %}
     {% if tag %}
         <li>
-            <a href="{% url tag_subscribers_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+            <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
                 {% trans 'People talking about this' %}
             </a>
         </li>
@@ -33,12 +33,12 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Author" %}: {{ subscriber.name }}</h2>
+    <h2>{% trans "Author" %}: {{ author.name }}</h2>
 
     {% if tag %}
         <div>
             <p>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></p>
-            <a href="{% url subscriber_show subscriber.pk %}" title="{% trans 'See all posts by' %} {{ subscriber.name }}">
+            <a href="{% url author_detail author.pk %}" title="{% trans 'See all posts by' %} {{ author.name }}">
                 {% trans 'See the complete list of posts by this author' %}
             </a>
         </div>
@@ -47,7 +47,7 @@
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="entry {% cycle 'even' 'odd' %}">
-            <h3><a href="{% url post_show post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+            <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
             </h3>
@@ -55,7 +55,7 @@
                 {% post_details post %}
             </div>
             <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_show post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
             <ul class="actions links">
                 <li>
@@ -70,7 +70,7 @@
                 <li>
                     {% trans 'See other blog posts for' %} 
                     {% for tag in post.tags.all %}
-                        <a href="{% url tag_show tag.name %}" title="{% trans 'See other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="{% url tag_detail tag.name %}" title="{% trans 'See other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </li>
                 {% endif %}
@@ -87,9 +87,10 @@
             {% related_tags_for tag %}
         </div>
         <div>
-            {% subscribers_about tag %}
+            {% authors_about tag %}
         </div>
     {% endif %}
 
-    {% tags_cloud_for_subscriber subscriber %}
+    {% tag_cloud_for_model planet.Author as tags_cloud with steps=9 min_count=3 distribution=log %}
+    {% include 'tags/blocks/authors_cloud.html' %}
 {% endblock %}

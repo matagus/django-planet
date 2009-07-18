@@ -1,5 +1,5 @@
 {% extends "base_site.html" %}
-{% load i18n pagination_tags planet_tags %}
+{% load i18n pagination_tags tagging_tags planet_tags %}
 
 {% block page_title %}{{ tag }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
 {% block extrameta %}
@@ -22,7 +22,7 @@
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="entry {% cycle 'even' 'odd' %}">
-            <h3><a href="{% url post_show post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+            <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
             </h3>
@@ -31,11 +31,11 @@
                     {% trans 'published' %}
                     {% if post.author %}
                         {% trans 'by ' %}
-                        <a href="{% url subscriber_show post.feed.subscriber_set.all.0.pk %}" title="{% trans 'See all posts for this author' %}">
+                        <a href="{% url author_detail post.feed.author_set.all.0.pk %}" title="{% trans 'See all posts for this author' %}">
                             {{ post.author }}
                         </a>
                     {% endif %}
-                    &nbsp;{% trans 'in' %} <a href="{% url feed_show post.feed.pk %}" title="{% trans 'See all posts for this blog' %}">
+                    &nbsp;{% trans 'in' %} <a href="{% url feed_detail post.feed.pk %}" title="{% trans 'See all posts for this blog' %}">
                         {{ post.feed.name }}
                     </a> 
                     &nbsp;{% trans 'at' %} {{ post.date_modified|date:"g:i A" }}
@@ -43,7 +43,7 @@
                 <p class="tags list">
                     {% for tag in post.tags.all %}
                         {% if forloop.first %} {% trans "under" %} {% endif %}
-                        <a href="{% url tag_show tag.name %}" title="{% trans 'See more other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="{% url tag_detail tag.name %}" title="{% trans 'See more other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                     {% if post.comments %}
                         <a href="{{ post.comments }}" title="{% trans 'Comments' %}">
@@ -53,7 +53,7 @@
                 </p>
             </div>
             <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_show post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
         <!-- End .entry -->
         </div>
@@ -64,13 +64,13 @@
 
 {% block menu_extra %}
     <li>
-        <a href="{% url tag_subscribers_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+        <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
             {% trans 'People talking about this' %}
         </a>
     </li>
     <li>
-        <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-            {% trans 'Blogs talking about this' %}
+        <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of feeds talking about this tag' %}">
+            {% trans 'Feeds talking about this' %}
         </a>
     </li>
 {% endblock %}
@@ -81,8 +81,5 @@
     </div>
     <div>
         {# bug in sqlite3 feeds_about tag #}
-    </div>
-    <div>
-        {% tags_cloud 10 %}
     </div>
 {% endblock %}

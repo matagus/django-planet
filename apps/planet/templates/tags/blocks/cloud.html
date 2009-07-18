@@ -1,7 +1,7 @@
-{% load i18n feedjack_extension_tags  %}
+{% load i18n  %}
 <h4>{% trans "Tags cloud" %}</h4>
 <div class="tags cloud">
     {% for tag in tags_cloud %}
-        <a class="tag" href="{% url tag_show tag.name %}" style="font-size: {% normalize_number tag.count max_posts_count %}px;">{{ tag }}</a>
+        <a class="tag" href="{% url tag_detail tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
     {% endfor %}
 </div>

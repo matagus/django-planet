@@ -1,5 +1,5 @@
 {% extends "base_site.html" %}
-{% load i18n pagination_tags feedjack_extension_tags  %}
+{% load i18n pagination_tags  %}
 
 {% block page_title %}{% trans "Tags cloud" %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
@@ -12,7 +12,7 @@
 <div class="tags cloud">
     {% autopaginate tags_cloud 200 %}
     {% for tag in tags_cloud %}
-        <a href="{% url tag_show tag.name %}" style="font-size: {% normalize_number tag.count max_posts_count %}px;">{{ tag }}</a>
+        <a href="{% url tag_detail tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
     {% endfor %}
     {% paginate %}
 </div>

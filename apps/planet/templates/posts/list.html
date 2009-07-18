@@ -1,5 +1,5 @@
 {% extends "base_site.html" %}
-{% load i18n pagination_tags feedjack_extension_tags %}
+{% load i18n pagination_tags planet_tags %}
 
 {% block page_title %}{% trans 'Posts list' %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
@@ -11,7 +11,7 @@
     {% autopaginate posts 50 %}
     {% for post in posts %}
         <div class="entry {% cycle 'even' 'odd' %}">
-            <h3><a href="{% url post_show post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+            <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
             </h3>
@@ -19,7 +19,7 @@
                 {% post_details post %}
             </div>
             <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_show post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
         <!-- End .entry -->
         </div>

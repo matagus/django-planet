@@ -1,14 +1,14 @@
 {% extends "base_site.html" %}
 {% load i18n pagination_tags  %}
 
-{% block page_title %}{% trans "Blogs list" %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% trans "Feeds list" %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Blogs list' %} - {{ site.title }}" />
-    <meta name="description" content="{% trans 'Blogs list' %} - {{ site.title }}' %}" />
+    <meta name="DC.title" content="{% trans 'Feeds list' %} - {{ site.title }}" />
+    <meta name="description" content="{% trans 'Feeds list' %} - {{ site.title }}' %}" />
 {% endblock %}
 
 {% block content %}
-<h2>{% trans "Blogs" %}</h2>
+<h2>{% trans "Feeds" %}</h2>
 <div class="feeds list">
     {% autopaginate feeds_list 50 %}
     <ul>
@@ -17,7 +17,7 @@
             <a href="{{ feed.feed_url }}" title="{% trans 'Subscribe to feed of' %} {{ feed.title }}">
                 <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
             </a>
-            <a href="{% url feed_show feed.pk %}" class="feed" title="{% trans 'See the full list of post from this blog' %}">{{ feed.name }}</a>
+            <a href="{% url feed_detail feed.pk %}" class="feed" title="{% trans 'See the full list of post from this blog' %}">{{ feed.title }}</a>
         </li>
     {% endfor %}
     {% paginate %}

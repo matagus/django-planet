@@ -28,10 +28,10 @@
                 {% trans 'Read the original entry' %}: <a href="{{ post.link }}">{{ post.title|safe }}</a>
             </li>
             <li>
-                {% trans "Visit the blog" %} <a href="{{ post.feed.link }}">{{ post.feed.name }}</a>
+                {% trans "Visit the blog" %} <a href="{{ post.feed.blog.url }}">{{ post.feed.blog.title }}</a>
             </li>
             <li>
-                <a href="{% url feed_show post.feed.pk %}">{% trans "See more posts from this blog" %}</a>
+                <a href="{% url feed_detail post.feed.pk %}">{% trans "See more posts from this blog" %}</a>
             </li>
         </ul>
     <!-- End .entry -->
@@ -39,7 +39,5 @@
 {% endblock %}
 
 {% block right_column %}
-    {% tags_cloud_for_feed post.feed %}
-
-    {% tags_cloud 10 %}
+    {#% tags_cloud_for_feed post.feed %#}
 {% endblock %}

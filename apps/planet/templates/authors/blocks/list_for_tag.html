@@ -1,11 +1,11 @@
 {% load i18n %}
-{% ifnotequal subscribers|lenght 1 %}
+{% ifnotequal authors|lenght 1 %}
 <h4>{% trans "Blogs talking about" %} {{ tag }}</h4>
 <ul class="suscribers list">
-    {% for subscriber in subscribers %}
+    {% for author in authors %}
         <li>
-            <a class="nombre" href="{% url by_tag_subscriber_show subscriber.pk,tag.name %}" title="{% trans 'Author of' %} {{ subscriber.feed.title }}">
-                {{ subscriber.name }}
+            <a class="nombre" href="{% url by_tag_author_detail author.pk,tag.name %}" title="{% trans 'Author of' %} {{ author.feed.title }}">
+                {{ author.name }}
             </a>
         </li>
     {% endfor %}
