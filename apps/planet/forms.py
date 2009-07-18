@@ -10,6 +10,7 @@ SEARCH_CHOICES = (
     ("tags", _("Tags")),
     ("blogs", _("Blogs")),
     ("authors", _("Authors")),
+    ("feeds", _("Feeds")),
 )
 
 class SearchForm(forms.Form):

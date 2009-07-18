@@ -184,6 +184,7 @@ class Author(models.Model):
     """
     name = models.CharField(_("Name"), max_length=255, null=True, blank=True)
     email = models.EmailField(_("Author email"), blank=True)
+    profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
     
     site_objects = AuthorManager()
     objects = models.Manager()
@@ -236,7 +237,7 @@ class PostLink(models.Model):
         verbose_name = _("Post Link")
         verbose_name_plural = _("Post Links")
         ordering = ("post", "title", "rel")
-        unique_together = (("post", "rel", "mime_type"), )
+        #unique_together = (("post", "rel", "mime_type", "title"), )
 
     def __unicode__(self):
         return u"%s %s (%s)" % (self.title, self.rel, self.post)
