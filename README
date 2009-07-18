@@ -2,8 +2,6 @@
 django planet
 =============
 
-* * * * * WARNING: it does not cointain woking code yet! * * * * *
-
 This is a generic application for Django projects aiming to provide a planet
 feed aggregator app.
 
@@ -31,10 +29,17 @@ Summary of changes with respect to feedjack and feedjack-extension code:
     * Custom managers for each model.
     * New urls and detail and list views for each new model.
 
+TODO:
+
+    * Feeds (RSS and Atom): for all posts, for posts filtered by tag, author,
+    blog, feed or any of its combinations.
+    * setup.py, pack it into and egg and upload it to Python Python Package Index.
+    * Make a beauty CSS and add icons.
+
+    * Some other features inspired by semantic attributes of RSS and Atom feeds :P
+
+
 INSTALLATION
 ------------
 
     For installation instructions, see the file INSTALL in this directory.
-
-
-* * * * * WARNING: it does not cointain woking code yet! * * * * *
