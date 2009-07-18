@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from planet.models import Blog, Feed, Author, Post
 from planet.forms import SearchForm
 
-from tagging.models import Tag
+from tagging.models import Tag, TaggedItem
 
 
 def index(request):
@@ -25,17 +25,17 @@ def index(request):
 def blogs_list(request):
     blogs_list = Blog.site_objects.all()
 
-    return render_to_response("blog/list.html", {"blogs_list": blogs_list},
+    return render_to_response("blogs/list.html", {"blogs_list": blogs_list},
         context_instance=RequestContext(request))
 
 
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     
-    posts = Post.site_objects.filter(blog=blog).order_by("-date_created")
+    posts = Post.site_objects.filter(feed__blog=blog).order_by("-date_created")
     
     return render_to_response(
-        "blogs/show.html", {"blog": blog, "posts": posts},
+        "blogs/detail.html", {"blog": blog, "posts": posts},
         context_instance=RequestContext(request))
 
 
@@ -49,15 +49,14 @@ def feeds_list(request):
 def feed_detail(request, feed_id, tag=None):
     feed = get_object_or_404(Feed, pk=feed_id)
     
-    params_dict = {"feed": feed}
-    
     if tag:
         tag = get_object_or_404(Tag, name=tag)
-        params_dict.update({"tags": tag})
         
-    posts = Post.site_objects.filter(**params_dict).order_by("-date_created")
-    
-    return render_to_response("feeds/show.html",
+        posts = TaggedItem.objects.get_by_model(Post.site_objects, tag)
+    else:
+        posts = Post.site_objects.filter(feed=feed).order_by("-date_created")
+
+    return render_to_response("feeds/detail.html",
         {"feed": feed, "posts": posts, "tag": tag},
         context_instance=RequestContext(request))
 
@@ -73,15 +72,15 @@ def authors_list(request):
 def author_detail(request, author_id, tag=None):
     author = get_object_or_404(Author, pk=author_id)
     
-    params_dict = {"feed__author": author}
-    
     if tag:
         tag = get_object_or_404(Tag, name=tag)
-        params_dict.update({"tags": tag})
         
-    posts = Post.site_objects.filter(**params_dict).order_by("-date_created")
+        posts = TaggedItem.objects.get_by_model(Post.site_objects, tag)
+    else:
+        posts = Post.site_objects.filter(
+            authors=author).order_by("-date_created")
     
-    return render_to_response("authors/show.html",
+    return render_to_response("authors/detail.html",
         {"author": author, "posts": posts, "tag": tag},
         context_instance=RequestContext(request))
 
@@ -96,33 +95,42 @@ def posts_list(request):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     
-    return render_to_response("posts/show.html", {"post": post},
+    return render_to_response("posts/detail.html", {"post": post},
         context_instance=RequestContext(request))
 
 
 def tag_detail(request, tag):
     tag = get_object_or_404(Tag, name=tag)
         
-    posts = Post.site_objects.filter(tags=tag).order_by("-date_created")
+    posts = TaggedItem.objects.get_by_model(
+        Post.site_objects, tag).order_by("-date_created")
     
-    return render_to_response("tags/show.html", {"posts": posts, "tag": tag},
+    return render_to_response("tags/detail.html", {"posts": posts, "tag": tag},
         context_instance=RequestContext(request))
 
 
 def tag_authors_list(request, tag):
     tag = get_object_or_404(Tag, name=tag)
-    
-    authors = Author.site_objects.filter(feed__post__tags__name=tag).distinct()
-    
+
+    posts_list = TaggedItem.objects.get_by_model(Post.site_objects, tag)
+
+    authors = set()
+    for post in posts_list:
+        for author in post.authors.all():
+            authors.add(author)
+
     return render_to_response("authors/list_for_tag.html",
-        {"authors": authors, "tag": tag},
+        {"authors": list(authors), "tag": tag},
         context_instance=RequestContext(request))
 
 
 def tag_feeds_list(request, tag):
     tag = get_object_or_404(Tag, name=tag)
-    
-    feeds_list = Feed.site_objects.filter(post__tags__name=tag).distinct()
+
+    post_ids = TaggedItem.objects.get_by_model(Post.site_objects, tag
+        ).values_list("id", flat=True)
+
+    feeds_list = Feed.site_objects.filter(post__in=post_ids).distinct()
     
     return render_to_response("feeds/list_for_tag.html",
         {"feeds_list": feeds_list, "tag": tag},
@@ -130,16 +138,11 @@ def tag_feeds_list(request, tag):
 
 
 def tags_cloud(request, min_posts_count=1):
-    max_posts_count = Tag.objects.annotate(count=Count("post")).filter(
-        count__gt=min_posts_count, name__isnull=False).aggregate(Max("count"))
-        max_posts_count = max_posts_count["count__max"]
-    
-    tags_cloud = Tag.objects.annotate(count=Count("post")
-        ).filter(count__gt=min_posts_count, name__isnull=False).order_by("name")
+
+    tags_cloud = Tag.objects.cloud_for_model(Post)
 
     return render_to_response("tags/cloud.html",
-        {"tags_cloud": tags_cloud, "max_posts_count": max_posts_count},
-        context_instance=RequestContext(request))
+        {"tags_cloud": tags_cloud}, context_instance=RequestContext(request))
 
 
 def foaf(request):

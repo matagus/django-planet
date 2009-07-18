@@ -40,7 +40,7 @@ class BasePostFeed(atom.Feed):
         return {"type" : "html", }, linebreaks(escape(post.content))
     
     def item_links(self, post):
-        return [{"href" : reverse("post_show", args=( post.pk,))}]
+        return [{"href" : reverse("post_detail", args=( post.pk,))}]
     
     def item_authors(self, post):
         return [{"name" : post.author}]
@@ -103,7 +103,7 @@ class BlogFeed(BasePostFeed):
         return get_object_or_404(Feed, pk=params[0], is_active=True)
     
     def feed_id(self, feed):
-        return reverse("feed_show", args=(feed.pk, ))
+        return reverse("feed_detail", args=(feed.pk, ))
     
     def feed_title(self, feed):
         return _("Posts in %s - %s") % (feed.title, self.site.name)
@@ -122,7 +122,7 @@ class BlogFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, feed):
-        return ({'href': reverse("feed_show", args=(feed.pk, ))},)
+        return ({'href': reverse("feed_detail", args=(feed.pk, ))},)
 
     def items(self, feed):
         return Post.objects.filter(feed=feed,
@@ -134,7 +134,7 @@ class TagFeed(BasePostFeed):
         return get_object_or_404(Tag, name=params[0])
     
     def feed_id(self, tag):
-        return reverse("tag_show", args=(tag.pk, ))
+        return reverse("tag_detail", args=(tag.pk, ))
     
     def feed_title(self, tag):
         return _("Posts under %s tag - %s") % (tag, self.site.name)
@@ -150,7 +150,7 @@ class TagFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, tag):
-        return ({'href': reverse("tag_show", args=(tag.pk, ))},)
+        return ({'href': reverse("tag_detail", args=(tag.pk, ))},)
 
     def items(self, tag):
         return Post.objects.filter(tags__name=tag, feed__subscriber__site=self.site
@@ -239,7 +239,7 @@ def rss_feed(request, tag=None, subscriber_id=None):
     for post in object_list:
         feed.add_item(
             title = '%s: %s' % (post.feed.name, post.title),
-            link = reverse("post_show", args=(post.pk,)),
+            link = reverse("post_detail", args=(post.pk,)),
             description = post.content,
             author_email = post.author_email,
             author_name = post.author,

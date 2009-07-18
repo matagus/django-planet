@@ -1,5 +1,5 @@
 {% extends "base_site.html" %}
-{% load i18n pagination_tags feedjack_extension_tags %}
+{% load i18n pagination_tags planet_tags %}
 
 {% block page_title %}{% trans "Blog" %}: {{ subscriber.name }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
 {% block extrameta %}

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 
-from planet.models import Site, Link
 from planet.forms import SearchForm
 
 def context(request):
@@ -12,6 +12,5 @@ def context(request):
         search_form = SearchForm()
     
     return {"site": Site.objects.get(pk=settings.SITE_ID),
-        "links": Link.objects.all(),
         "search_form": search_form}
 
