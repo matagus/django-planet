@@ -13,7 +13,7 @@
 
 {% block rss_feed %}
     <a href="{% url author_rss_feed author.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ author.name }}">
-        <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
+        <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
 

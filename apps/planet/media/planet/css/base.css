@@ -132,8 +132,13 @@ h3 a:hover { font-weight: 100; color: #2e9306;}
     
 #header .logo { width: 200px; float: left; }
 #header .logo h1 { display: inline; }
-
+a.external { background: transparent url(../icons/external.gif) no-repeat right center; padding-right: 10px; }
+#buttons { margin-top: 20px; text-align: right; }
+#search_form input[type="text"]:focus { border: #76d500 2px solid; }
+#search_form label { text-transform: lowercase; }
 div.post { border-bottom: #33493c 5px solid; padding-bottom: 20px; }
+div.post p.tags.list { font-size: 0.85em; text-transform: lowercase; }
+div.pagination { text-align: center; margin-top: 1.5em; }
 
 div.tags.cloud a.level1 { font-size: 0.5em; font-weight: 50; }
 div.tags.cloud a.level2 { font-size: 0.7em; font-weight: 70; }
@@ -142,11 +147,3 @@ div.tags.cloud a.level4 { font-size: 1em; }
 div.tags.cloud a.level5 { font-size: 1.1em; }
 div.tags.cloud a.level6 { font-size: 1.2em; }
 div.tags.cloud a.level7 { font-size: 1.3em; }
-
-a.external { background: transparent url(../icons/external.gif) no-repeat right center; padding-right: 10px; }
-
-#buttons { margin-top: 20px; text-align: right; }
-#search_form input[type="text"]:focus { border: #76d500 2px solid; }
-#search_form label { text-transform: lowercase; }
-
-div.post p.tags.list { font-size: 0.85em; text-transform: lowercase; }
