@@ -54,6 +54,7 @@ TODO:
 
     * Some other features inspired by semantic attributes of RSS and Atom feeds :P
 
+    * Clean content (html, css and js) of each feed entry.
 
 INSTALLATION
 ------------
