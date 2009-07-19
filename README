@@ -12,7 +12,8 @@ models were inspired by Mark Pilgrim's Feedparser [3].
 [1] http://www.feedjack.org/
 [2] http://code.google.com/p/feedjack-extension/
 [3] http://www.feedparser.org/
- 
+
+
 Summary of changes with respect to feedjack and feedjack-extension code:
     
     * Link model was dropped.
@@ -28,13 +29,16 @@ Summary of changes with respect to feedjack and feedjack-extension code:
 
     * Custom managers for each model.
     * New urls and detail and list views for each new model.
+    * CSS theme based on the minimal and beautiful Mounty Lounge Industries
+    blog's design (http://blog.montylounge.com/)
 
+    
 TODO:
-
+    * python manage.py update_feeds command!
     * Feeds (RSS and Atom): for all posts, for posts filtered by tag, author,
     blog, feed or any of its combinations.
     * setup.py, pack it into and egg and upload it to Python Python Package Index.
-    * Make a beauty CSS and add icons.
+    * A little sample project.
 
     * Some other features inspired by semantic attributes of RSS and Atom feeds :P
 
