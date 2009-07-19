@@ -48,29 +48,9 @@
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
             {% post_details post %}
-
             <div class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
-            <ul class="actions links">
-                <li>
-                    {% trans 'Read the original entry' %}: <a href="{{ post.link }}">{{ post.title|safe }}</a>
-                </li>
-                {% if post.author %}
-                    <li>
-                        {% trans "Visit the autor's blog" %}: <a href="{{ post.feed.link }}">{{ post.author }}</a>
-                    </li>
-                {% endif %}
-                {% if post.tags.all %}
-                <li>
-                    {% trans 'See other blog posts for' %} 
-                    {% for tag in post.tags.all %}
-                        <a href="{% url tag_detail tag.name %}" title="{% trans 'See other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </li>
-                {% endif %}
-            </ul>
-        <!-- End .entry -->
         </div>
     {% endfor %}
     {% paginate %}
@@ -86,6 +66,5 @@
         </div>
     {% endif %}
 
-    {% tag_cloud_for_model planet.Author as tags_cloud with steps=9 min_count=3 distribution=log %}
-    {% include 'tags/blocks/authors_cloud.html' %}
+    {% cloud_for_author author %}
 {% endblock %}

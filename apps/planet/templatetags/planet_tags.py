@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
+Several usefull template tags!
 """
 
 from django import template
@@ -16,6 +17,9 @@ register = template.Library()
 
 @register.inclusion_tag('authors/blocks/list_for_tag.html')
 def authors_about(tag):
+    """
+    Displays a list of authors who have been written a post tagged with this tag.    
+    """
     post_ids = TaggedItem.objects.get_by_model(
         Post.site_objects, tag).values_list("id", flat=True)
     
@@ -26,6 +30,9 @@ def authors_about(tag):
 
 @register.inclusion_tag('feeds/blocks/list_for_tag.html')
 def feeds_about(tag):
+    """
+    Displays a list of feeds whose posts have been tagged with this tag.
+    """
     post_ids = TaggedItem.objects.get_by_model(
         Post.site_objects, tag).values_list("id", flat=True)
     
@@ -36,25 +43,60 @@ def feeds_about(tag):
 
 @register.inclusion_tag("tags/blocks/related_list.html")
 def related_tags_for(tag, count=20):
-    related_tags = Tag.objects.none()
+    """
+    Displays a list of tags that have been used for tagging Posts instances
+    always that <tag> have been used too.
+    """
+    related_tags = Tag.objects.related_for_model([tag], Post, counts=True)
 
-    max_posts_count = related_tags and related_tags[0].post__count or 0
+    return {"related_tags": related_tags[:count]}
 
-    return {"related_tags": related_tags, "max_posts_count": max_posts_count}
 
 @register.inclusion_tag("posts/details.html")
 def post_details(post):
+    """
+    Displays info about a post: title, date, feed and tags.
+    """
     return {"post": post}
+
 
 @register.inclusion_tag("posts/full_details.html")
 def post_full_details(post):
+    """
+    Displays full info about a post: title, date, feed, authors and tags,
+    and it also displays external links to post and blog.
+    """
     return {"post": post}
-    
-#@register.simple_tag
-#def year_cloud_for(instance):
-    #if isinstance(instance, Feed):
-        #return Post.objects.values("date_modified").distinct().annotate(Count("pk")).order_by("date_modified")
-    #elif isinstance(instance, Author):
-        #return []
-    #else:
-        #return []
+
+
+@register.inclusion_tag("tags/blocks/feeds_cloud.html")
+def cloud_for_feed(feed, min_count=3):
+    """
+    Displays a tag cloud for a given feed object.    
+    """
+    tags_cloud = Tag.objects.cloud_for_model(
+        Post, filters={"feed": feed}, min_count=min_count)
+
+    return {"tags_cloud": tags_cloud, "feed": feed}
+
+
+@register.inclusion_tag("tags/blocks/authors_cloud.html")
+def cloud_for_author(author, min_count=3):
+    """
+    Displays a tag cloud for a given author object.    
+    """
+    tags_cloud = Tag.objects.cloud_for_model(
+        Post, filters={"authors": author}, min_count=min_count)
+
+    return {"tags_cloud": tags_cloud, "author": author}
+
+
+@register.inclusion_tag("tags/blocks/blogs_cloud.html")
+def cloud_for_blog(blog, min_count=3):
+    """
+    Displays a tag cloud for a given blog object.    
+    """
+    tags_cloud = Tag.objects.cloud_for_model(
+        Post, filters={"feed__blog": blog}, min_count=min_count)
+
+    return {"tags_cloud": tags_cloud, "blog": blog}

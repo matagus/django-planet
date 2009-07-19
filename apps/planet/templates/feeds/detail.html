@@ -43,7 +43,6 @@
             <div class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
-        <!-- End .entry -->
         </div>
     {% endfor %}
 
@@ -68,6 +67,5 @@
         </div>
     {% endif %}
     
-    {% tag_cloud_for_model planet.Feed as tags_cloud with steps=9 min_count=3 distribution=log %}
-    {% include 'tags/blocks/feeds_cloud.html' %}
+    {% cloud_for_feed feed %}
 {% endblock %}

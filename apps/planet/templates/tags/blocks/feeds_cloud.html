@@ -1,9 +1,9 @@
 {% load i18n %}
 {% if tags_cloud %}
-<h4>{% trans "Tags cloud for blog" %} {{ feed.name }}</h4>
+<h4>{% trans "Tags cloud for feed" %} {{ feed.title }}</h4>
 <div class="tags cloud">
     {% for tag in tags_cloud %}
-        <a class="tag" href="{% url by_tag_feed_detail feed.pk tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
+        <a href="{% url by_tag_feed_detail feed.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a>
     {% endfor %}
 </div>
 {% endif %}

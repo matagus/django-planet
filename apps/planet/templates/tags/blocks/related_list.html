@@ -1,9 +1,11 @@
 {% load i18n  %}
 {% if related_tags %}
     <h4>{% trans "Related tags" %}</h4>
-    <div class="tags related">
+    <ul class="tags related">
         {% for tag in related_tags %}
-            <a class="tag" href="{% url tag_detail tag.name %}" style="font-size: {{ tag.font_size }};">{{ tag }}</a>
+            <li>
+                <a class="tag" href="{% url tag_detail tag.name %}">{{ tag }}</a>
+            </li>
         {% endfor %}
-    </div>
+    </ul>
 {% endif %}
