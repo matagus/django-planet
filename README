@@ -16,13 +16,11 @@ models were inspired by Mark Pilgrim's Feedparser [3].
 Screenshots:
 ------------
 
-The following screenshots are just for demonstration purposes.
+The following screenshots are just for demonstration purposes:
 
-.. image:: http://cloud.github.com/downloads/matagus/django-planet/post_list-my_planet.png
-
-.. image:: http://cloud.github.com/downloads/matagus/django-planet/tag_view-my_planet.png
-
-.. image:: http://cloud.github.com/downloads/matagus/django-planet/author_view-my_planet.png
+   * http://cloud.github.com/downloads/matagus/django-planet/post_list-my_planet.png
+   * http://cloud.github.com/downloads/matagus/django-planet/tag_view-my_planet.png
+   * http://cloud.github.com/downloads/matagus/django-planet/author_view-my_planet.png
 
 
 Summary of changes:
