@@ -1,5 +1,4 @@
-=============
-django planet
+django-planet
 =============
 
 This is a generic application for Django projects aiming to provide a planet
@@ -14,8 +13,21 @@ models were inspired by Mark Pilgrim's Feedparser [3].
 [3] http://www.feedparser.org/
 
 
-Summary of changes with respect to feedjack and feedjack-extension code:
-    
+Screenshots:
+------------
+
+The following screenshots are just for demonstration purposes.
+
+.. image:: http://cloud.github.com/downloads/matagus/django-planet/post_list-my_planet.png
+
+.. image:: http://cloud.github.com/downloads/matagus/django-planet/tag_view-my_planet.png
+
+.. image:: http://cloud.github.com/downloads/matagus/django-planet/author_view-my_planet.png
+
+
+Summary of changes:
+-------------------
+
     * Link model was dropped.
     * Site models replaced by django.contrib.sites.Site model :)
     * Tag model replaced by tagging.Tag model.
@@ -34,6 +46,8 @@ Summary of changes with respect to feedjack and feedjack-extension code:
 
     
 TODO:
+-----
+    
     * python manage.py update_feeds command!
     * Feeds (RSS and Atom): for all posts, for posts filtered by tag, author,
     blog, feed or any of its combinations.
@@ -47,3 +61,9 @@ INSTALLATION
 ------------
 
     For installation instructions, see the file INSTALL in this directory.
+
+
+Copyright notice
+----------------
+
+The screenshots are just for demonstration.
