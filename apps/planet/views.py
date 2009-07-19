@@ -190,7 +190,7 @@ def search(request):
                 params_dict = {"title__icontains": query}
 
                 blogs_list = Blog.site_objects.filter(**params_dict
-                    ).order_by("name")
+                    ).order_by("title")
 
                 return render_to_response("blogs/list.html",
                     {"blogs_list": blogs_list},
@@ -200,7 +200,7 @@ def search(request):
                 params_dict = {"title__icontains": query}
 
                 feeds_list = Feed.site_objects.filter(**params_dict
-                    ).order_by("name")
+                    ).order_by("title")
 
                 return render_to_response("feeds/list.html",
                     {"feeds_list": feeds_list},
