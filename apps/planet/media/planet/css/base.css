@@ -55,6 +55,7 @@ body {
 	background: #76d500; /* c14040 */
 	margin: 0.3em 0  0 -6.0em;
 	width: 3.8em;
+    border-top: #33493c 5px solid;
 }
 
 #right-rail p {font-size: .8em; margin-bottom: 1.8em;}
@@ -147,3 +148,6 @@ div.tags.cloud a.level4 { font-size: 1em; }
 div.tags.cloud a.level5 { font-size: 1.1em; }
 div.tags.cloud a.level6 { font-size: 1.2em; }
 div.tags.cloud a.level7 { font-size: 1.3em; }
+
+div.post ul.original_details { margin-left: 0; }
+div.post ul.original_details li { display: inline; }

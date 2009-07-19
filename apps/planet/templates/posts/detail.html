@@ -8,33 +8,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="entry">
-        <h2>{{ post.title|striptags|safe }}</h2>
-        <div class="details">
-            {% post_details post %}
-        </div>
-        <p id="comments_link">
-        {% if post.comments %}
-            <a href="{{ post.comments }}" title="{% trans 'Comments' %}">
-                ({% trans "Comments" %})
-            </a>
-        {% endif %}
-        </p>
+    <div class="post clearfix">
+        {% post_full_details post %}
         <div class="content">
             {{ post.content|safe }}
         </div>
-        <ul>
-            <li>
-                {% trans 'Read the original entry' %}: <a href="{{ post.url }}">{{ post.title|safe }}</a>
-            </li>
-            <li>
-                {% trans "Visit the blog" %} <a href="{{ post.feed.blog.url }}">{{ post.feed.blog.title }}</a>
-            </li>
-            <li>
-                <a href="{% url feed_detail post.feed.pk %}">{% trans "See more posts from this blog" %}</a>
-            </li>
-        </ul>
-    <!-- End .entry -->
     </div>
 {% endblock %}
 

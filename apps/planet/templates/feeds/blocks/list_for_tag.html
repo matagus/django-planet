@@ -1,11 +1,11 @@
 {% load i18n %}
 {% ifnotequal feeds_list|lenght 1 %}
-    <h4>{% trans "Blogs talking about" %} {{ tag }}</h4>
-    <ul class="blogs list">
+    <h4>{% trans "Feeds talking about" %} {{ tag }}</h4>
+    <ul class="feeds list">
         {% for feed in feeds_list %}
             <li>
-                <a class="nombre" href="{% url by_tag_feed_detail feed.pk,tag.name %}" title="{{ feed.name }}">
-                    {{ feed.name }}
+                <a class="nombre" href="{% url by_tag_feed_detail feed.pk,tag.name %}" title="{{ feed.title }}">
+                    {{ feed.title }}
                 </a>
             </li>
         {% endfor %}

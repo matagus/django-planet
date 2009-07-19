@@ -22,13 +22,7 @@
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
-            <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
-                    {{ post.title|striptags|safe }}
-                </a>
-            </h3>
-            <div class="details">
-                {% post_details post %}
-            </div>
+            {% post_details post %}
             <div class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
@@ -56,6 +50,6 @@
         {% related_tags_for tag %}
     </div>
     <div>
-        {# bug in sqlite3 feeds_about tag #}
+        {% feeds_about tag %}
     </div>
 {% endblock %}

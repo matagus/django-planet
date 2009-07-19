@@ -12,13 +12,7 @@
     {% autopaginate posts 10 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
-            <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
-                    {{ post.title|striptags|safe }}
-                </a>
-            </h3>
-            <div class="details">
-                {% post_details post %}
-            </div>
+            {% post_details post %}
             <p class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </p>

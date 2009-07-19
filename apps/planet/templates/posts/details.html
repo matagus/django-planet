@@ -1,14 +1,11 @@
 {% load i18n %}
 <div class="date">{{ post.date_modified|date:"M d Y" }}</div>
+<h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+        {{ post.title|striptags|safe }}
+    </a>
+</h3>
 <p>
-    {% trans 'published' %}
-    {% for author in post.authors.all %}
-        {% trans 'by' %}
-        <a href="{% url author_detail author.pk %}" title="{% trans 'See all posts for this author' %}">
-            {{ author.name }}
-        </a>
-    {% endfor %}
-    {% trans 'in' %} <a href="{% url feed_detail post.feed.pk %}" title="{% trans 'See all posts for this blog' %}">
+    {% trans 'published in' %} <a href="{% url feed_detail post.feed.pk %}" title="{% trans 'See all posts for this feed' %}">
         {{ post.feed.title }}
     </a>
 </p>
