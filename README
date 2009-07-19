@@ -42,6 +42,9 @@ Summary of changes:
     * CSS theme based on the minimal and beautiful Mounty Lounge Industries
     blog's design (http://blog.montylounge.com/)
 
+    * Full template tags set: tags cloud for a blog, a feed, an author and a
+    global one; related tags list, authors list related to a tag and feeds list
+    related to a tag.
     
 TODO:
 -----
@@ -61,8 +64,3 @@ INSTALLATION
 
     For installation instructions, see the file INSTALL in this directory.
 
-
-Copyright notice
-----------------
-
-The screenshots are just for demonstration.
