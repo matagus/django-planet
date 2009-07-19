@@ -25,7 +25,7 @@
         </div>
         <ul>
             <li>
-                {% trans 'Read the original entry' %}: <a href="{{ post.link }}">{{ post.title|safe }}</a>
+                {% trans 'Read the original entry' %}: <a href="{{ post.url }}">{{ post.title|safe }}</a>
             </li>
             <li>
                 {% trans "Visit the blog" %} <a href="{{ post.feed.blog.url }}">{{ post.feed.blog.title }}</a>

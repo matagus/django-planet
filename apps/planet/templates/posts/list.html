@@ -8,9 +8,10 @@
 {% endblock %}
 
 {% block content %}
-    {% autopaginate posts 50 %}
+    <h2>{% trans "Recent posts" %}</h2>
+    {% autopaginate posts 10 %}
     {% for post in posts %}
-        <div class="entry {% cycle 'even' 'odd' %}">
+        <div class="post {% cycle 'even' 'odd' %} clearfix">
             <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
@@ -18,10 +19,9 @@
             <div class="details">
                 {% post_details post %}
             </div>
-            <div class="content">
+            <p class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
-            </div>
-        <!-- End .entry -->
+            </p>
         </div>
     {% endfor %}
 

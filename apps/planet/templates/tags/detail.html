@@ -13,7 +13,7 @@
 
 {% block rss_feed %}
     <a href="{% url tag_rss_feed tag %}" title="{% trans 'Suscribe to RSS feed for tag' %} {{ tag }}">
-        <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
+        <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
 
@@ -21,41 +21,17 @@
     <h2>{% trans "Tag" %}: {{ tag }}</h2>
     {% autopaginate posts 20 %}
     {% for post in posts %}
-        <div class="entry {% cycle 'even' 'odd' %}">
+        <div class="post {% cycle 'even' 'odd' %} clearfix">
             <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
             </h3>
-            <div>
-                <p class="date">
-                    {% trans 'published' %}
-                    {% if post.author %}
-                        {% trans 'by ' %}
-                        <a href="{% url author_detail post.feed.author_set.all.0.pk %}" title="{% trans 'See all posts for this author' %}">
-                            {{ post.author }}
-                        </a>
-                    {% endif %}
-                    &nbsp;{% trans 'in' %} <a href="{% url feed_detail post.feed.pk %}" title="{% trans 'See all posts for this blog' %}">
-                        {{ post.feed.name }}
-                    </a> 
-                    &nbsp;{% trans 'at' %} {{ post.date_modified|date:"g:i A" }}
-                </p>
-                <p class="tags list">
-                    {% for tag in post.tags.all %}
-                        {% if forloop.first %} {% trans "under" %} {% endif %}
-                        <a href="{% url tag_detail tag.name %}" title="{% trans 'See more other posts for ' %} {{ tag.name }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                    {% if post.comments %}
-                        <a href="{{ post.comments }}" title="{% trans 'Comments' %}">
-                            ({% trans "Comments" %})
-                        </a>
-                    {% endif %}
-                </p>
+            <div class="details">
+                {% post_details post %}
             </div>
             <div class="content">
                 {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
             </div>
-        <!-- End .entry -->
         </div>
     {% endfor %}
 

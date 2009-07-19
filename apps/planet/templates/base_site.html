@@ -11,137 +11,117 @@
     <meta http-equiv="content-language" content="en" />
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8">
     {% block extrameta %}{% endblock %}
-    <link href="{{ MEDIA_URL }}feedjack/custom/img/django_80x15.png" rel="SHORTCUT ICON">
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}feedjack/custom/default.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}feedjack/custom/theme.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}feedjack/custom/posts.css" />
+    <link href="{{ MEDIA_URL }}icons/shortcut.ico" rel="SHORTCUT ICON">
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/960.css" />
     {% block head_feeds %}
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url rss_feed %}" />
     {% endblock %}
     {% block extrastyle %}{% endblock %}
     {% block extrahead %}{% endblock %}
-    <script src="{{ MEDIA_URL }}js/jquery-1.3.2.min.js" language="javascript"></script>
+    <script src="{{ MEDIA_URL }}js/jquery.min.js" language="javascript"></script>
     <script language="javascript">
         function externalLinks(base_url) {
             return $('a[href^=http]:not("[href^=' + base_url + ']"):not(":has(\'img\')")');
         }
-        $(document).ready(function() { externalLinks('{{ site.url }}').addClass("external"); });
+        $(document).ready(function() { externalLinks('{{ site.domain }}').addClass("external"); });
     </script>
-    <style>
-        a.external {
-            background: transparent url({{ MEDIA_URL }}icons/external.gif) no-repeat scroll right center;
-            padding-right: 10px; text-decoration: none;
-        }
-        a.external:hover { color: #666; }
-    </style>
 </head>
 <body>
-<div id="header">
-    <div class="tit">
-        <h1><a href="{% url planet_index %}" title="{{ site.name }}">{{ site.name }}</a></h1>
-    </div>
-</div>
+    <div id="body-container" class="clearfix">
+        <div id="header">
+            <div class="logo">
+                <h1>
+                    <a href="{% url planet_index %}" title="{{ site.name }}">{{ site.name }}</a>
+                </h1>
+            </div>
+            <div id="nav">
+                <form name="search_form" id="search_form" action="{% url planet_search %}" method="GET">
+                    <label>{% trans 'Search in' %}</label>
+                    {{ search_form }}
+                    <button name="search" value="go">{% trans 'ok' %}</button>
+                </form>
+            </div>
+        </div>
 
-<div id="container">
-    <div id="center" class="column">
-    {% block content %}
-        <!-- Your content goes here -->
-    {% endblock %}
-    <!-- End #center -->
-    </div>
-
-    <div id="left" class="column">
-        {% block leftt_column %}
-        {% endblock %}
-    </div>
-
-    <div id="right" class="column">
-        <div id="navigation_bar">
-            <ul>
-                <li>
-                    <a href="{% url posts_list %}">{% trans 'Posts' %}</a>
-                </li>
-                <li>
-                    <a href="{% url authors_list %}">{% trans 'Authors' %}</a>
-                </li>
-                <li>
-                    <a href="{% url blogs_list %}">{% trans 'Blogs' %}</a>
-                </li>
-                <li>
-                    <a href="{% url feeds_list %}">{% trans 'Feeds' %}</a>
-                </li>
-                <li>
-                    <a href="{% url tags_cloud %}">{% trans 'Tag Cloud' %}</a>
-                </li>
-                {% block menu_extra %}
+        <div class="container_12">
+            <div class="grid_9">
+                <div class="content">
+                {% block content %}
+                    <!-- Your content goes here -->
                 {% endblock %}
-            </ul>
+                </div>
+            </div>
+
+            <div id="right-rail" class="grid_3">
+                <div id="navigation_bar">
+                    <h4>{% trans 'Browse' %}</h4>
+                    <ul>
+                        <li>
+                            <a href="{% url posts_list %}">{% trans 'Posts' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url authors_list %}">{% trans 'Authors' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url blogs_list %}">{% trans 'Blogs' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url feeds_list %}">{% trans 'Feeds' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url tags_cloud %}">{% trans 'Tag Cloud' %}</a>
+                        </li>
+                        {% block menu_extra %}
+                        {% endblock %}
+                    </ul>
+                </div>
+
+                {% block right_column %}
+                    {% tag_cloud_for_model planet.Post as tags_cloud with steps=7 min_count=5 distribution=log %}
+                    {% include 'tags/blocks/cloud.html' %}
+                {% endblock %}
+
+                <div id="buttons">
+                    <ul>
+                        <li>
+                            {% block rss_feed %}
+                            <a href="{% url rss_feed %}" title="{% trans 'Suscribe to RSS feed' %}">
+                                <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
+                            </a>
+                            {% endblock %}
+                         </li>
+                        <li>
+                            {% block atom_feed %}
+                            {% endblock %}
+                        </li>
+                        <li>
+                            <a href="{% url opml %}" title="OPML">
+                                <img src="{{ MEDIA_URL }}images/button-opml.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url foaf %}" title="FOAF">
+                                <img src="{{ MEDIA_URL }}images/button-foaf.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.djangoproject.com/" title="{% trans 'This is a django powered site!' %}">
+                                <img src="{{ MEDIA_URL }}images/django_80x15.png" width="80" height="15" alt="Powered by Django." title="Powered by Django"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-        <div id="search">
-            <form name="search_form" id="search_form" action="{% url planet_search %}" method="GET">
-                <label>{% trans 'Search in' %}</label>
-                {{ search_form }}
-                <button name="search" value="go">{% trans 'ok' %}</button>
-            </form>
+
+        <div id="footer">
+            <p>{% blocktrans %}A <a href="http://github.com/matagus/django-planet/tree" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
+            <p>{% blocktrans %}Theme heavly based on the minimal and beautiful <a href="http://blog.montylounge.com/" title="Visit Mounty Lounge Industries blog">Mounty Lounge Industries blog's</a> design{% endblocktrans %}</p>
         </div>
 
-        {% block right_column %}
-            {% tag_cloud_for_model planet.Post as tags_cloud with steps=9 min_count=3 distribution=log %}
-            {% include 'tags/blocks/cloud.html' %}
-        {% endblock %}
-
-        <div id="buttons">
-            {% block rss_feed %}
-            <a href="{% url rss_feed %}" title="{% trans 'Suscribe to RSS feed' %}">
-                <img class="button" src="{{ MEDIA_URL }}feedjack/custom/img/rss20.png" width="80" height="15" alt="[RSS 2.0 Feed]"/>
-            </a>
-            {% endblock %}
-            
-            {% block atom_feed %}
-            {% endblock %}
-            
-            <a href="{% url opml %}" title="OPML">
-                <img src="{{ MEDIA_URL }}feedjack/custom/img/button-opml.png"/>
-            </a>
-            <a href="{% url foaf %}" title="FOAF">
-                <img src="{{ MEDIA_URL }}feedjack/custom/img/button-foaf.png"/>
-            </a>
-            
-            <a href="http://www.djangoproject.com/" title="{% trans 'This is a django powered site!' %}">
-                <img src="{{ MEDIA_URL }}feedjack/custom/img/django_80x15.png" width="80" height="15" alt="Powered by Django." title="Powered by Django"/>
-            </a>
-
-            <a href="http://jigsaw.w3.org/css-validator/" title="This page validates as CSS">
-                <img src="{{ MEDIA_URL }}feedjack/custom/img/css.png" alt="CSS Valid" width="80px" height="15px"/>
-            </a>
-            <a href="http://validator.w3.org/check/referer" title="This page validates as XHTML 1.1 Transitional">
-                <img src="{{ MEDIA_URL }}feedjack/custom/img/xhtml.png" alt="XHTML Valid" width="80px" height="15px"/>
-            </a>
-        </div>
-
-    <!-- End #right -->
     </div>
-
-<!-- End #container -->
-</div>
-
-<div>
-    <div id="footer">
-    {% if site.welcome %}
-        <div class="welcome">
-            <h2>{% trans "Welcome" %}</h2>
-            {{ site.welcome|safe }}
-        </div>
-    {% endif %}
-    {% if site.greets %}
-        <div class="credits">
-            <h2>{% trans "Credits" %}</h2>
-            {{ site.greets|safe }}
-        </div>
-    {% endif %}
-
-    <p id="powered">{% blocktrans %}A <a href="http://github.com/matagus/django-planet/tree" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
-</div>
 </body>
 
 </html>

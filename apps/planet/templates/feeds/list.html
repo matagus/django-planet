@@ -15,7 +15,7 @@
     {% for feed in feeds_list %}
         <li>
             <a href="{{ feed.feed_url }}" title="{% trans 'Subscribe to feed of' %} {{ feed.title }}">
-                <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
+                <img src="{{ MEDIA_URL }}images/feed.png" alt="Feed">
             </a>
             <a href="{% url feed_detail feed.pk %}" class="feed" title="{% trans 'See the full list of post from this blog' %}">{{ feed.title }}</a>
         </li>

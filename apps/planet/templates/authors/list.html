@@ -14,7 +14,7 @@
     {% for author in authors_list %}
         <p>
             <a href="{{ author.feed.feed_url }}" title="{% trans 'Subscribe to the feed of the author of' %} {{ author.feed.title }}">
-                <img src="{{ MEDIA_URL }}icons/rss-medium.png" alt=":)">
+                <img src="{{ MEDIA_URL }}images/feed.png" alt="Feed">
             </a>
             <a class="nombre" href="{% url author_detail author.pk %}" title="{% trans 'Author of' %} {{ author.feed.title }}">
                 {{ author.name }}

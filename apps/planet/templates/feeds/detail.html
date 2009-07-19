@@ -37,7 +37,7 @@
     
     {% autopaginate posts 20 %}
     {% for post in posts %}
-        <div class="entry {% cycle 'even' 'odd' %}">
+        <div class="post {% cycle 'even' 'odd' %} clearfix">
             <h3><a href="{% url post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
                     {{ post.title|striptags|safe }}
                 </a>
