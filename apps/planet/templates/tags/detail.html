@@ -3,12 +3,13 @@
 
 {% block page_title %}{{ tag }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{{ tag }} {% trans 'tag in' %} {{ site.title }}" />
-    <meta name="description" content="{{ tag }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
+    <meta name="DC.title" content="{{ tag }} {% trans 'tag in' %} {{ site.name }}" />
+    <meta name="description" content="{{ tag }} - {% trans 'Posts in' %} {{ site.name }}" />
 {% endblock %}
 
 {% block head_feeds %}
     <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url tag_rss_feed tag %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'Posts in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url rss_feed %}" />
 {% endblock %}
 
 {% block rss_feed %}
@@ -23,9 +24,6 @@
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
             {% post_details post %}
-            <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
-            </div>
         </div>
     {% endfor %}
 

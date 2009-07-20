@@ -100,3 +100,20 @@ def cloud_for_blog(blog, min_count=3):
         Post, filters={"feed__blog": blog}, min_count=min_count)
 
     return {"tags_cloud": tags_cloud, "blog": blog}
+
+
+@register.inclusion_tag("authors/blocks/list_for_feed.html")
+def authors_for_feed(feed):
+
+    authors = Author.site_objects.filter(post__feed=feed)
+
+    return {"authors": authors, "feed": feed}
+
+
+@register.inclusion_tag("feeds/blocks/list_for_author.html")
+def feeds_for_author(author):
+    
+    feeds = Feed.site_objects.filter(
+        post__authors=author).order_by("title").distinct()
+
+    return {"feeds_list": feeds, "author": author}

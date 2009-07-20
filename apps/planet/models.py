@@ -203,7 +203,7 @@ class FeedLink(models.Model):
     Stores data contained in feedparser's feed.links for a given feed
     """
     feed = models.ForeignKey("planet.Feed")
-    rel = models.CharField(_("Relation"), max_length=20)
+    rel = models.CharField(_("Relation"), max_length=50)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
 
@@ -225,7 +225,7 @@ class PostLink(models.Model):
     Stores data contained in feedparser's feed.entries[i].links for a given feed
     """
     post = models.ForeignKey("planet.Post")
-    rel = models.CharField(_("Relation"), max_length=20)
+    rel = models.CharField(_("Relation"), max_length=50)
     mime_type = models.CharField(_("MIME type"), max_length=50)
     link = models.URLField(_("Url")) 
     title = models.CharField(_("Title"), max_length=255) 

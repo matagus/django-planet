@@ -16,7 +16,7 @@ from tagging.models import Tag, TaggedItem
 
 
 def index(request):
-    posts = Post.site_objects.all().order_by("-date_created")
+    posts = Post.site_objects.all().order_by("-date_modified")
     
     return render_to_response("posts/list.html", {"posts": posts},
         context_instance=RequestContext(request))
@@ -32,7 +32,7 @@ def blogs_list(request):
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     
-    posts = Post.site_objects.filter(feed__blog=blog).order_by("-date_created")
+    posts = Post.site_objects.filter(feed__blog=blog).order_by("-date_modified")
     
     return render_to_response(
         "blogs/detail.html", {"blog": blog, "posts": posts},
@@ -54,7 +54,7 @@ def feed_detail(request, feed_id, tag=None):
         
         posts = TaggedItem.objects.get_by_model(Post.site_objects, tag)
     else:
-        posts = Post.site_objects.filter(feed=feed).order_by("-date_created")
+        posts = Post.site_objects.filter(feed=feed).order_by("-date_modified")
 
     return render_to_response("feeds/detail.html",
         {"feed": feed, "posts": posts, "tag": tag},
@@ -78,7 +78,7 @@ def author_detail(request, author_id, tag=None):
         posts = TaggedItem.objects.get_by_model(Post.site_objects, tag)
     else:
         posts = Post.site_objects.filter(
-            authors=author).order_by("-date_created")
+            authors=author).order_by("-date_modified")
     
     return render_to_response("authors/detail.html",
         {"author": author, "posts": posts, "tag": tag},
@@ -86,7 +86,8 @@ def author_detail(request, author_id, tag=None):
 
 
 def posts_list(request):
-    posts = Post.site_objects.all().order_by("-date_created")
+    posts = Post.site_objects.all().select_related("feed"
+        ).order_by("-date_modified")
     
     return render_to_response("posts/list.html", {"posts": posts},
         context_instance=RequestContext(request))
@@ -103,7 +104,7 @@ def tag_detail(request, tag):
     tag = get_object_or_404(Tag, name=tag)
         
     posts = TaggedItem.objects.get_by_model(
-        Post.site_objects, tag).order_by("-date_created")
+        Post.site_objects, tag).order_by("-date_modified")
     
     return render_to_response("tags/detail.html", {"posts": posts, "tag": tag},
         context_instance=RequestContext(request))
@@ -147,14 +148,14 @@ def tags_cloud(request, min_posts_count=1):
 
 def foaf(request):
     # TODO: use http://code.google.com/p/django-foaf/ instead of this
-    feeds = Feed.site_objects.all()
+    feeds = Feed.site_objects.all().select_related("blog")
     
     return render_to_response("microformats/foaf.xml", {"feeds": feeds},
         context_instance=RequestContext(request), mimetype="text/xml")
 
 
 def opml(request):
-    feeds = Feed.site_objects.all()
+    feeds = Feed.site_objects.all().select_related("blog")
     
     return render_to_response("microformats/opml.xml", {"feeds": feeds},
         context_instance=RequestContext(request), mimetype="text/xml")
@@ -171,7 +172,7 @@ def search(request):
                 params_dict = {"title__icontains": query}
             
                 posts = Post.site_objects.filter(**params_dict
-                    ).distinct().order_by("-date_created")
+                    ).distinct().order_by("-date_modified")
             
                 return render_to_response("posts/list.html", {"posts": posts},
                     context_instance=RequestContext(request))

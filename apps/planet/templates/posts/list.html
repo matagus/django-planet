@@ -3,19 +3,16 @@
 
 {% block page_title %}{% trans 'Posts list' %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Posts list' %} - {{ site.title }}" />
-    <meta name="description" content="{% trans 'Posts list' %} - {{ site.title }}' %}" />
+    <meta name="DC.title" content="{% trans 'Posts list' %} - {{ site.name }}" />
+    <meta name="description" content="{% trans 'Posts list' %} - {{ site.name }}" />
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Recent posts" %}</h2>
+    <h2>{% trans "Latest posts" %}</h2>
     {% autopaginate posts 10 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
             {% post_details post %}
-            <p class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
-            </p>
         </div>
     {% endfor %}
 

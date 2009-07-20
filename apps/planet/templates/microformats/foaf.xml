@@ -9,19 +9,19 @@
 <!-- based on http://www-128.ibm.com/developerworks/xml/library/x-pblog/ -->
 <foaf:Group>
 
-  <foaf:name>{{ site.title }}</foaf:name>
-  <foaf:homepage>{{ site.url }}</foaf:homepage>
-  <rdfs:seeAlso rdf:resource="{{ site.url }}/foaf/" />
+  <foaf:name>{{ site.name }}</foaf:name>
+  <foaf:homepage>{{ site.domain }}</foaf:homepage>
+  <rdfs:seeAlso rdf:resource="{{ site.domain }}/foaf/" />
 
   {% for feed in feeds %}
   <foaf:member>
     <foaf:Person>
-      <foaf:name>{{ feed.name }}</foaf:name>
+      <foaf:name>{{ feed.title }}</foaf:name>
       <foaf:weblog>
-        <foaf:Document rdf:about="{{ feed.link }}">
-          <dc:title>{{ feed.title }}</dc:title>
+        <foaf:Document rdf:about="{{ feed.blog.url }}">
+          <dc:title>{{ feed.blog.title }}</dc:title>
           <rdfs:seeAlso>
-            <rss:channel rdf:about="{{ feed.feed_url }}" />
+            <rss:channel rdf:about="{{ feed.url }}" />
           </rdfs:seeAlso>
         </foaf:Document>
       </foaf:weblog>

@@ -15,3 +15,9 @@
         <a href="{% url tag_detail tag.name %}" title="Tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 </p>
+<p class="content">
+    {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+</p>
+<div class="external_links">
+    <a href="{{ post.url }}" title="{% trans 'Read original post' %}">{% trans 'read original post' %}</a> {% trans 'in' %} <strong>{{ post.feed.title }}</strong>  {% trans 'blog' %}.
+</div>

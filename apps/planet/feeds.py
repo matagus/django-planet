@@ -11,10 +11,11 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, Http404
 from django.template.defaultfilters import linebreaks, escape, capfirst
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.sites.models import Site
 
 import atom
-from planet.models import Post, Author, Feed
-from tagging.models import Tag
+from planet.models import Post, Author, Feed, Blog
+from tagging.models import Tag, TaggedItem
 
 
 ITEMS_PER_FEED = getattr(settings, 'PLANET_ITEMS_PER_FEED', 50)
@@ -56,7 +57,7 @@ class PostFeed(BasePostFeed):
         return _("All posts")
 
     def feed_updated(self):
-        qs = Post.objects.filter(feed__subscriber__site=self.site)
+        qs = Post.objects.filter(feed__site=self.site)
         # We return an arbitrary date if there are no results, because there
         # must be a feed_updated field as per the Atom specifications, however
         # there is no real data to go by, and an arbitrary date can be static.
@@ -68,22 +69,22 @@ class PostFeed(BasePostFeed):
         return ({'href': reverse('posts_list')},)
 
     def items(self):
-        posts_list = Post.objects.filter(feed__subscriber__site=self.site
+        posts_list = Post.objects.filter(feed__site=self.site
             ).order_by("-date_created")[:ITEMS_PER_FEED]
         return posts_list
 
-class SubscriberFeed(BasePostFeed):
+class AuthorFeed(BasePostFeed):
     def get_object(self, params):
-        return get_object_or_404(Subscriber, pk=params[0], is_active=True)
+        return get_object_or_404(Author, pk=params[0], is_active=True)
     
-    def feed_id(self, subscriber):
-        return reverse("subscriber_show", args=(subscriber.pk, ))
+    def feed_id(self, author):
+        return reverse("author_show", args=(author.pk, ))
     
-    def feed_title(self, subscriber):
-        return _("Posts by %s - %s") % (subscriber.name, self.site.name)
+    def feed_title(self, author):
+        return _("Posts by %s - %s") % (author.name, self.site.name)
 
-    def feed_updated(self, subscriber):
-        qs = Post.objects.filter(feed__subscriber=subscriber).distinct()
+    def feed_updated(self, author):
+        qs = Post.objects.filter(feed__author=author).distinct()
         # We return an arbitrary date if there are no results, because there
         # must be a feed_updated field as per the Atom specifications, however
         # there is no real data to go by, and an arbitrary date can be static.
@@ -91,11 +92,11 @@ class SubscriberFeed(BasePostFeed):
             return datetime(year=2008, month=7, day=1)
         return qs.latest('date_created').date_created
 
-    def feed_links(self, subscriber):
-        return ({'href': reverse("subscriber_show", args=(subscriber.pk, ))},)
+    def feed_links(self, author):
+        return ({'href': reverse("author_show", args=(author.pk, ))},)
 
-    def items(self, subscriber):
-        return Post.objects.filter(feed__subscriber=subscriber,
+    def items(self, author):
+        return Post.objects.filter(feed__author=author,
             ).distinct().order_by("-date_created")[:ITEMS_PER_FEED]
 
 class BlogFeed(BasePostFeed):
@@ -113,7 +114,7 @@ class BlogFeed(BasePostFeed):
 
     def feed_updated(self, feed):
         qs = Post.objects.filter(feed=feed,
-            feed__subscriber__site=self.site).distinct()
+            feed__site=self.site).distinct()
         # We return an arbitrary date if there are no results, because there
         # must be a feed_updated field as per the Atom specifications, however
         # there is no real data to go by, and an arbitrary date can be static.
@@ -126,7 +127,7 @@ class BlogFeed(BasePostFeed):
 
     def items(self, feed):
         return Post.objects.filter(feed=feed,
-            feed__subscriber__site=self.site).distinct(
+            feed__site=self.site).distinct(
             ).order_by("-date_created")[:ITEMS_PER_FEED]
 
 class TagFeed(BasePostFeed):
@@ -141,7 +142,7 @@ class TagFeed(BasePostFeed):
 
     def feed_updated(self, tag):
         qs = Post.objects.filter(tags__name=tag,
-            feed__subscriber__site=self.site).distinct()
+            feed__site=self.site).distinct()
         # We return an arbitrary date if there are no results, because there
         # must be a feed_updated field as per the Atom specifications, however
         # there is no real data to go by, and an arbitrary date can be static.
@@ -153,26 +154,26 @@ class TagFeed(BasePostFeed):
         return ({'href': reverse("tag_detail", args=(tag.pk, ))},)
 
     def items(self, tag):
-        return Post.objects.filter(tags__name=tag, feed__subscriber__site=self.site
+        return Post.objects.filter(tags__name=tag, feed__site=self.site
             ).distinct().order_by("-date_created")[:ITEMS_PER_FEED]
 
-class SubscriberTagFeed(BasePostFeed):
+class AuthorTagFeed(BasePostFeed):
     def __init__(self, *args, **kwargs):
-        super(SubscriberTagFeed, self).__init__(args, kwargs)
+        super(AuthorTagFeed, self).__init__(args, kwargs)
         self.tag = kwargs["tag"]
     
     def get_object(self, params):
-        return get_object_or_404(Subscriber, pk=params[0], is_active=True)
+        return get_object_or_404(Author, pk=params[0], is_active=True)
     
-    def feed_id(self, subscriber):
-        return reverse("by_tag_subscriber_show", args=(subscriber.pk, self.tag))
+    def feed_id(self, author):
+        return reverse("by_tag_author_show", args=(author.pk, self.tag))
     
-    def feed_title(self, subscriber):
+    def feed_title(self, author):
         return _("Posts by %s under %s tag - %s")\
-            % (subscriber.name, self.tag, self.site.name)
+            % (author.name, self.tag, self.site.name)
 
-    def feed_updated(self, subscriber):
-        qs = Post.objects.filter(feed__subscriber=subscriber,
+    def feed_updated(self, author):
+        qs = Post.objects.filter(feed__author=author,
             tags__name=self.tag).distinct()
         # We return an arbitrary date if there are no results, because there
         # must be a feed_updated field as per the Atom specifications, however
@@ -181,15 +182,15 @@ class SubscriberTagFeed(BasePostFeed):
             return datetime(year=2008, month=7, day=1)
         return qs.latest('date_created').date_created
 
-    def feed_links(self, subscriber):
-        return ({'href': reverse("by_tag_subscriber_show", args=(subscriber.pk, self.tag))},)
+    def feed_links(self, author):
+        return ({'href': reverse("by_tag_author_show", args=(author.pk, self.tag))},)
 
-    def items(self, subscriber):
+    def items(self, author):
         return Post.objects.filter(
-            feed__subscriber=subscriber, tags__name=self.tag
+            feed__author=author, tags__name=self.tag
             ).distinct().order_by("-date_created")[:ITEMS_PER_FEED]
 
-class SubscriberFeedChooser:
+class AuthorFeedChooser:
     def __init__(self, *args, **kwargs):
         self.request = args[1]
         self.url = args[0]
@@ -197,7 +198,7 @@ class SubscriberFeedChooser:
     def get_feed(self, params):
         check_params = params.split("/")
         if len(check_params) == 1:
-            return SubscriberFeed(self.url, self.request).get_feed(params)
+            return AuthorFeed(self.url, self.request).get_feed(params)
         else:
             if not len(check_params) == 3:
                 raise Http404, "Feed does not exist"
@@ -206,24 +207,24 @@ class SubscriberFeedChooser:
                 raise Http404, "Feed does not exist"
             
             tag = check_params[2]
-            return SubscriberTagFeed(self.url, self.request, tag=tag).get_feed(params)
+            return AuthorTagFeed(self.url, self.request, tag=tag).get_feed(params)
 
-def rss_feed(request, tag=None, subscriber_id=None):
+def rss_feed(request, tag=None, author_id=None):
     site = get_object_or_404(Site, pk=settings.SITE_ID)
 
-    params_dict = {"feed__subscriber__site": site}
+    params_dict = {"feed__site": site}
 
     pretitle = ""
-    title = "%s (RSS Feed)" % site.title
+    title = "%s (RSS Feed)" % site.name
     
     if tag:
         params_dict.update({"tags__name": tag})
         pretitle = "%s %s " % (tag, _("in"))
 
-    if subscriber_id:
-        params_dict.update({"feed__subscriber": subscriber_id})
-        subscriber = Subscriber.objects.get(pk=subscriber_id)
-        pretitle = "%s %s " % (subscriber.name, _("in"))
+    if author_id:
+        params_dict.update({"feed__author": author_id})
+        author = Author.objects.get(pk=author_id)
+        pretitle = "%s %s " % (author.name, _("in"))
 
     try:
         posts_count = settings.FJ_EXTENSION_ITEMS_PER_FEED
@@ -233,18 +234,23 @@ def rss_feed(request, tag=None, subscriber_id=None):
     object_list = Post.objects.filter(**params_dict).distinct()[:posts_count]
     
     feed = feedgenerator.Rss201rev2Feed(title=pretitle + title,
-        link=site.url, description=site.description,
-        feed_url=os.path.join(site.url, reverse("default_feed")))
+        link=site.domain, description=None,
+        feed_url=os.path.join(site.domain, reverse("rss_feed")))
 
     for post in object_list:
+        author_list = post.authors.all()
+        author = author_list and author_list[0] or None
+        author_name = author and author.name or ""
+        author_email = author and author.email or ""
+        
         feed.add_item(
-            title = '%s: %s' % (post.feed.name, post.title),
+            title = '%s: %s' % (post.feed.title, post.title),
             link = reverse("post_detail", args=(post.pk,)),
             description = post.content,
-            author_email = post.author_email,
-            author_name = post.author,
+            author_email = author_email,
+            author_name = author_name,
             pubdate = post.date_modified,
-            unique_id = post.link,
+            unique_id = post.url,
             categories = [tag.name for tag in post.tags.all()]
         )
     

@@ -1,10 +1,10 @@
 {% extends "base_site.html" %}
 {% load i18n pagination_tags tagging_tags planet_tags %}
 
-{% block page_title %}{% trans "Blog" %}: {{ author.name }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
+{% block page_title %}{{ author.name }} {% trans 'has written the following posts' %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Blog' %}: {{ author.name }} - {% trans 'Posts in' %} {{ site.title }}" />
-    <meta name="description" content="{% trans 'Blog' %} {{ author.name }} {{ author.feed.tagline|safe }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
+    <meta name="DC.title" content="{{ author.name }} {% trans 'has written the following posts' %} - {{ site.name }}" />
+    <meta name="description" content="{{ author.name }} {% trans 'has written the following posts' %} - {{ site.name }}" />
 {% endblock %}
 
 {% block head_feeds %}
@@ -26,14 +26,14 @@
         </li>
         <li>
             <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Blogs talking about this' %}
+                {% trans 'Feeds talking about this' %}
             </a>
         </li>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Author" %}: {{ author.name }}</h2>
+    <h2>{{ author.name }} {% trans "has written the following posts" %}:</h2>
 
     {% if tag %}
         <div>
@@ -48,9 +48,6 @@
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
             {% post_details post %}
-            <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
-            </div>
         </div>
     {% endfor %}
     {% paginate %}

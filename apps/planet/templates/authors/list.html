@@ -3,24 +3,24 @@
 
 {% block page_title %}{% trans 'Authors list' %} - {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Authors list' %} - {{ site.title }}" />
-    <meta name="description" content="{% trans 'Authors list' %} - {{ site.title }}' %}" />
+    <meta name="DC.title" content="{% trans 'Authors list' %} - {{ site.name }}" />
+    <meta name="description" content="{% trans 'Authors list' %} - {{ site.name }}" />
 {% endblock %}
 
 {% block content %}
 <h2>{% trans "Authors" %}</h2>
-<div class="suscribers list">
-    {% autopaginate authors_list 40 %}
+<ul class="author list">
+    {% autopaginate authors_list 20 %}
     {% for author in authors_list %}
-        <p>
-            <a href="{{ author.feed.feed_url }}" title="{% trans 'Subscribe to the feed of the author of' %} {{ author.feed.title }}">
-                <img src="{{ MEDIA_URL }}images/feed.png" alt="Feed">
-            </a>
-            <a class="nombre" href="{% url author_detail author.pk %}" title="{% trans 'Author of' %} {{ author.feed.title }}">
-                {{ author.name }}
-            </a>
+        <li>
+            <h3>
+                <a class="nombre" href="{% url author_detail author.pk %}" title="{% trans 'Author:' %} {{ author.name }}">
+                    {{ author.name }}
+                </a>
+            </h3>
+            {% trans 'writes for' %} {% feeds_for_author author %}
         </p>
     {% endfor %}
     {% paginate %}
-</div>
+</ul>
 {% endblock %}

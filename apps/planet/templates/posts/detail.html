@@ -3,8 +3,8 @@
 
 {% block page_title %}{{ post.title|safe }} - {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{{ post.title|safe }} - {{ site.title }}" />
-    <meta name="description" content="{{ post.title|safe }} - {{ site.title }}" />
+    <meta name="DC.title" content="{{ post.title|safe }} - {{ site.name }}" />
+    <meta name="description" content="{{ post.title|safe }} - {{ site.name }}" />
 {% endblock %}
 
 {% block content %}

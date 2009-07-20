@@ -13,7 +13,7 @@ from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
         Author, PostAuthorData, Enclosure)
 
 
-USER_AGENT = "Mozilla/5.0 (X11;U; Linux i686; es-AR; rv:1.9.1) Gecko/20090624 Ubuntu/9.04 (jaunty) Firefox/3.5"
+USER_AGENT = "django-planet-crawler/0.1"
 
 class Command(BaseCommand):
     """
@@ -144,7 +144,7 @@ class Command(BaseCommand):
                 for enclosure_dict in entry.get("enclosures", []):
                     post_enclosure, created = Enclosure.objects.get_or_create(
                         post=post,
-                        length=enclosure_dict.get("length"),
+                        length=enclosure_dict.get("length", 0),
                         mime_type=enclosure_dict.get("type"),
                         link=enclosure_dict.get("href")
                     )

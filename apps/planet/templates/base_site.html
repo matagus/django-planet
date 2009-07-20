@@ -4,13 +4,12 @@
 <html>
 <head>
     <title>{% block page_title %}{{ site.name }}{% endblock %}</title>
+    {% block extrameta %}
     <meta name="DC.title" content="{{ site.name }}" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="{{ site.description }}" />
+    {% endblock %}
     <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
     <meta http-equiv="content-language" content="en" />
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8">
-    {% block extrameta %}{% endblock %}
     <link href="{{ MEDIA_URL }}icons/shortcut.ico" rel="SHORTCUT ICON">
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css" />
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/960.css" />

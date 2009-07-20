@@ -3,19 +3,19 @@
 
 {% block page_title %}{% trans "Feed" %}: {{ feed.title }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
 {% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Feed' %}: {{ feed.title }} - {% trans 'Posts in' %} {{ site.title }}" />
-    <meta name="description" content="{% trans 'Feed' %} {{ feed.title }} {{ feed.tagline|safe }} - {% trans 'Posts in' %} {{ site.title }}' %}" />
+    <meta name="DC.title" content="{% trans 'Feed' %}: {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
+    <meta name="description" content="{% trans 'Feed' %} {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
 {% endblock %}
 
 {% block menu_extra %}
     {% if tag %}
         <li>
-            <a href="{% url tag_authors_list tag.title %}" title="{% trans 'See the list of authors talking about this tag' %}">
+            <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
                 {% trans 'People talking about this' %}
             </a>
         </li>
         <li>
-            <a href="{% url tag_feeds_list tag.title %}" title="{% trans 'See the list of blogs talking about this tag' %}">
+            <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
                 {% trans 'Feeds talking about this' %}
             </a>
         </li>
@@ -23,41 +23,44 @@
 {% endblock %}
 
 {% block content %}
+    {% if feed.icon %}
+        <img src="{{ feed.icon }}" alt="{% trans 'Feed icon' %}" />
+    {% endif %}
     <h2>{% trans "Feed" %}: {{ feed.title }}</h2>
-    <p class="description">{{ feed.feed.tagline|safe }}</p>
-
-    {% if tag %}
-        <div>
-            <p>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></p>
-            <a href="{% url feed_detail feed.pk %}" title="{% trans 'See all posts from' %} {{ feed.title }}">
-                {% trans 'See the complete list of posts from this blog' %}
+    {% if feed.subtitle %}
+        <p>{{ feed.subtitle|striptags }}</p>
+    {% endif %}
+    <ul class="feed details">
+        <li>
+            <a href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
+                <img src="{{ MEDIA_URL }}images/feed.png" alt="{% trans 'RSS 2.0 Feed' %}" />
             </a>
-        </div>
+            {% trans 'feed' %}: <a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a>
+        </li>
+        <li>
+            {% trans 'generator' %}: <strong>{{ feed.generator }}</strong>
+        </li>
+        <li>
+            {% trans 'web' %}: <a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a>
+        </li>
+    </ul>
+    
+    {% if tag %}
+        <h3>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h3>
     {% endif %}
     
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
             {% post_details post %}
-
-            <div class="content">
-                {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
-            </div>
         </div>
     {% endfor %}
-
-    {% if tag %}
-        <p>
-            <a href="{% url tag_feeds_list tag.title %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Other blogs talking about ' %} {{ tag }}
-            </a>
-        </p>
-    {% endif %}
-
     {% paginate %}
 {% endblock %}
 
 {% block right_column %}
+    {# this is too slow % authors_for_feed feed %#}
+    
     {% if tag %}
         <div>
             {% related_tags_for tag %}

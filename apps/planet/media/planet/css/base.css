@@ -141,13 +141,19 @@ div.post { border-bottom: #33493c 5px solid; padding-bottom: 20px; }
 div.post p.tags.list { font-size: 0.85em; text-transform: lowercase; }
 div.pagination { text-align: center; margin-top: 1.5em; }
 
-div.tags.cloud a.level1 { font-size: 0.5em; font-weight: 50; }
-div.tags.cloud a.level2 { font-size: 0.7em; font-weight: 70; }
-div.tags.cloud a.level3 { font-size: 0.9em; font-weight: 90; }
-div.tags.cloud a.level4 { font-size: 1em; }
+div.tags.cloud a.level1 { font-size: 0.5em; font-weight: 50; opacity: 0.7; }
+div.tags.cloud a.level2 { font-size: 0.7em; font-weight: 70; opacity: 0.8; }
+div.tags.cloud a.level3 { font-size: 0.9em; font-weight: 90; opacity: 0.9; }
+div.tags.cloud a.level4 { font-size: 1em; opacity: 0.95; }
 div.tags.cloud a.level5 { font-size: 1.1em; }
 div.tags.cloud a.level6 { font-size: 1.2em; }
-div.tags.cloud a.level7 { font-size: 1.3em; }
+div.tags.cloud a.level7 { font-size: 1.3em; font-weight: bolder; }
 
 div.post ul.original_details { margin-left: 0; }
 div.post ul.original_details li { display: inline; }
+div.post div.external_links { font-size: 0.75em; text-align: right; }
+
+ul.details { border-left: #33493c 10px solid; padding-left: 0.5em; margin-left: 0.2em; }
+
+ul.author.list ul.feeds.list { display: inline; margin-left: 0; }
+ul.author.list ul.feeds.list li { display: inline; }
