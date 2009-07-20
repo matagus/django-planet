@@ -1,0 +1,10 @@
+{% load i18n %}
+<ul class="feeds list">
+    {% for feed in feeds_list %}
+        <li>
+            <a class="nombre" href="{% url feed_detail feed.pk %}" title="{{ feed.title }}">
+                {{ feed.title }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
