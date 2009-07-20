@@ -48,16 +48,37 @@ Summary of changes:
     
 TODO:
 -----
-    
+    First:
+        
     * python manage.py update_feeds command!
     * Feeds (RSS and Atom): for all posts, for posts filtered by tag, author,
     blog, feed or any of its combinations.
     * setup.py, pack it into and egg and upload it to Python Python Package Index.
+    * Get the first image of a post (from enclosure link or from content),
+    download it, generate a thumbnail and asociate it to that post. Then show it
+    in list-views!
     * A little sample project.
-
-    * Some other features inspired by semantic attributes of RSS and Atom feeds :P
-
     * Clean content (html, css and js) of each feed entry.
+
+
+    Second:
+        
+    * Make a sample project showing how to integrate it into Pinax
+      http://www.pinaxproject.com/
+    * Date-based views: by month and year
+    * SEO improvement: custom META tags for each view, use SlugField fields for
+    any model that has a detail view (blog, feed, post, author) and use it in
+    its url. Like /planet/blogs/Experimetal_Etc
+    * Use django-atomformat: http://github.com/pinax/atom-format/tree/master
+    * Build a template tag to show a block of latest photos (ie post enclosures
+    of type "image/*")
+
+
+    Maybe:
+
+    * Allow users import an OPML file with their favourite feeds.
+    * Use django-foaf to generate foaf xml? http://code.google.com/p/django-foaf/
+    * Some other features inspired by semantic attributes of RSS and Atom feeds :P
 
 INSTALLATION
 ------------
