@@ -45,12 +45,13 @@ Summary of changes:
     * Full template tags set: tags cloud for a blog, a feed, an author and a
     global one; related tags list, authors list related to a tag and feeds list
     related to a tag.
+
+    * Added indexed to models according to expected use.
     
 TODO:
 -----
     First:
         
-    * python manage.py update_feeds command!
     * Feeds (RSS and Atom): for all posts, for posts filtered by tag, author,
     blog, feed or any of its combinations.
     * setup.py, pack it into and egg and upload it to Python Python Package Index.
@@ -72,7 +73,8 @@ TODO:
     * Use django-atomformat: http://github.com/pinax/atom-format/tree/master
     * Build a template tag to show a block of latest photos (ie post enclosures
     of type "image/*")
-
+    * Improve add_feed and update_feed commands with multi processing,
+    make them more clear and atomic, etc.
 
     Maybe:
 
