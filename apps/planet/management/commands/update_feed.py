@@ -21,5 +21,5 @@ class Command(BaseCommand):
 
         feed_url = args[0]
         # process feed in create-mode
-        process_feed(feed_url, create=True)
+        process_feed(feed_url, create=False)
                 
