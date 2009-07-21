@@ -38,8 +38,8 @@ class Blog(models.Model):
     A model to store primary info about a blog or website that which feed or
     feeds are aggregated to our planet
     """
-    title = models.CharField(_("title"), max_length=255, blank=True)
-    url = models.URLField(_("Url"), unique=True)
+    title = models.CharField(_("title"), max_length=255, blank=True, db_index=True)
+    url = models.URLField(_("Url"), unique=True, db_index=True)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
 
     site_objects = BlogManager()
@@ -83,9 +83,9 @@ class Feed(models.Model):
     # a site where this feed is published
     site = models.ForeignKey(Site)
     # url to retrieve this feed
-    url = models.URLField(_("Url"), unique=True)
+    url = models.URLField(_("Url"), unique=True, db_index=True)
     # title attribute from Feedparser's Feed object
-    title = models.CharField(_("Title"), max_length=255)
+    title = models.CharField(_("Title"), max_length=255, db_index=True)
     # subtitle attribute from Feedparser's Feed object. aka tagline
     subtitle = models.TextField(_("Subtitle"), blank=True, null=True)
     # rights or license attribute from Feedparser's Feed object
@@ -97,21 +97,24 @@ class Feed(models.Model):
     # language name or code. language attribute from Feedparser's Feed object
     language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
     # global unique identifier for the feed
-    guid = models.CharField(_("Global Unique Identifier"), max_length=255, blank=True, null=True)
+    guid = models.CharField(_("Global Unique Identifier"), max_length=255,
+        blank=True, null=True, db_index=True)
     # icon attribute from Feedparser's Feed object
     icon_url = models.URLField(_("Icon URL"), blank=True, null=True)
     # image attribute from Feedparser's Feed object
     image_url = models.URLField(_("Image URL"), blank=True, null=True)
 
     # etag attribute from Feedparser's Feed object
-    etag = models.CharField(_("Etag"), max_length=50, blank=True, null=True)
+    etag = models.CharField(_("Etag"), max_length=50, blank=True,
+        null=True, db_index=True)
     # modified attribute from Feedparser's Feed object
-    last_modified = models.DateTimeField(_("Last modified"), null=True, blank=True)
+    last_modified = models.DateTimeField(_("Last modified"), null=True,
+        blank=True, db_index=True)
     # datetime when the feed was checked by last time
     last_checked = models.DateTimeField(_("Last checked"), null=True, blank=True)
     # in order to retrieve it or not
-    is_active = models.BooleanField(_("Is active"), default=True,
-        help_text=_("If disabled, this feed will not be further updated.") )
+    is_active = models.BooleanField(_("Is active"), default=True, db_index=True,
+        help_text=_("If disabled, this feed will not be further updated."))
 
     site_objects = FeedManager()
     objects = models.Manager()
@@ -152,14 +155,15 @@ class Post(models.Model):
     A feed contains a collection of posts. This model stores them.
     """
     feed = models.ForeignKey("planet.Feed", null=False, blank=False)
-    title = models.CharField(_("Title"), max_length=255)
+    title = models.CharField(_("Title"), max_length=255, db_index=True)
     authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
-    url = models.URLField(_("Url"))
+    url = models.URLField(_("Url"), db_index=True)
     guid = models.CharField(_("Guid"), max_length=200, db_index=True)
     content = models.TextField(_("Content"))
     comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
-    
-    date_modified = models.DateTimeField(_("Date modified"), null=True, blank=True)
+
+    date_modified = models.DateTimeField(_("Date modified"), null=True,
+        blank=True, db_index=True)
     date_created = models.DateField(_("Date created"), auto_now_add=True)
 
     site_objects = PostManager()
@@ -182,7 +186,8 @@ class Author(models.Model):
     """
     An author is everyone who wrote or has contributed to write a post.
     """
-    name = models.CharField(_("Name"), max_length=255, null=True, blank=True)
+    name = models.CharField(_("Name"), max_length=255, null=True,
+        blank=True, db_index=True)
     email = models.EmailField(_("Author email"), blank=True)
     profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
     
@@ -203,9 +208,9 @@ class FeedLink(models.Model):
     Stores data contained in feedparser's feed.links for a given feed
     """
     feed = models.ForeignKey("planet.Feed")
-    rel = models.CharField(_("Relation"), max_length=50)
-    mime_type = models.CharField(_("MIME type"), max_length=50)
-    link = models.URLField(_("Url")) 
+    rel = models.CharField(_("Relation"), max_length=50, db_index=True)
+    mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
+    link = models.URLField(_("Url"), max_length=255, db_index=True) 
 
     site_objects = FeedLinkManager()
     objects = models.Manager()
@@ -225,10 +230,10 @@ class PostLink(models.Model):
     Stores data contained in feedparser's feed.entries[i].links for a given feed
     """
     post = models.ForeignKey("planet.Post")
-    rel = models.CharField(_("Relation"), max_length=50)
-    mime_type = models.CharField(_("MIME type"), max_length=50)
-    link = models.URLField(_("Url")) 
-    title = models.CharField(_("Title"), max_length=255) 
+    rel = models.CharField(_("Relation"), max_length=50, db_index=True)
+    mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
+    link = models.URLField(_("Url"), max_length=255, db_index=True) 
+    title = models.CharField(_("Title"), max_length=255, db_index=True) 
 
     site_objects = PostLinkManager()
     objects = models.Manager()
@@ -249,8 +254,8 @@ class Enclosure(models.Model):
     """
     post = models.ForeignKey("planet.Post")
     length = models.CharField(_("Length"), max_length=20)
-    mime_type = models.CharField(_("MIME type"), max_length=50)
-    link = models.URLField(_("Url")) 
+    mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
+    link = models.URLField(_("Url"), max_length=255, db_index=True) 
 
     site_objects = EnclosureManager()
     objects = models.Manager()
