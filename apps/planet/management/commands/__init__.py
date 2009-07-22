@@ -54,6 +54,10 @@ def process_feed(feed_url, create=False):
 
     current_site = Site.objects.get(pk=settings.SITE_ID)
 
+    # update last checked datetime
+    planet_feed.last_checked = datetime.now()
+    planet_feed.save()
+
     if create:
         # then create blog, feed, generator, feed links and feed tags
         
@@ -109,18 +113,22 @@ def process_feed(feed_url, create=False):
     items_per_page = int(document.feed.get("opensearch_itemsperpage", 25))
     
     if total_results == 0:
+        print "*" * 20
+        print "Feed: %s" % planet_feed.url
         print "No entries to store. Exiting..."
     
     else:
+        print "Entries total count: %d" % total_results
+        print
         new_posts_count = 0
         stop_retrieving = False
         while (total_results > len(entries)) and not stop_retrieving:
 
             # retrive and store feed posts
             entries.extend(document.entries)
-            print "Processing %d entries" % len(entries)
+            print "Processing %d entries" % len(document.entries)
             
-            for entry in entries:
+            for entry in document.entries:
                 title = entry.get("title", "")
                 url = entry.get("link")
                 guid = entry.get("guid")
@@ -213,4 +221,8 @@ def process_feed(feed_url, create=False):
 
         print "*" * 20
         print "Feed: %s" % planet_feed.url
+        if new_posts_count:
+            # update last modified datetime
+            planet_feed.last_modified = datetime.now()
+            planet_feed.save()
         print "%d posts were created. Done." % new_posts_count

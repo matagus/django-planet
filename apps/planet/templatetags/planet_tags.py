@@ -4,8 +4,11 @@
 Several usefull template tags!
 """
 
+import re
+
 from django import template
-from django.db.models import Count, Max, F
+from django.template.defaultfilters import stringfilter
+from django.utils.safestring import mark_safe
 
 from planet.models import Author, Feed, Blog, Post
 
@@ -117,3 +120,17 @@ def feeds_for_author(author):
         post__authors=author).order_by("title").distinct()
 
     return {"feeds_list": feeds, "author": author}
+
+
+@register.filter
+@stringfilter
+def clean_html(html):
+    pattern_list = ('(style=".*?")', '(<style.*?</style>")',
+        '(<script.*?</script>")', )
+    for pattern in pattern_list:
+        html = re.sub(pattern, '', html)
+
+    pattern_list = (('(<br.?/>){3,}', '<br/><br/>'), )
+    for (pattern, replacement) in pattern_list:
+        html = re.sub(pattern, replacement, html)
+    return mark_safe(html)

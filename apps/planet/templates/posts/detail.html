@@ -11,7 +11,7 @@
     <div class="post clearfix">
         {% post_full_details post %}
         <div class="content">
-            {{ post.content|safe }}
+            {{ post.content|safe|clean_html }}
         </div>
     </div>
 {% endblock %}
