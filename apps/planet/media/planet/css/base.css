@@ -158,3 +158,6 @@ ul.details { padding-left: 0.5em; margin-left: 0.2em; }
 
 ul.author.list ul.feeds.list { display: inline; margin-left: 0; }
 ul.author.list ul.feeds.list li { display: inline; }
+
+#navigation_bar ul li { padding: 3px 0; }
+#navigation_bar ul li a { text-transform: uppercase; }
