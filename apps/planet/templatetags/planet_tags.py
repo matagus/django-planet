@@ -18,7 +18,7 @@ from tagging.models import Tag, TaggedItem
 register = template.Library()
 
 
-@register.inclusion_tag('authors/blocks/list_for_tag.html')
+@register.inclusion_tag('planet/authors/blocks/list_for_tag.html')
 def authors_about(tag):
     """
     Displays a list of authors who have been written a post tagged with this tag.    
@@ -31,7 +31,7 @@ def authors_about(tag):
     return {"authors": authors, "tag": tag}
 
 
-@register.inclusion_tag('feeds/blocks/list_for_tag.html')
+@register.inclusion_tag('planet/feeds/blocks/list_for_tag.html')
 def feeds_about(tag):
     """
     Displays a list of feeds whose posts have been tagged with this tag.
@@ -44,7 +44,7 @@ def feeds_about(tag):
     return {"feeds_list": feeds_list, "tag": tag}
 
 
-@register.inclusion_tag("tags/blocks/related_list.html")
+@register.inclusion_tag("planet/tags/blocks/related_list.html")
 def related_tags_for(tag, count=20):
     """
     Displays a list of tags that have been used for tagging Posts instances
@@ -55,7 +55,7 @@ def related_tags_for(tag, count=20):
     return {"related_tags": related_tags[:count]}
 
 
-@register.inclusion_tag("posts/details.html")
+@register.inclusion_tag("planet/posts/details.html")
 def post_details(post):
     """
     Displays info about a post: title, date, feed and tags.
@@ -63,7 +63,7 @@ def post_details(post):
     return {"post": post}
 
 
-@register.inclusion_tag("posts/full_details.html")
+@register.inclusion_tag("planet/posts/full_details.html")
 def post_full_details(post):
     """
     Displays full info about a post: title, date, feed, authors and tags,
@@ -72,7 +72,7 @@ def post_full_details(post):
     return {"post": post}
 
 
-@register.inclusion_tag("tags/blocks/feeds_cloud.html")
+@register.inclusion_tag("planet/tags/blocks/feeds_cloud.html")
 def cloud_for_feed(feed, min_count=3):
     """
     Displays a tag cloud for a given feed object.    
@@ -83,7 +83,7 @@ def cloud_for_feed(feed, min_count=3):
     return {"tags_cloud": tags_cloud, "feed": feed}
 
 
-@register.inclusion_tag("tags/blocks/authors_cloud.html")
+@register.inclusion_tag("planet/tags/blocks/authors_cloud.html")
 def cloud_for_author(author, min_count=3):
     """
     Displays a tag cloud for a given author object.    
@@ -94,7 +94,7 @@ def cloud_for_author(author, min_count=3):
     return {"tags_cloud": tags_cloud, "author": author}
 
 
-@register.inclusion_tag("tags/blocks/blogs_cloud.html")
+@register.inclusion_tag("planet/tags/blocks/blogs_cloud.html")
 def cloud_for_blog(blog, min_count=3):
     """
     Displays a tag cloud for a given blog object.    
@@ -105,7 +105,7 @@ def cloud_for_blog(blog, min_count=3):
     return {"tags_cloud": tags_cloud, "blog": blog}
 
 
-@register.inclusion_tag("authors/blocks/list_for_feed.html")
+@register.inclusion_tag("planet/authors/blocks/list_for_feed.html")
 def authors_for_feed(feed):
 
     authors = Author.site_objects.filter(post__feed=feed)
@@ -113,7 +113,7 @@ def authors_for_feed(feed):
     return {"authors": authors, "feed": feed}
 
 
-@register.inclusion_tag("feeds/blocks/list_for_author.html")
+@register.inclusion_tag("planet/feeds/blocks/list_for_author.html")
 def feeds_for_author(author):
     
     feeds = Feed.site_objects.filter(

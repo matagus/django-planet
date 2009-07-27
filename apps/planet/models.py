@@ -219,7 +219,7 @@ class FeedLink(models.Model):
         verbose_name = _("Feed Link")
         verbose_name_plural = _("Feed Links")
         ordering = ("feed", "rel", "mime_type")
-        unique_together = (("feed", "rel", "mime_type"), )
+        #unique_together = (("feed", "rel", "mime_type", "link"), )
 
     def __unicode__(self):
         return u"%s %s (%s)" % (self.feed.title, self.rel, self.mime_type)
@@ -264,7 +264,7 @@ class Enclosure(models.Model):
         verbose_name = _("Post Enclosure")
         verbose_name_plural = _("Post Enclosures")
         ordering = ("post", "mime_type", "link")
-        unique_together = (("post", "link"), )
+        #unique_together = (("post", "link", "mime_type"), )
 
     def __unicode__(self):
         return u"%s [%s] (%s)" % (self.link, self.mime_type, self.post)

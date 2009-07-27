@@ -19,6 +19,17 @@ def process_feed(feed_url, create=False):
     entries  and their related data.
     """
 
+    def normalize_tag(tag):
+        """
+        converts things like "-noise-" to "noise" and "- noise -" to "noise"
+        """
+        if tag.startswith("-"):
+            tag = tag[1:]
+        if tag.endswith("-"):
+            tag = tag[:-1]
+        tag = tag.strip()
+        return tag
+
     try:
         USER_AGENT = settings.USER_AGENT
     except AttributeError:
@@ -46,6 +57,9 @@ def process_feed(feed_url, create=False):
     if not create:
         modified = datetime.timetuple(planet_feed.last_modified)
         etag = planet_feed.etag
+        # update last checked datetime
+        planet_feed.last_checked = datetime.now()
+        planet_feed.save()
     else:
         modified = etag = None
     
@@ -53,10 +67,6 @@ def process_feed(feed_url, create=False):
         modified=modified, etag=etag)
 
     current_site = Site.objects.get(pk=settings.SITE_ID)
-
-    # update last checked datetime
-    planet_feed.last_checked = datetime.now()
-    planet_feed.save()
 
     if create:
         # then create blog, feed, generator, feed links and feed tags
@@ -151,7 +161,10 @@ def process_feed(feed_url, create=False):
                 except:
                     print "Skipping post %s (%s) because already exists"\
                         % (guid, url)
-                    stop_retrieving = True
+                    if not create:
+                        # if it is in update-mode then stop retrieving when
+                        # it finds repeated posts
+                        stop_retrieving = True
                 
                 else:
                     new_posts_count += 1
@@ -160,6 +173,7 @@ def process_feed(feed_url, create=False):
                     for tag_dict in entry.get("tags", []):
                         tag_name = tag_dict.get("term") or tag_dict.get("label")
                         tag_name = tag_name[:255]
+                        tag_name = normalize_tag(tag_name)
                         post_tags.append(tag_name)
 
                     if post_tags:
