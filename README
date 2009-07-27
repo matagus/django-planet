@@ -47,6 +47,7 @@ Summary of changes:
     related to a tag.
 
     * Added indexed to models according to expected use.
+    * Content cleaned (css styles and some duplicated/useless spaces).
     
 TODO:
 -----
@@ -59,8 +60,6 @@ TODO:
     download it, generate a thumbnail and asociate it to that post. Then show it
     in list-views!
     * A little sample project.
-    * Clean content (html, css and js) of each feed entry.
-
 
     Second:
         
@@ -75,6 +74,8 @@ TODO:
     of type "image/*")
     * Improve add_feed and update_feed commands with multi processing,
     make them more clear and atomic, etc.
+    * Optimized content clean & compression of each feed entry (remove
+    duplicated/useless tags, bad spaces, and the like).
 
     Maybe:
 
