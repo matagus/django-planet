@@ -13,7 +13,8 @@ from django.template.defaultfilters import linebreaks, escape, capfirst
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 
-import atom
+from atompub import atom
+
 from planet.models import Post, Author, Feed, Blog
 from tagging.models import Tag, TaggedItem
 
@@ -81,7 +82,7 @@ class AuthorFeed(BasePostFeed):
         return reverse("author_show", args=(author.pk, ))
     
     def feed_title(self, author):
-        return _("Posts by %s - %s") % (author.name, self.site.name)
+        return _("Posts by %(author_name)s - %(site_name)s") % {'author_name': author.name, 'site_name': self.site.name}
 
     def feed_updated(self, author):
         qs = Post.objects.filter(feed__author=author).distinct()
@@ -107,7 +108,7 @@ class BlogFeed(BasePostFeed):
         return reverse("feed_detail", args=(feed.pk, ))
     
     def feed_title(self, feed):
-        return _("Posts in %s - %s") % (feed.title, self.site.name)
+        return _("Posts in %(feed_title)s - %(site_name)s") % {'feed_title': feed.title, 'site_name':self.site.name}
 
     def feed_subtitle(self, feed):
         return "%s - %s" % (feed.tagline, feed.link)
@@ -138,7 +139,7 @@ class TagFeed(BasePostFeed):
         return reverse("tag_detail", args=(tag.pk, ))
     
     def feed_title(self, tag):
-        return _("Posts under %s tag - %s") % (tag, self.site.name)
+        return _("Posts under %(tag)s tag - %(site_name)s") % {'tag': tag, 'site_name': self.site.name}
 
     def feed_updated(self, tag):
         qs = Post.objects.filter(tags__name=tag,
@@ -169,8 +170,8 @@ class AuthorTagFeed(BasePostFeed):
         return reverse("by_tag_author_show", args=(author.pk, self.tag))
     
     def feed_title(self, author):
-        return _("Posts by %s under %s tag - %s")\
-            % (author.name, self.tag, self.site.name)
+        return _("Posts by %(author_name)s under %(tag)s tag - %(site_name)s")\
+            % {'author_name': author.name, 'tag': self.tag, 'site_name': self.site.name}
 
     def feed_updated(self, author):
         qs = Post.objects.filter(feed__author=author,

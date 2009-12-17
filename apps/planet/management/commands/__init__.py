@@ -2,15 +2,23 @@
 # -*- coding: utf-8 -*-
 
 import feedparser
-from datetime import datetime
 import time
+import mimetypes
+
+from urlparse import urlparse
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.sites.models import Site
 
+from tagging.models import Tag
+
 from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
         Author, PostAuthorData, Enclosure)
+from planet.signals import post_created
 
+class PostAlreadyExists(Exception):
+    pass
 
 def process_feed(feed_url, create=False):
     """
@@ -141,24 +149,27 @@ def process_feed(feed_url, create=False):
             for entry in document.entries:
                 title = entry.get("title", "")
                 url = entry.get("link")
-                guid = entry.get("guid")
-                content = entry.get("content", [{"value": ""}])[0]["value"]
+                guid = entry.get("link")
+                content = entry.get('description') or entry.get("content", [{"value": ""}])[0]["value"]
                 comments_url = entry.get("comments")
                 date_modified = entry.get("updated_parsed") or\
                     entry.get("published_parsed")
                 try:
                     date_modified = datetime.fromtimestamp(
                         time.mktime(date_modified))
-                except:
+                except Exception:
                     date_modified = None
 
                 try:
+                    if len(Post.objects.filter(url=url, guid=guid)):
+                        raise PostAlreadyExists
                     post = Post(title=title, url=url, guid=guid, content=content,
                         comments_url=comments_url, date_modified=date_modified,
                         feed=planet_feed)
+                    # To have the feed entry in the pre_save signal
+                    post.entry = entry
                     post.save()
-                
-                except:
+                except PostAlreadyExists:
                     print "Skipping post %s (%s) because already exists"\
                         % (guid, url)
                     if not create:
@@ -169,15 +180,11 @@ def process_feed(feed_url, create=False):
                 else:
                     new_posts_count += 1
                     # create post tags...
-                    post_tags = []
                     for tag_dict in entry.get("tags", []):
                         tag_name = tag_dict.get("term") or tag_dict.get("label")
                         tag_name = tag_name[:255]
                         tag_name = normalize_tag(tag_name)
-                        post_tags.append(tag_name)
-
-                    if post_tags:
-                        post.tags = " ,".join(set(post_tags))
+                        Tag.objects.add_tag(post, '"%s"' % tag_name)
 
                     # create post links...
                     for link_dict in entry.get("links", []):
@@ -190,13 +197,22 @@ def process_feed(feed_url, create=False):
                         )
 
                     # create and store enclosures...
-                    for enclosure_dict in entry.get("enclosures", []):
+                    if entry.get('media_thumbnail', False):
+                        mime_type, enc = mimetypes.guess_type(urlparse(entry.get('media_thumbnail').href).path)
                         post_enclosure, created = Enclosure.objects.get_or_create(
                             post=post,
+                            length=0,
+                            mime_type=mime_type,
+                            link=entry.get('media_thumbnail').href
+                        )
+                    for enclosure_dict in entry.get("enclosures", []):
+                        post_enclosure = Enclosure(
+                            post=post,
                             length=enclosure_dict.get("length", 0),
-                            mime_type=enclosure_dict.get("type"),
+                            mime_type=enclosure_dict.get("type", ""),
                             link=enclosure_dict.get("href")
                         )
+                        post_enclosure.save()
 
                     # create and store author...
                     author_dict = entry.get("author_detail")
@@ -225,6 +241,10 @@ def process_feed(feed_url, create=False):
                             pad = PostAuthorData(author=contributor, post=post,
                                 is_contributor=True)
                             pad.save()
+                    
+                    # We send a post_created signal
+                    print 'post_created.send(sender=post)', post
+                    post_created.send(sender=post, instance=post)
 
             if not stop_retrieving:
                 opensearch_url = "%s?start-index=%d&max-results=%d" %\

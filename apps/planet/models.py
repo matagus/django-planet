@@ -21,12 +21,17 @@
     * Added FeedLink, PostLink, Enclosure and Generator models to store info
       provided by Feedparser.
 """
+import feedparser
+from datetime import datetime
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _ 
 from django.contrib.sites.models import Site
+from django.conf import settings
+from django.db.models.signals import pre_delete
 
 import tagging
+from tagging.models import Tag
 
 from planet.managers import (FeedManager, AuthorManager, BlogManager,
     PostManager, GeneratorManager, PostLinkManager, FeedLinkManager,
@@ -79,13 +84,13 @@ class Feed(models.Model):
     A model to store detailed info about a parsed Atom or RSS feed
     """
     # a feed belongs to a blog
-    blog = models.ForeignKey("planet.Blog", null=False, blank=False)
+    blog = models.ForeignKey("planet.Blog", null=True, blank=True)
     # a site where this feed is published
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, null=True, blank=True)
     # url to retrieve this feed
     url = models.URLField(_("Url"), unique=True, db_index=True)
     # title attribute from Feedparser's Feed object
-    title = models.CharField(_("Title"), max_length=255, db_index=True)
+    title = models.CharField(_("Title"), max_length=255, db_index=True, blank=True, null=True)
     # subtitle attribute from Feedparser's Feed object. aka tagline
     subtitle = models.TextField(_("Subtitle"), blank=True, null=True)
     # rights or license attribute from Feedparser's Feed object
@@ -93,7 +98,7 @@ class Feed(models.Model):
     # generator_detail attribute from Feedparser's Feed object
     generator = models.ForeignKey("planet.Generator", blank=True, null=True)
     # info attribute from Feedparser's Feed object
-    info = models.CharField(_(""), max_length=255, blank=True, null=True)
+    info = models.CharField(_("Infos"), max_length=255, blank=True, null=True)
     # language name or code. language attribute from Feedparser's Feed object
     language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
     # global unique identifier for the feed
@@ -123,6 +128,47 @@ class Feed(models.Model):
         verbose_name = _("Feed")
         verbose_name_plural = _("Feeds")
         ordering = ('title', 'url',)
+
+    def save(self):
+        if not self.blog:
+            self.modified = self.etag = None
+            
+            try:
+                USER_AGENT = settings.USER_AGENT
+            except AttributeError:
+                print "Please set the variable USER_AGENT = <string> in your settings.py"
+                exit(0)
+            
+            document = feedparser.parse(self.url, agent=USER_AGENT,
+                modified=self.modified, etag=self.etag)
+            
+            self.site = Site.objects.get(pk=settings.SITE_ID)
+            
+            self.title = document.feed.get("title", "--")
+            self.subtitle = document.feed.get("subtitle")
+            blog_url = document.feed.get("link")
+            self.rights = document.feed.get("rights") or document.feed.get("license")
+            self.info = document.feed.get("info")
+            self.guid = document.feed.get("id")
+            self.image_url = document.feed.get("image", {}).get("href")
+            self.icon_url = document.feed.get("icon")
+            self.language = document.feed.get("language")
+            self.etag = document.get("etag", '')
+            self.last_modified = document.get("updated_parsed", datetime.now())
+            
+            self.blog, created = Blog.objects.get_or_create(
+                url=blog_url, defaults={"title": self.title})
+            
+            generator_dict = document.feed.get("generator_detail", {})
+            
+            if generator_dict:
+                self.generator, created = Generator.objects.get_or_create(
+                    name=generator_dict.get("name", "--"),
+                    link=generator_dict.get("link"),
+                    version=generator_dict.get("version"))
+            else:
+                self.generator = None
+        super(Feed, self).save()
 
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.url)
@@ -174,12 +220,17 @@ class Post(models.Model):
         verbose_name_plural = _("Posts")
         ordering = ('-date_modified',)
         unique_together = (('feed', 'guid'),)
-
+    
     def __unicode__(self):
         return u"%s [%s]" % (self.title, self.feed.title)
 
 # each Post object now will have got a .tags attribute!
 tagging.register(Post)
+
+# Deleting all asociated tags.
+def delete_asociated_tags(sender, **kwargs):
+    Tag.objects.update_tags(kwargs['instance'], None)
+pre_delete.connect(delete_asociated_tags, sender=Post)
 
 
 class Author(models.Model):
@@ -210,7 +261,7 @@ class FeedLink(models.Model):
     feed = models.ForeignKey("planet.Feed")
     rel = models.CharField(_("Relation"), max_length=50, db_index=True)
     mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
-    link = models.URLField(_("Url"), max_length=255, db_index=True) 
+    link = models.URLField(_("Url"), max_length=500, db_index=True) 
 
     site_objects = FeedLinkManager()
     objects = models.Manager()
@@ -232,7 +283,7 @@ class PostLink(models.Model):
     post = models.ForeignKey("planet.Post")
     rel = models.CharField(_("Relation"), max_length=50, db_index=True)
     mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
-    link = models.URLField(_("Url"), max_length=255, db_index=True) 
+    link = models.URLField(_("Url"), max_length=500, db_index=True) 
     title = models.CharField(_("Title"), max_length=255, db_index=True) 
 
     site_objects = PostLinkManager()
@@ -255,7 +306,7 @@ class Enclosure(models.Model):
     post = models.ForeignKey("planet.Post")
     length = models.CharField(_("Length"), max_length=20)
     mime_type = models.CharField(_("MIME type"), max_length=50, db_index=True)
-    link = models.URLField(_("Url"), max_length=255, db_index=True) 
+    link = models.URLField(_("Url"), max_length=500, db_index=True) 
 
     site_objects = EnclosureManager()
     objects = models.Manager()

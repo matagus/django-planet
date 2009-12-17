@@ -37,12 +37,16 @@ class AuthorAdmin(admin.ModelAdmin):
 
 admin.site.register(Author, AuthorAdmin)
 
+class EnclosureInline(admin.StackedInline):
+    model = Enclosure
+    extra = 0
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "feed", "url")
     list_filter = ("feed", )
+    # filter_horizontal = ('tags',)
 
-admin.site.register(Post, PostAdmin)
+admin.site.register(Post, PostAdmin, inlines=[EnclosureInline])
 
 
 class BlogAdmin(admin.ModelAdmin):

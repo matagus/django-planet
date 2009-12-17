@@ -1,5 +1,5 @@
 {% load i18n %}
-{% ifnotequal feeds_list|lenght 1 %}
+{% ifnotequal feeds_list|length 1 %}
     <h4>{% trans "Feeds talking about" %} {{ tag }}</h4>
     <ul class="feeds list">
         {% for feed in feeds_list %}
