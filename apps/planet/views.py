@@ -17,10 +17,10 @@ from tagging.models import Tag, TaggedItem
 
 def index(request):
     posts = Post.site_objects.all().order_by("-date_modified")
-    
+
     return render_to_response("planet/posts/list.html", {"posts": posts},
         context_instance=RequestContext(request))
-    
+
 
 def blogs_list(request):
     blogs_list = Blog.site_objects.all()
@@ -31,11 +31,11 @@ def blogs_list(request):
 
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
-    
+
     posts = Post.site_objects.filter(feed__blog=blog).order_by("-date_modified")
-    
-    return render_to_response(
-        "blogs/detail.html", {"blog": blog, "posts": posts},
+
+    return render_to_response("planet/blogs/detail.html",
+                              {"blog": blog, "posts": posts},
         context_instance=RequestContext(request))
 
 
@@ -48,10 +48,10 @@ def feeds_list(request):
 
 def feed_detail(request, feed_id, tag=None):
     feed = get_object_or_404(Feed, pk=feed_id)
-    
+
     if tag:
         tag = get_object_or_404(Tag, name=tag)
-        
+
         posts = TaggedItem.objects.get_by_model(
             Post.site_objects, tag).filter(feed=feed).order_by("-date_modified")
     else:
@@ -72,16 +72,16 @@ def authors_list(request):
 
 def author_detail(request, author_id, tag=None):
     author = get_object_or_404(Author, pk=author_id)
-    
+
     if tag:
         tag = get_object_or_404(Tag, name=tag)
-        
+
         posts = TaggedItem.objects.get_by_model(Post.site_objects, tag).filter(
             authors=author).order_by("-date_modified")
     else:
         posts = Post.site_objects.filter(
             authors=author).order_by("-date_modified")
-    
+
     return render_to_response("planet/authors/detail.html",
         {"author": author, "posts": posts, "tag": tag},
         context_instance=RequestContext(request))
@@ -90,24 +90,24 @@ def author_detail(request, author_id, tag=None):
 def posts_list(request):
     posts = Post.site_objects.all().select_related("feed"
         ).order_by("-date_modified")
-    
+
     return render_to_response("planet/posts/list.html", {"posts": posts},
         context_instance=RequestContext(request))
 
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    
+
     return render_to_response("planet/posts/detail.html", {"post": post},
         context_instance=RequestContext(request))
 
 
 def tag_detail(request, tag):
     tag = get_object_or_404(Tag, name=tag)
-        
+
     posts = TaggedItem.objects.get_by_model(
         Post.site_objects, tag).order_by("-date_modified")
-    
+
     return render_to_response("planet/tags/detail.html", {"posts": posts,
         "tag": tag}, context_instance=RequestContext(request))
 
@@ -134,7 +134,7 @@ def tag_feeds_list(request, tag):
         ).values_list("id", flat=True)
 
     feeds_list = Feed.site_objects.filter(post__in=post_ids).distinct()
-    
+
     return render_to_response("planet/feeds/list_for_tag.html",
         {"feeds_list": feeds_list, "tag": tag},
         context_instance=RequestContext(request))
@@ -151,14 +151,14 @@ def tags_cloud(request, min_posts_count=1):
 def foaf(request):
     # TODO: use http://code.google.com/p/django-foaf/ instead of this
     feeds = Feed.site_objects.all().select_related("blog")
-    
+
     return render_to_response("planet/microformats/foaf.xml", {"feeds": feeds},
         context_instance=RequestContext(request), mimetype="text/xml")
 
 
 def opml(request):
     feeds = Feed.site_objects.all().select_related("blog")
-    
+
     return render_to_response("planet/microformats/opml.xml", {"feeds": feeds},
         context_instance=RequestContext(request), mimetype="text/xml")
 
@@ -169,16 +169,16 @@ def search(request):
 
         if search_form.is_valid():
             query = search_form.cleaned_data["q"]
-            
+
             if search_form.cleaned_data["w"] == "posts":
                 params_dict = {"title__icontains": query}
-            
+
                 posts = Post.site_objects.filter(**params_dict
                     ).distinct().order_by("-date_modified")
-            
+
                 return render_to_response("planet/posts/list.html",
                     {"posts": posts}, context_instance=RequestContext(request))
-            
+
             elif search_form.cleaned_data["w"] == "tags":
                 params_dict = {"name__icontains": query}
 
