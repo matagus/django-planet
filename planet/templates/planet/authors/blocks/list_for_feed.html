@@ -3,7 +3,7 @@
 <ul class="authors list">
     {% for author in authors %}
         <li>
-            <a class="nombre" href="{% url author_detail author.pk %}" title="{{ author.name }}">
+            <a class="nombre" href="{% url planet_author_detail author.pk %}" title="{{ author.name }}">
                 {{ author.name }}
             </a>
         </li>

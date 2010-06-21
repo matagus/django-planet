@@ -4,7 +4,7 @@
     <ul class="tags related">
         {% for tag in related_tags %}
             <li>
-                <a class="tag" href="{% url tag_detail tag.name %}">{{ tag }}</a>
+                <a class="tag" href="{% url planet_tag_detail tag.name %}">{{ tag }}</a>
             </li>
         {% endfor %}
     </ul>

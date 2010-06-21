@@ -42,14 +42,14 @@ class BasePostFeed(atom.Feed):
         return {"type" : "html", }, linebreaks(escape(post.content))
     
     def item_links(self, post):
-        return [{"href" : reverse("post_detail", args=( post.pk,))}]
+        return [{"href" : reverse("planet_post_detail", args=( post.pk,))}]
     
     def item_authors(self, post):
         return [{"name" : post.author}]
 
 class PostFeed(BasePostFeed):
     def feed_id(self):
-        return reverse("posts_list")
+        return reverse("planet_posts_list")
     
     def feed_title(self):
         return _("Posts in %s") % self.site.name
@@ -67,7 +67,7 @@ class PostFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self):
-        return ({'href': reverse('posts_list')},)
+        return ({'href': reverse('planet_posts_list')},)
 
     def items(self):
         posts_list = Post.objects.filter(feed__site=self.site
@@ -79,7 +79,7 @@ class AuthorFeed(BasePostFeed):
         return get_object_or_404(Author, pk=params[0], is_active=True)
     
     def feed_id(self, author):
-        return reverse("author_show", args=(author.pk, ))
+        return reverse("planet_author_show", args=(author.pk, ))
     
     def feed_title(self, author):
         return _("Posts by %(author_name)s - %(site_name)s") % {'author_name': author.name, 'site_name': self.site.name}
@@ -94,7 +94,7 @@ class AuthorFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, author):
-        return ({'href': reverse("author_show", args=(author.pk, ))},)
+        return ({'href': reverse("planet_author_show", args=(author.pk, ))},)
 
     def items(self, author):
         return Post.objects.filter(feed__author=author,
@@ -105,7 +105,7 @@ class BlogFeed(BasePostFeed):
         return get_object_or_404(Feed, pk=params[0], is_active=True)
     
     def feed_id(self, feed):
-        return reverse("feed_detail", args=(feed.pk, ))
+        return reverse("planet_feed_detail", args=(feed.pk, ))
     
     def feed_title(self, feed):
         return _("Posts in %(feed_title)s - %(site_name)s") % {'feed_title': feed.title, 'site_name':self.site.name}
@@ -124,7 +124,7 @@ class BlogFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, feed):
-        return ({'href': reverse("feed_detail", args=(feed.pk, ))},)
+        return ({'href': reverse("planet_feed_detail", args=(feed.pk, ))},)
 
     def items(self, feed):
         return Post.objects.filter(feed=feed,
@@ -136,7 +136,7 @@ class TagFeed(BasePostFeed):
         return get_object_or_404(Tag, name=params[0])
     
     def feed_id(self, tag):
-        return reverse("tag_detail", args=(tag.pk, ))
+        return reverse("planet_tag_detail", args=(tag.pk, ))
     
     def feed_title(self, tag):
         return _("Posts under %(tag)s tag - %(site_name)s") % {'tag': tag, 'site_name': self.site.name}
@@ -152,7 +152,7 @@ class TagFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, tag):
-        return ({'href': reverse("tag_detail", args=(tag.pk, ))},)
+        return ({'href': reverse("planet_tag_detail", args=(tag.pk, ))},)
 
     def items(self, tag):
         return Post.objects.filter(tags__name=tag, feed__site=self.site
@@ -167,7 +167,7 @@ class AuthorTagFeed(BasePostFeed):
         return get_object_or_404(Author, pk=params[0], is_active=True)
     
     def feed_id(self, author):
-        return reverse("by_tag_author_show", args=(author.pk, self.tag))
+        return reverse("planet_by_tag_author_show", args=(author.pk, self.tag))
     
     def feed_title(self, author):
         return _("Posts by %(author_name)s under %(tag)s tag - %(site_name)s")\
@@ -184,7 +184,7 @@ class AuthorTagFeed(BasePostFeed):
         return qs.latest('date_created').date_created
 
     def feed_links(self, author):
-        return ({'href': reverse("by_tag_author_show", args=(author.pk, self.tag))},)
+        return ({'href': reverse("planet_by_tag_author_show", args=(author.pk, self.tag))},)
 
     def items(self, author):
         return Post.objects.filter(
@@ -236,7 +236,7 @@ def rss_feed(request, tag=None, author_id=None):
     
     feed = feedgenerator.Rss201rev2Feed(title=pretitle + title,
         link=site.domain, description=None,
-        feed_url=os.path.join(site.domain, reverse("rss_feed")))
+        feed_url=os.path.join(site.domain, reverse("planet_rss_feed")))
 
     for post in object_list:
         author_list = post.authors.all()
@@ -246,7 +246,7 @@ def rss_feed(request, tag=None, author_id=None):
         
         feed.add_item(
             title = '%s: %s' % (post.feed.title, post.title),
-            link = reverse("post_detail", args=(post.pk,)),
+            link = reverse("planet_post_detail", args=(post.pk,)),
             description = post.content,
             author_email = author_email,
             author_name = author_name,

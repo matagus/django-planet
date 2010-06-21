@@ -15,18 +15,18 @@
     {% for blog in blogs_list %}
         <li>
             <h3>
-                <a href="{% url blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
+                <a href="{% url planet_blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
             </h3>
             <ul class="blog details">
                 <li>
                     {% trans 'web' %}: <a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</a>
                 </li>
                 <li>
-                    {% trans 'browse' %} <a href="{% url blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</a>
+                    {% trans 'browse' %} <a href="{% url planet_blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</a>
                 </li>
                 {% for feed in blog.feed_set.all %}
                 <li>
-                    {% trans 'feed' %}: <a href="{% url feed_detail feed.pk %}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a>
+                    {% trans 'feed' %}: <a href="{% url planet_feed_detail feed.pk %}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a>
                     <a href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
                         <img src="{{ MEDIA_URL }}images/feed.png" alt="{% trans 'RSS 2.0 Feed' %}" />
                     </a>

@@ -7,26 +7,26 @@
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url rss_feed %}" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url planet_rss_feed %}" />
 {% endblock %}
 
 {% block menu %}
     <h4>{% trans 'Browse' %}</h4>
     <ul>
         <li>
-            <a href="{% url posts_list %}">{% trans 'Posts' %}</a>
+            <a href="{% url planet_post_list %}">{% trans 'Posts' %}</a>
         </li>
         <li>
-            <a href="{% url authors_list %}">{% trans 'Authors' %}</a>
+            <a href="{% url planet_author_list %}">{% trans 'Authors' %}</a>
         </li>
         <li>
-            <a href="{% url blogs_list %}">{% trans 'Blogs' %}</a>
+            <a href="{% url planet_blog_list %}">{% trans 'Blogs' %}</a>
         </li>
         <li>
-            <a href="{% url feeds_list %}">{% trans 'Feeds' %}</a>
+            <a href="{% url planet_feed_list %}">{% trans 'Feeds' %}</a>
         </li>
         <li>
-            <a href="{% url tags_cloud %}">{% trans 'Tag Cloud' %}</a>
+            <a href="{% url planet_tag_cloud %}">{% trans 'Tag Cloud' %}</a>
         </li>
         {% block menu_extra %}
         {% endblock %}
@@ -49,7 +49,7 @@
         <ul>
             <li>
                 {% block rss_feed %}
-                <a href="{% url rss_feed %}" title="{% trans 'Suscribe to RSS feed' %}">
+                <a href="{% url planet_rss_feed %}" title="{% trans 'Suscribe to RSS feed' %}">
                     <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
                 </a>
                 {% endblock %}
@@ -59,12 +59,12 @@
                 {% endblock %}
             </li>
             <li>
-                <a href="{% url opml %}" title="OPML">
+                <a href="{% url planet_opml %}" title="OPML">
                     <img src="{{ MEDIA_URL }}images/button-opml.png"/>
                 </a>
             </li>
             <li>
-                <a href="{% url foaf %}" title="FOAF">
+                <a href="{% url planet_foaf %}" title="FOAF">
                     <img src="{{ MEDIA_URL }}images/button-foaf.png"/>
                 </a>
             </li>

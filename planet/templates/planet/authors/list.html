@@ -14,7 +14,7 @@
     {% for author in authors_list %}
         <li>
             <h3>
-                <a class="nombre" href="{% url author_detail author.pk %}" title="{% trans 'Author:' %} {{ author.name }}">
+                <a class="nombre" href="{% url planet_author_detail author.pk %}" title="{% trans 'Author:' %} {{ author.name }}">
                     {{ author.name }}
                 </a>
             </h3>

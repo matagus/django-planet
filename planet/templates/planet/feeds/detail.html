@@ -10,12 +10,12 @@
 {% block menu_extra %}
     {% if tag %}
         <li>
-            <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+            <a href="{% url planet_tag_author_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
                 {% trans 'People talking about this' %}
             </a>
         </li>
         <li>
-            <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
+            <a href="{% url planet_tag_feed_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
                 {% trans 'Feeds talking about this' %}
             </a>
         </li>

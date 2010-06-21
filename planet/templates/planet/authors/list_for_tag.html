@@ -7,7 +7,7 @@
     {% autopaginate authors 40 %}
     {% for author in authors %}
         <p>
-            <a class="nombre" href="{% url by_tag_author_detail author.pk,tag.name %}" title="{{ author.name }}">
+            <a class="nombre" href="{% url planet_by_tag_author_detail author.pk,tag.name %}" title="{{ author.name }}">
                 {{ author.name }}
             </a>
         </p>

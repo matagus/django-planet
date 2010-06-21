@@ -10,7 +10,7 @@
             <a href="{{ feed.feed_url }}" title="{% trans 'Subscribe to feed of' %} {{ feed.title }}">
                 <img src="{{ MEDIA_URL }}images/feed.png" alt="Feed">
             </a>
-            <a class="nombre" href="{% url by_tag_feed_detail feed.pk,tag.name %}" title="{{ feed.title }}">
+            <a class="nombre" href="{% url planet_by_tag_feed_detail feed.pk,tag.name %}" title="{{ feed.title }}">
                 {{ feed.title }}
             </a>
         </p>

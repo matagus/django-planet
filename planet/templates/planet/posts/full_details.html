@@ -5,11 +5,11 @@
     {% trans 'published' %}
     {% for author in post.authors.all %}
         {% trans 'by' %}
-        <a href="{% url author_detail author.pk %}" title="{% trans 'See all posts for this author' %}">
+        <a href="{% url planet_author_detail author.pk %}" title="{% trans 'See all posts for this author' %}">
             {{ author.name }}
         </a>
     {% endfor %}
-    {% trans 'in' %} <a href="{% url feed_detail post.feed.pk %}" title="{% trans 'See all posts for this feed' %}">
+    {% trans 'in' %} <a href="{% url planet_feed_detail post.feed.pk %}" title="{% trans 'See all posts for this feed' %}">
         {{ post.feed.title }}
     </a>
 </p>
@@ -24,6 +24,6 @@
 <p class="tags list">
     {% for tag in post.tags.all %}
         {% if forloop.first %} {% trans "tags" %}: {% endif %}
-        <a href="{% url tag_detail tag.name %}" title="Tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+        <a href="{% url planet_tag_detail tag.name %}" title="Tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 </p>

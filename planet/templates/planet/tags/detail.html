@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url tag_rss_feed tag %}" />
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'Posts in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url rss_feed %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_tag_rss_feed tag %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'Posts in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_rss_feed %}" />
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url tag_rss_feed tag %}" title="{% trans 'Suscribe to RSS feed for tag' %} {{ tag }}">
+    <a href="{% url planet_tag_rss_feed tag %}" title="{% trans 'Suscribe to RSS feed for tag' %} {{ tag }}">
         <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
@@ -32,12 +32,12 @@
 
 {% block menu_extra %}
     <li>
-        <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+        <a href="{% url planet_tag_author_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
             {% trans 'People talking about this' %}
         </a>
     </li>
     <li>
-        <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of feeds talking about this tag' %}">
+        <a href="{% url planet_tag_feed_list tag.name %}" title="{% trans 'See the list of feeds talking about this tag' %}">
             {% trans 'Feeds talking about this' %}
         </a>
     </li>

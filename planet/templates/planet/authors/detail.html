@@ -8,11 +8,11 @@
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ author.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url author_rss_feed author.pk %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ author.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_author_rss_feed author.pk %}" />
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url author_rss_feed author.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ author.name }}">
+    <a href="{% url planet_author_rss_feed author.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ author.name }}">
         <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
@@ -20,12 +20,12 @@
 {% block menu_extra %}
     {% if tag %}
         <li>
-            <a href="{% url tag_authors_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+            <a href="{% url planet_tag_author_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
                 {% trans 'People talking about this' %}
             </a>
         </li>
         <li>
-            <a href="{% url tag_feeds_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
+            <a href="{% url planet_tag_feed_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
                 {% trans 'Feeds talking about this' %}
             </a>
         </li>
@@ -38,7 +38,7 @@
     {% if tag %}
         <div>
             <p>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></p>
-            <a href="{% url author_detail author.pk %}" title="{% trans 'See all posts by' %} {{ author.name }}">
+            <a href="{% url planet_author_detail author.pk %}" title="{% trans 'See all posts by' %} {{ author.name }}">
                 {% trans 'See the complete list of posts by this author' %}
             </a>
         </div>
