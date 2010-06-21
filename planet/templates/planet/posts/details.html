@@ -1,11 +1,11 @@
 {% load i18n %}
 <div class="date">{{ post.date_modified|date:"M d Y" }}</div>
-<h3><a href="{% url planet_post_detail post.pk %}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+<h3><a href="{{ post.get_absolute_url }}" title="{% trans 'Read ' %} {{ post.title|safe }}">
         {{ post.title|striptags|safe }}
     </a>
 </h3>
 <p>
-    {% trans 'published in' %} <a href="{% url planet_feed_detail post.feed.pk %}" title="{% trans 'See all posts for this feed' %}">
+    {% trans 'published in' %} <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
         {{ post.feed.title }}
     </a>
 </p>

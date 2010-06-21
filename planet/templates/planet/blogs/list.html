@@ -15,14 +15,14 @@
     {% for blog in blogs_list %}
         <li>
             <h3>
-                <a href="{% url planet_blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
+                <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
             </h3>
             <ul class="blog details">
                 <li>
                     {% trans 'web' %}: <a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</a>
                 </li>
                 <li>
-                    {% trans 'browse' %} <a href="{% url planet_blog_detail blog.pk %}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</a>
+                    {% trans 'browse' %} <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</a>
                 </li>
                 {% for feed in blog.feed_set.all %}
                 <li>

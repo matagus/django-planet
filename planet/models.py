@@ -58,6 +58,10 @@ class Blog(models.Model):
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.url)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('planet.views.blog_detail', [str(self.id)])
+
 class Generator(models.Model):
     """
     The software or website that has built a feed
@@ -173,6 +177,10 @@ class Feed(models.Model):
     def __unicode__(self):
         return u'%s (%s)' % (self.title, self.url)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('planet.views.feed_detail', [str(self.id)])
+
 
 class PostAuthorData(models.Model):
     """
@@ -224,6 +232,10 @@ class Post(models.Model):
     def __unicode__(self):
         return u"%s [%s]" % (self.title, self.feed.title)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('planet.views.post_detail', [str(self.id)])
+
 # each Post object now will have got a .tags attribute!
 tagging.register(Post)
 
@@ -252,6 +264,10 @@ class Author(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.name, self.email,)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('planet.views.author_detail', [str(self.id)])
 
 
 class FeedLink(models.Model):
