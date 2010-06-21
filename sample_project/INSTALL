@@ -1,0 +1,36 @@
+This is a simple demo project for django-planet app. It has been built and 
+tested with django 1.2.1 and python 2.6.
+
+In order to integrate django-planet to your django project
+you'll need to install also django-atompub [1], django-pagination [2],
+feedparser [3] and django-tagging [4].
+
+Optionally, to improve feed downloading you can install threadpool [5].
+
+[1] http://code.google.com/p/django-atompub/
+[2] http://code.google.com/p/django-pagination/
+[3] http://www.feedparser.org/
+[4] http://code.google.com/p/django-tagging/
+[5] http://chrisarndt.de/projects/threadpool/
+
+
+INSTALLATION:
+
+1) cp local_settings.example.py local_settings.py
+
+2) run ./manage.py syncdb
+
+3) Add some feeds:
+    ./manage.py add_feed http://simonwillison.net/atom/tagged/django/
+    ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
+    ./manage.py add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
+    ./manage.py add_feed http://djangodose.com/everything/feed/
+    ./manage.py add_feed http://seeknuance.com/tag/django/feed/atom
+    ./manage.py add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
+
+4) add a cron entry to run periocically: ./manage.py update_all_feeds
+
+5) run ./manage.py runserver 
+
+6) point your browser to http://localhost:8000/ and enjoy it!
+
