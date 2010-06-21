@@ -4,7 +4,7 @@ django-planet
 This is a generic application for Django projects aiming to provide a planet
 feed aggregator app.
 
-Django-planet is heavily based on Feedjack's [1] models by Gustavo Picón and my
+Django-planet is heavily based on Feedjack's [1] models by Gustavo Picon and my
 django app that extends it: feedjack-extension [2]. Changes and addings to
 models were inspired by Mark Pilgrim's Feedparser [3].
 
