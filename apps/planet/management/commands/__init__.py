@@ -52,7 +52,7 @@ def process_feed(feed_url, create=False):
         planet_feed = None
 
     print "*" * 20
-    print "Feed: %s" % planet_feed.url
+    print "Feed: %s" % feed_url
 
     if create and planet_feed:
         # can't create it due to it already exists
