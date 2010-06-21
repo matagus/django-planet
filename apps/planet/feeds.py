@@ -13,7 +13,7 @@ from django.template.defaultfilters import linebreaks, escape, capfirst
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 
-from atompub import atom
+import atom
 
 from planet.models import Post, Author, Feed, Blog
 from tagging.models import Tag, TaggedItem
