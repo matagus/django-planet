@@ -48,6 +48,9 @@ Summary of changes:
 
     * Added indexed to models according to expected use.
     * Content cleaned (css styles and some duplicated/useless spaces).
+
+    * simple demo project at sample_project: just follow sample_project/INSTALL 
+    instrucctions :)
     
 TODO:
 -----
@@ -59,7 +62,6 @@ TODO:
     * Get the first image of a post (from enclosure link or from content),
     download it, generate a thumbnail and asociate it to that post. Then show it
     in list-views!
-    * A little sample project.
 
     Second:
         
