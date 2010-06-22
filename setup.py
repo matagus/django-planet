@@ -44,7 +44,7 @@ setup(
         ]},
 
     install_requires = ['setuptools', 'django', 'feedparser', 
-        'django-pagination', 'tagging'],
+        'django-pagination', 'django-tagging'],
 
     classifiers = [
         'Development Status :: 5 - Production/Stable',
