@@ -24,6 +24,24 @@ setup(
     author_email = 'me@matagus.com.ar',
 
     packages = find_packages(),
+    package_data={
+        'planet': [
+            'templates/*.html',
+            'templates/planet/*.html',
+            'templates/planet/authors/*.html',
+            'templates/planet/authors/blocks/*.html',
+            'templates/planet/blogs/*.html',
+            'templates/planet/posts/*.html',
+            'templates/planet/tags/*.html',
+            'templates/planet/tags/blocks/*.html',
+            'templates/planet/feeds/*.html',
+            'templates/planet/feeds/blocks/*.html',
+            'templates/planet/microformats/*.xml',
+            'media/planet/css/*.css',
+            'media/planet/js/*.js',
+            'media/planet/icons/*.gif',
+            'media/planet/images/*.png',
+        ]},
 
     install_requires = ['setuptools', 'django', 'feedparser', 
         'django-pagination', 'tagging'],
