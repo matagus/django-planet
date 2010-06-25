@@ -28,7 +28,7 @@ INSTALLATION
 ------------
 In order to get django-planet working you must:
 
-Create a local_settings.py file:
+Create a local_settings.py file::
 
     DEBUG = True
     TEMPLATE_DEBUG = True
@@ -51,11 +51,11 @@ Create a local_settings.py file:
 
     USER_AGENT = "django-planet/0.1"
 
-Then create the database structure:
+Then create the database structure::
 
      ./manage.py syncdb
 
-Add some feeds: 
+Add some feeds::
 
     ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
     ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
@@ -64,13 +64,13 @@ Add some feeds:
     ./manage.py add_feed http://seeknuance.com/tag/django/feed/atom
     ./manage.py add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
 
-And surely you'll want to add a cron entry to periodically run: 
+And surely you'll want to add a cron entry to periodically run::
 
     30 * * * * python manage.py update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
     
-And finally run:
+And finally run::
 
      ./manage.py runserver 
 
@@ -80,4 +80,4 @@ Demo Project
 ------------
 
 There's a simple demo project at sample_project directory: just follow 
-sample_project/INSTALL instrucctions :) or see it live at http://www.matagus.como.ar/friends/
+sample_project/INSTALL instrucctions :) or see it live at http://www.matagus.com.ar/friends/
