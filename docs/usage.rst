@@ -28,63 +28,56 @@ INSTALLATION
 ------------
 In order to get django-planet working you must:
 
-    * Create a local_settings.py file:
+Create a local_settings.py file:
 
-        DEBUG = True
-        TEMPLATE_DEBUG = True
+    DEBUG = True
+    TEMPLATE_DEBUG = True
 
-        LANGUAGE_COOKIE_NAME = "planetlng"
-        SESSION_COOKIE_NAME = "planetid"
+    LANGUAGE_COOKIE_NAME = "planetlng"
+    SESSION_COOKIE_NAME = "planetid"
 
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-                'NAME': 'planet',                      # Or path to database file if using sqlite3.
-                'USER': '<myuser>',                      # Not used with sqlite3.
-                'PASSWORD': '<mypass>',                  # Not used with sqlite3.
-                'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-                'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-            }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'planet',                      # Or path to database file if using sqlite3.
+            'USER': '<myuser>',                      # Not used with sqlite3.
+            'PASSWORD': '<mypass>',                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
         }
+    }
 
-        TIME_ZONE = 'America/Chicago'
+    TIME_ZONE = 'America/Chicago'
 
-        USER_AGENT = "django-planet/0.1"
+    USER_AGENT = "django-planet/0.1"
 
-    * run:
+Then create the database structure:
 
-         ./manage.py syncdb
+     ./manage.py syncdb
 
-    * Add some feeds: 
+Add some feeds: 
 
-        ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
-        ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
-        ./manage.py add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
-        ./manage.py add_feed http://djangodose.com/everything/feed/
-        ./manage.py add_feed http://seeknuance.com/tag/django/feed/atom
-        ./manage.py add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
+    ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
+    ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
+    ./manage.py add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
+    ./manage.py add_feed http://djangodose.com/everything/feed/
+    ./manage.py add_feed http://seeknuance.com/tag/django/feed/atom
+    ./manage.py add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
 
-    * add a cron entry to run periocically: 
-    
-        30 * * * * python manage.py update_all_feeds
-
-    This attempts to pull for new posts every 30 minutes.
-        
-
-    * run:
-
-         ./manage.py runserver 
-
-    * and browse ``http://localhost:8000/`` and enjoy it!
-
-You may want to set these up via cron to run regularly::
+And surely you'll want to add a cron entry to periodically run: 
 
     30 * * * * python manage.py update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
+    
+And finally run:
+
+     ./manage.py runserver 
+
+Browse ``http://localhost:8000/`` and enjoy it!
 
 Demo Project
 ------------
 
 There's a simple demo project at sample_project directory: just follow 
-sample_project/INSTALL instrucctions :)
+sample_project/INSTALL instrucctions :) or see it live at http://www.matagus.como.ar/friends/
