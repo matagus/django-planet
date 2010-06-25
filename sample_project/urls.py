@@ -15,7 +15,7 @@ if settings.DEBUG:
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT}),
     )
-    
+
 urlpatterns += patterns('',
     ('', "planet.views.posts_list"),
 )
