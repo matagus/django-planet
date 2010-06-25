@@ -1,1 +1,2 @@
 recursive-include planet/templates *.html
+recursive-include docs *.rst
