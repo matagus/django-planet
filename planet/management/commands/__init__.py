@@ -94,6 +94,12 @@ def process_feed(feed_url, create=False):
         etag = document.get("etag", '')
         last_modified = document.get("updated_parsed", datetime.now())
 
+        feed_links = document.feed.get("links", [])
+        if not blog_url:
+            link = filter(lambda item: item["rel"]=="alternate", feed_links)
+            if link:
+                blog_url = link[0]["href"]
+
         blog, created = Blog.objects.get_or_create(
             url=blog_url, defaults={"title": title})
 
@@ -121,7 +127,7 @@ def process_feed(feed_url, create=False):
             if name:
                 print name
 
-        for link_dict in document.feed.get("links", []):
+        for link_dict in feed_links:
             feed_link, created = FeedLink.objects.get_or_create(
                 feed=planet_feed,
                 rel=link_dict.get("rel", "--"),
