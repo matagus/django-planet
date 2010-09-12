@@ -8,18 +8,6 @@
 
     [1] http://www.feedjack.org/
     [2] http://www.feedparser.org/
-
-    Summary of changes:
-    * Link model was dropped.
-    * Site models replaced by django.contrib.sites.Site model :)
-    * Tag model replaced by tagging.Tag model.
-    * Added Blog model (a Blog may have several Feed objects related).
-    * Subscriber model renamed to Author, and was modifyed since a Blog may
-      have several authors. Authors may be of two types: author or contributor.
-    * Feed model was changed. New attributes added to store info provided by
-      Feedparser.
-    * Added FeedLink, PostLink, Enclosure and Generator models to store info
-      provided by Feedparser.
 """
 import feedparser
 from datetime import datetime
