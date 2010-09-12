@@ -220,10 +220,10 @@ def search(request):
                     context_instance=RequestContext(request))
 
             else:
-                return HttpResponseRedirect(reverse("posts_list"))
+                return HttpResponseRedirect(reverse("planet_post_list"))
 
         else:
-            return HttpResponseRedirect(reverse("posts_list"))
+            return HttpResponseRedirect(reverse("planet_post_list"))
 
     else:
-        return HttpResponseRedirect(reverse("posts_list"))
+        return HttpResponseRedirect(reverse("planet_post_list"))
