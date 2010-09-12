@@ -49,6 +49,13 @@
 
             <div id="right-rail" class="grid_3">
                 <div id="navigation_bar">
+                    {% if user.is_staff %}
+                    <ul>
+                        <li>
+                            <a href="{% url admin:index %}">{% trans 'admin site' %}</a>
+                        </li>
+                    </ul>
+                    {% endif %}
                     {% block menu %}
                     {% endblock %}
                 </div>
