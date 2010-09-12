@@ -5,13 +5,10 @@ In order to integrate django-planet to your django project
 you'll need to install also django-atompub [1], django-pagination [2],
 feedparser [3] and django-tagging [4].
 
-Optionally, to improve feed downloading you can install threadpool [5].
-
 [1] http://code.google.com/p/django-atompub/
 [2] http://code.google.com/p/django-pagination/
 [3] http://www.feedparser.org/
 [4] http://code.google.com/p/django-tagging/
-[5] http://chrisarndt.de/projects/threadpool/
 
 
 INSTALLATION:
