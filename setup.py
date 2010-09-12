@@ -22,6 +22,7 @@ setup(
             "templates/planet/authors/blocks/*.html",
             "templates/planet/tags/blocks/*.html",
             "templates/planet/feeds/blocks/*.html",
+            "templates/planet/microformats/*.xml",
             "media/planet/css/*.css",
             "media/planet/js/*.js",
             "media/planet/icons/*.gif",
