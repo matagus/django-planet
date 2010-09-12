@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 """
-
 from django.conf.urls.defaults import patterns, url
 
 
@@ -36,8 +35,8 @@ urlpatterns = patterns('planet.views',
 
 # Feed's urls
 urlpatterns += patterns('planet.feeds',
-    url(r'^posts/feeds/rss/$', "rss_feed", name="planet_rss_feed"),
-    url(r'^feeds/rss/tags/(?P<tag>.*)/$', "rss_feed", name="planet_tag_rss_feed"),
-    url(r'^feeds/rss/authors/(?P<author_id>\d+)/$', "rss_feed", name="planet_author_rss_feed"),
-    url(r'^feeds/rss/authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', "rss_feed", name="planet_tag_author_rss_feed"),
+    url(r'^posts/feeds/rss/$', 'rss_feed', name="planet_rss_feed"),
+    url(r'^feeds/rss/tags/(?P<tag>.*)/$', 'rss_feed', name="planet_tag_rss_feed"),
+    url(r'^feeds/rss/authors/(?P<author_id>\d+)/$', 'rss_feed', name="planet_author_rss_feed"),
+    url(r'^feeds/rss/authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', 'rss_feed', name="planet_tag_author_rss_feed"),
 )

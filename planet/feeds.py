@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 
-import os
 from datetime import datetime
+import os
 
-from django.http import HttpResponse
-from django.utils import feedgenerator
-from django.utils.cache import patch_vary_headers
-from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.contrib.syndication.views import Feed
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, Http404
 from django.template.defaultfilters import linebreaks, escape, capfirst
+from django.utils import feedgenerator
+from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.sites.models import Site
-
-import atom
 
 from planet.models import Post, Author, Feed, Blog
+
 from tagging.models import Tag, TaggedItem
 
 
 ITEMS_PER_FEED = getattr(settings, 'PLANET_ITEMS_PER_FEED', 50)
 
-class BasePostFeed(atom.Feed):
+class BasePostFeed(Feed):
     def __init__(self, *args, **kwargs):
         super(BasePostFeed, self).__init__(args, kwargs)
         self.site = Site.objects.get(pk=settings.SITE_ID)
