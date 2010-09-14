@@ -30,8 +30,8 @@ In order to get django-planet working you must:
 
 Create a local_settings.py file::
 
-    DEBUG = True
-    TEMPLATE_DEBUG = True
+    DEBUG = False
+    TEMPLATE_DEBUG = DEBUG
 
     LANGUAGE_COOKIE_NAME = "planetlng"
     SESSION_COOKIE_NAME = "planetid"
