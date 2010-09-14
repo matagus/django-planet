@@ -37,9 +37,11 @@
             </a>
             {% trans 'feed' %}: <a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a>
         </li>
+        {% if feed.generator %}
         <li>
             {% trans 'generator' %}: <strong>{{ feed.generator }}</strong>
         </li>
+        {% endif %}
         <li>
             {% trans 'web' %}: <a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a>
         </li>
