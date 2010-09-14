@@ -3,6 +3,7 @@
 """
 from django.conf.urls.defaults import patterns, url
 
+from planet.feeds import PostFeed, AuthorFeed, AuthorTagFeed, TagFeed
 
 # HTML view's urls
 urlpatterns = patterns('planet.views',
@@ -34,9 +35,10 @@ urlpatterns = patterns('planet.views',
 )
 
 # Feed's urls
-urlpatterns += patterns('planet.feeds',
-    url(r'^posts/feeds/rss/$', 'rss_feed', name="planet_rss_feed"),
-    url(r'^feeds/rss/tags/(?P<tag>.*)/$', 'rss_feed', name="planet_tag_rss_feed"),
-    url(r'^feeds/rss/authors/(?P<author_id>\d+)/$', 'rss_feed', name="planet_author_rss_feed"),
-    url(r'^feeds/rss/authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', 'rss_feed', name="planet_tag_author_rss_feed"),
+urlpatterns += patterns('',
+    url(r'^posts/feeds/rss/$', PostFeed(), name="planet_rss_feed"),
+    url(r'^feeds/rss/tags/(?P<tag>.*)/$', TagFeed(), name="planet_tag_rss_feed"),
+    url(r'^feeds/rss/authors/(?P<author_id>\d+)/$', AuthorFeed(), name="planet_author_rss_feed"),
+    url(r'^feeds/rss/authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', AuthorTagFeed(), name="planet_tag_author_rss_feed"),
 )
+
