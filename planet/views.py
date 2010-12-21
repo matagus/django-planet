@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from django.utils import feedgenerator
-from django.utils.cache import patch_vary_headers
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse
-from django.template import Context, loader, RequestContext
-from django.db.models import Count, Max
-from django.utils.translation import ugettext_lazy as _
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
 
 from planet.models import Blog, Feed, Author, Post
 from planet.forms import SearchForm
