@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Several usefull template tags!
+Several useful template tags!
 """
 
 import re
