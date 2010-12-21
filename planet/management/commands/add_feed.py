@@ -7,13 +7,9 @@ from planet.management.commands import process_feed
 
 
 class Command(BaseCommand):
-    """
-    Command to add a complete blog feed to our db.
+    help = "Add a complete blog feed to our db."
+    args = "<feed_url>"
 
-    Usage:
-
-    ./manage.py add_feed <feed_url>
-    """
     def handle(self, *args, **options):
         if not len(args):
             print "You must provide the feed url as parameter"
