@@ -199,8 +199,8 @@ class Post(models.Model):
     feed = models.ForeignKey("planet.Feed", null=False, blank=False)
     title = models.CharField(_("Title"), max_length=255, db_index=True)
     authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
-    url = models.URLField(_("Url"), db_index=True)
-    guid = models.CharField(_("Guid"), max_length=200, db_index=True)
+    url = models.URLField(_("Url"), max_length=1000, db_index=True)
+    guid = models.TextField(_("Guid"), db_index=True)
     content = models.TextField(_("Content"))
     comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
 
