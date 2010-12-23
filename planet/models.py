@@ -206,7 +206,7 @@ class Post(models.Model):
 
     date_modified = models.DateTimeField(_("Date modified"), null=True,
         blank=True, db_index=True)
-    date_created = models.DateField(_("Date created"), auto_now_add=True)
+    date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
 
     site_objects = PostManager()
     objects = models.Manager()
@@ -214,7 +214,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = _("Post")
         verbose_name_plural = _("Posts")
-        ordering = ('-date_modified',)
+        ordering = ('-date_created', '-date_modified')
         unique_together = (('feed', 'guid'),)
 
     def __unicode__(self):
