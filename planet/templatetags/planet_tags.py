@@ -9,6 +9,8 @@ import re
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
+from django.template import TemplateSyntaxError, Node, loader
+from django.utils.translation import ugettext as _
 
 from planet.models import Author, Feed, Blog, Post
 
@@ -120,6 +122,82 @@ def feeds_for_author(author):
         post__authors=author).order_by("title").distinct()
 
     return {"feeds_list": feeds, "author": author}
+
+
+class PlanetPostList(Node):
+    def __init__(self, limit=None, tag=None):
+        self.limit = limit
+        self.tag = tag
+
+    def render(self, context):
+        if self.tag is not None:
+            try:
+                tag_name = context[self.tag]
+            except KeyError:
+                raise TemplateSyntaxError(_("%s: no variable %s in context") % (bits[0], tag_name))
+            posts = TaggedItem.objects.get_by_model(
+                Post.site_objects, tag_name).order_by("-date_modified")
+        else:
+            posts = Post.site_objects.all().order_by("-date_modified")
+
+        if self.limit is not None:
+            posts = posts[:self.limit]
+
+        context['posts'] = posts
+        return loader.get_template("planet/list.html").render(context)
+
+
+@register.tag()
+def planet_post_list(parser, token):
+    """
+    Render a list of posts using the planet/list.html template.
+
+    Params:
+        limit: limit to this number of entries
+        tag: select only Posts that matches this tag. This must be the name of a context variable, not a string.
+
+    Example:
+        {% planet_post_list with limit=10 tag=tag %}
+    """
+    bits = token.contents.split()
+    len_bits = len(bits)
+    kwargs = {}
+    if len_bits > 1:
+        if bits[1] != 'with':
+            raise TemplateSyntaxError(_("if given, fourth argument to %s tag must be 'with'") % bits[0])
+        for i in range(2, len_bits):
+            try:
+                name, value = bits[i].split('=')
+                if name == 'limit':
+                    try:
+                        kwargs[str(name)] = int(value)
+                    except ValueError:
+                        raise TemplateSyntaxError(_("%(tag)s tag's '%(option)s' option was not a valid integer: '%(value)s'") % {
+                            'tag': bits[0],
+                            'option': name,
+                            'value': value,
+                        })
+                elif name == 'tag':
+                    try:
+                        kwargs[str(name)] = value
+                    except ValueError:
+                        raise TemplateSyntaxError(_("%(tag)s tag's '%(option)s' option was not a valid integer: '%(value)s'") % {
+                            'tag': bits[0],
+                            'option': name,
+                            'value': value,
+                        })
+                else:
+                    raise TemplateSyntaxError(_("%(tag)s tag was given an invalid option: '%(option)s'") % {
+                        'tag': bits[0],
+                        'option': name,
+                    })
+            except ValueError:
+                raise TemplateSyntaxError(_("%(tag)s tag was given a badly formatted option: '%(option)s'") % {
+                    'tag': bits[0],
+                    'option': bits[i],
+                })
+
+    return PlanetPostList(**kwargs)
 
 
 @register.filter

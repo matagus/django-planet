@@ -1,0 +1,8 @@
+{% load i18n pagination_tags planet_tags %}
+
+<h2>{% trans "Latest posts" %}</h2>
+{% for post in posts %}
+    <div class="post {% cycle 'even' 'odd' %} clearfix">
+        {% post_details post %}
+    </div>
+{% endfor %}
