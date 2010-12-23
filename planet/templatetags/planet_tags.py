@@ -136,9 +136,9 @@ class PlanetPostList(Node):
             except KeyError:
                 raise TemplateSyntaxError(_("%s: no variable %s in context") % (bits[0], tag_name))
             posts = TaggedItem.objects.get_by_model(
-                Post.site_objects, tag_name).order_by("-date_modified")
+                Post.site_objects, tag_name)
         else:
-            posts = Post.site_objects.all().order_by("-date_modified")
+            posts = Post.site_objects.all()
 
         if self.limit is not None:
             posts = posts[:self.limit]
