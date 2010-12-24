@@ -9,8 +9,9 @@ import re
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
-from django.template import TemplateSyntaxError, Node, loader
+from django.template import TemplateSyntaxError, Node, loader, Variable
 from django.utils.translation import ugettext as _
+from django.utils.text import smart_split
 
 from planet.models import Author, Feed, Blog, Post
 
@@ -129,12 +130,9 @@ class PlanetPostList(Node):
         self.limit = limit
         self.tag = tag
 
-    def render(self, context):
+    def process(self, context):
         if self.tag is not None:
-            try:
-                tag_name = context[self.tag]
-            except KeyError:
-                raise TemplateSyntaxError(_("%s: no variable %s in context") % (bits[0], tag_name))
+            tag_name = Variable(self.tag).resolve(context)
             posts = TaggedItem.objects.get_by_model(
                 Post.site_objects, tag_name)
         else:
@@ -144,7 +142,13 @@ class PlanetPostList(Node):
             posts = posts[:self.limit]
 
         context['posts'] = posts
-        return loader.get_template("planet/list.html").render(context)
+        template = "planet/list.html"
+        
+        return (template, context)
+
+    def render(self, context):
+        template, context = self.process(context)
+        return loader.get_template(template).render(context)
 
 
 @register.tag()
@@ -154,12 +158,13 @@ def planet_post_list(parser, token):
 
     Params:
         limit: limit to this number of entries
-        tag: select only Posts that matches this tag. This must be the name of a context variable, not a string.
+        tag: select only Posts that matches this tag
 
-    Example:
+    Examples:
         {% planet_post_list with limit=10 tag=tag %}
+        {% planet_post_list with tag="Redis" %}
     """
-    bits = token.contents.split()
+    bits = list(smart_split(token.contents))
     len_bits = len(bits)
     kwargs = {}
     if len_bits > 1:
