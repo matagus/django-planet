@@ -71,6 +71,23 @@ class Generator(models.Model):
         return u'%s %s (%s)' % (self.name, self.version or "", self.link or "--")
 
 
+class Category(models.Model):
+    """
+    Define Categories for Feeds. In this way a site can manage many
+    aggregator/planet
+    """
+    title = models.CharField(_("Category Title"), max_length=100, unique=True)
+    date_created = models.DateField(_("Date created"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Feed Category")
+        verbose_name_plural = _("Feed Categories")
+        ordering = ('title', 'date_created')
+
+    def __unicode__(self):
+        return u"%s" % (self.title,)
+
+
 class Feed(models.Model):
     """
     A model to store detailed info about a parsed Atom or RSS feed
@@ -82,17 +99,20 @@ class Feed(models.Model):
     # url to retrieve this feed
     url = models.URLField(_("Url"), unique=True, db_index=True)
     # title attribute from Feedparser's Feed object
-    title = models.CharField(_("Title"), max_length=255, db_index=True, blank=True, null=True)
+    title = models.CharField(_("Title"), max_length=255, db_index=True,
+                             blank=True, null=True)
     # subtitle attribute from Feedparser's Feed object. aka tagline
     subtitle = models.TextField(_("Subtitle"), blank=True, null=True)
     # rights or license attribute from Feedparser's Feed object
-    rights = models.CharField(_("Rights"), max_length=255, blank=True, null=True)
+    rights = models.CharField(_("Rights"), max_length=255, blank=True,
+                              null=True)
     # generator_detail attribute from Feedparser's Feed object
     generator = models.ForeignKey("planet.Generator", blank=True, null=True)
     # info attribute from Feedparser's Feed object
     info = models.CharField(_("Infos"), max_length=255, blank=True, null=True)
     # language name or code. language attribute from Feedparser's Feed object
-    language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
+    language = models.CharField(_("Language"), max_length=50, blank=True,
+                                null=True)
     # global unique identifier for the feed
     guid = models.CharField(_("Global Unique Identifier"), max_length=255,
         blank=True, null=True, db_index=True)
@@ -108,10 +128,15 @@ class Feed(models.Model):
     last_modified = models.DateTimeField(_("Last modified"), null=True,
         blank=True, db_index=True)
     # datetime when the feed was checked by last time
-    last_checked = models.DateTimeField(_("Last checked"), null=True, blank=True)
+    last_checked = models.DateTimeField(_("Last checked"), null=True,
+                                        blank=True)
     # in order to retrieve it or not
-    is_active = models.BooleanField(_("Is active"), default=True, db_index=True,
+    is_active = models.BooleanField(_("Is active"), default=True,
+                                    db_index=True,
         help_text=_("If disabled, this feed will not be further updated."))
+
+    category = models.ForeignKey(Category, blank=True, null=True,
+                                 db_index=True)
 
     site_objects = FeedManager()
     objects = models.Manager()
