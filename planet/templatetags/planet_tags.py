@@ -58,12 +58,12 @@ def related_tags_for(tag, count=20):
     return {"related_tags": related_tags[:count]}
 
 
-@register.inclusion_tag("planet/posts/details.html")
-def post_details(post):
+@register.inclusion_tag("planet/dummy.html")
+def post_details(post, template="planet/posts/details.html"):
     """
     Displays info about a post: title, date, feed and tags.
     """
-    return {"post": post}
+    return {"template": template, "post": post}
 
 
 @register.inclusion_tag("planet/posts/full_details.html")
@@ -126,34 +126,42 @@ def feeds_for_author(author):
 
 
 class PlanetPostList(Node):
-    def __init__(self, limit=None, tag=None, category=None):
+    def __init__(self, limit=None, tag=None, category=None, template=None):
         self.limit = limit
         self.tag = tag
         self.category = category
+        self.template = template
+
+    def resolve(self, context, vars):
+        """
+        Resolve all the template variables listed in vars through the given
+        context
+        """
+        for var in vars:
+            val_var = self.__getattribute__(var)
+            if val_var is not None:
+                self.__setattr__(var, Variable(val_var).resolve(context))
 
     def process(self, context):
+        self.resolve(context, ('tag', 'category', 'template', 'limit'))
         if self.tag is not None:
-            tag_name = Variable(self.tag).resolve(context)
             posts = TaggedItem.objects.get_by_model(
-                Post.site_objects, tag_name)
+                Post.site_objects, self.tag)
         else:
             posts = Post.site_objects
 
-        import logging
-        #logging.warn(len(posts))
         if self.category is not None:
-            category_name = Variable(self.category).resolve(context)
-            posts = posts.filter(feed__category__title=category_name)
-        logging.warn(len(posts))
-        #assert False, posts
+            posts = posts.filter(feed__category__title=self.category)
 
         if self.limit is not None:
             posts = posts[:self.limit]
 
         context['posts'] = posts
-        template = "planet/list.html"
+
+        if self.template is None:
+            self.template = "planet/list.html"
         
-        return (template, context)
+        return (self.template, context)
 
     def render(self, context):
         template, context = self.process(context)
@@ -168,6 +176,8 @@ def planet_post_list(parser, token):
     Params:
         limit: limit to this number of entries
         tag: select only Posts that matches this tag
+        category: select only Posts that belongs to Feeds under this Category
+        template: render using a different template
 
     Examples:
         {% planet_post_list with limit=10 tag=tag %}
@@ -183,24 +193,8 @@ def planet_post_list(parser, token):
         for i in range(2, len_bits):
             try:
                 name, value = bits[i].split('=')
-                if name == 'limit':
-                    try:
-                        kwargs[str(name)] = int(value)
-                    except ValueError:
-                        raise TemplateSyntaxError(_("%(tag)s tag's '%(option)s' option was not a valid integer: '%(value)s'") % {
-                            'tag': bits[0],
-                            'option': name,
-                            'value': value,
-                        })
-                elif name in ('tag', 'category'):
-                    try:
-                        kwargs[str(name)] = value
-                    except ValueError:
-                        raise TemplateSyntaxError(_("%(tag)s tag's '%(option)s' option was not a valid integer: '%(value)s'") % {
-                            'tag': bits[0],
-                            'option': name,
-                            'value': value,
-                        })
+                if name in ('tag', 'category', 'template', 'limit'):
+                    kwargs[str(name)] = value
                 else:
                     raise TemplateSyntaxError(_("%(tag)s tag was given an invalid option: '%(option)s'") % {
                         'tag': bits[0],

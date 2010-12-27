@@ -56,7 +56,7 @@ class Generator(models.Model):
     """
     name = models.CharField(_("Name"), max_length=100)
     link = models.URLField(_("Url"), blank=True, null=True)
-    version = models.CharField(_("Version"), max_length=5, blank=True, null=True)
+    version = models.CharField(_("Version"), max_length=200, blank=True, null=True)
 
     site_objects = GeneratorManager()
     objects = models.Manager()
