@@ -27,8 +27,9 @@ class EnclosureAdmin(admin.ModelAdmin):
 admin.site.register(Enclosure, EnclosureAdmin)
 
 class FeedAdmin(admin.ModelAdmin):
-    list_display = ("title", "url", "blog", "language", "generator")
-    list_filter = ("language", "generator", )
+    list_display = ("title", "url", "blog", "language", "generator",
+                    "category")
+    list_filter = ("language", "generator", "category")
 
 admin.site.register(Feed, FeedAdmin)
 

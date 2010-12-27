@@ -14,13 +14,13 @@ from django.contrib.sites.models import Site
 from tagging.models import Tag
 
 from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
-        Author, PostAuthorData, Enclosure)
+        Author, PostAuthorData, Enclosure, Category)
 from planet.signals import post_created
 
 class PostAlreadyExists(Exception):
     pass
 
-def process_feed(feed_url, create=False):
+def process_feed(feed_url, create=False, category_title=None):
     """
     Stores a feed, its related data, its entries and their related data.
     If create=True then it creates the feed, otherwise it only stores new
@@ -113,12 +113,18 @@ def process_feed(feed_url, create=False):
         else:
             generator = None
 
+        if category_title:
+            ##TODO: site_objects!
+            category = Category.objects.get(title=category_title)
+        else:
+            category = None
+
         planet_feed = Feed(title=title, subtitle=subtitle, blog=blog,
             url=feed_url, rights=rights, info=info, guid=guid,
             image_url=image_url, icon_url=icon_url, language=language,
             etag=etag, last_modified=last_modified, generator=generator,
             is_active=True, last_checked=datetime.now(),
-            site=current_site
+            site=current_site, category=category
         )
         planet_feed.save()
 
