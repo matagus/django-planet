@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
-    Author, PostAuthorData, Enclosure)
+    Author, PostAuthorData, Enclosure, Category)
 
 
 class PostLinkAdmin(admin.ModelAdmin):
@@ -66,3 +66,8 @@ class FeedLinkAdmin(admin.ModelAdmin):
     list_filter = ("mime_type", "rel")
 
 admin.site.register(FeedLink, FeedLinkAdmin)
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("title", )
+
+admin.site.register(Category, CategoryAdmin)

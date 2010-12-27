@@ -27,3 +27,6 @@ settings_local.py
 
 ## VIM
 *.swp
+
+##PyCharm
+.idea

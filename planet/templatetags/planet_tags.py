@@ -126,9 +126,10 @@ def feeds_for_author(author):
 
 
 class PlanetPostList(Node):
-    def __init__(self, limit=None, tag=None):
+    def __init__(self, limit=None, tag=None, category=None):
         self.limit = limit
         self.tag = tag
+        self.category = category
 
     def process(self, context):
         if self.tag is not None:
@@ -136,7 +137,15 @@ class PlanetPostList(Node):
             posts = TaggedItem.objects.get_by_model(
                 Post.site_objects, tag_name)
         else:
-            posts = Post.site_objects.all()
+            posts = Post.site_objects
+
+        import logging
+        #logging.warn(len(posts))
+        if self.category is not None:
+            category_name = Variable(self.category).resolve(context)
+            posts = posts.filter(feed__category__title=category_name)
+        logging.warn(len(posts))
+        #assert False, posts
 
         if self.limit is not None:
             posts = posts[:self.limit]
@@ -163,6 +172,7 @@ def planet_post_list(parser, token):
     Examples:
         {% planet_post_list with limit=10 tag=tag %}
         {% planet_post_list with tag="Redis" %}
+        {% planet_post_list with category="PyPy" %}
     """
     bits = list(smart_split(token.contents))
     len_bits = len(bits)
@@ -182,7 +192,7 @@ def planet_post_list(parser, token):
                             'option': name,
                             'value': value,
                         })
-                elif name == 'tag':
+                elif name in ('tag', 'category'):
                     try:
                         kwargs[str(name)] = value
                     except ValueError:
