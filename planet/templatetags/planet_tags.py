@@ -153,6 +153,11 @@ class PlanetPostList(Node):
         if self.category is not None:
             posts = posts.filter(feed__category__title=self.category)
 
+        ##TODO: test under mysql and sqlite
+        posts = posts.extra(
+            select={'date': "COALESCE(planet_post.date_modified, planet_post.date_created)"}
+        ).order_by('-date')
+
         if self.limit is not None:
             posts = posts[:self.limit]
 
