@@ -150,6 +150,10 @@ class PlanetPostList(Node):
         else:
             posts = Post.site_objects
 
+        #select also related objects, in this way we avoid future queries to
+        #retrieve for example the blog name
+        posts = posts.select_related()
+
         if self.category is not None:
             posts = posts.filter(feed__category__title=self.category)
 
