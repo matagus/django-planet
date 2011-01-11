@@ -193,8 +193,10 @@ def process_feed(feed_url, create=False, category_title=None):
                     # create post tags...
                     for tag_dict in entry.get("tags", []):
                         tag_name = tag_dict.get("term") or tag_dict.get("label")
-                        tag_name = tag_name[:255]
                         tag_name = normalize_tag(tag_name)
+
+                        if len(tag_name) > 50: continue
+
                         try:
                             if "/" in tag_name:
                                 # For path based categories
