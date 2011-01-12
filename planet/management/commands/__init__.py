@@ -4,6 +4,7 @@
 import feedparser
 import time
 import mimetypes
+from BeautifulSoup import BeautifulStoneSoup
 
 from urlparse import urlparse
 from datetime import datetime
@@ -35,7 +36,11 @@ def process_feed(feed_url, create=False, category_title=None):
             tag = tag[1:]
         if tag.endswith("-"):
             tag = tag[:-1]
-        tag = tag.strip()
+
+        ## fix for HTML entities
+        tag = unicode(BeautifulStoneSoup(tag,
+                        convertEntities=BeautifulStoneSoup.HTML_ENTITIES ))
+        tag = tag.strip().lower()
         return tag
 
     try:
