@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-import os
-
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed

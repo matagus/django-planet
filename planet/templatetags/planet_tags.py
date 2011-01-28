@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Several usefull template tags!
+Several useful template tags!
 """
 
 import re
@@ -9,6 +9,9 @@ import re
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
+from django.template import TemplateSyntaxError, Node, loader, Variable
+from django.utils.translation import ugettext as _
+from django.utils.text import smart_split
 
 from planet.models import Author, Feed, Blog, Post
 
@@ -55,12 +58,12 @@ def related_tags_for(tag, count=20):
     return {"related_tags": related_tags[:count]}
 
 
-@register.inclusion_tag("planet/posts/details.html")
-def post_details(post):
+@register.inclusion_tag("planet/dummy.html")
+def post_details(post, template="planet/posts/details.html"):
     """
     Displays info about a post: title, date, feed and tags.
     """
-    return {"post": post}
+    return {"template": template, "post": post}
 
 
 @register.inclusion_tag("planet/posts/full_details.html")
@@ -120,6 +123,99 @@ def feeds_for_author(author):
         post__authors=author).order_by("title").distinct()
 
     return {"feeds_list": feeds, "author": author}
+
+
+class PlanetPostList(Node):
+    def __init__(self, limit=None, tag=None, category=None, template=None):
+        self.limit = limit
+        self.tag = tag
+        self.category = category
+        self.template = template
+
+    def resolve(self, context, vars):
+        """
+        Resolve all the template variables listed in vars through the given
+        context
+        """
+        for var in vars:
+            val_var = self.__getattribute__(var)
+            if val_var is not None:
+                self.__setattr__(var, Variable(val_var).resolve(context))
+
+    def process(self, context):
+        self.resolve(context, ('tag', 'category', 'template', 'limit'))
+        if self.tag is not None:
+            posts = TaggedItem.objects.get_by_model(
+                Post.site_objects, self.tag)
+        else:
+            posts = Post.site_objects
+
+        #select also related objects, in this way we avoid future queries to
+        #retrieve for example the blog name
+        posts = posts.select_related()
+
+        if self.category is not None:
+            posts = posts.filter(feed__category__title=self.category)
+
+        ##TODO: test under mysql and sqlite
+        posts = posts.extra(
+            select={'date': "COALESCE(planet_post.date_modified, planet_post.date_created)"}
+        ).order_by('-date')
+
+        if self.limit is not None:
+            posts = posts[:self.limit]
+
+        context['posts'] = posts
+
+        if self.template is None:
+            self.template = "planet/list.html"
+        
+        return (self.template, context)
+
+    def render(self, context):
+        template, context = self.process(context)
+        return loader.get_template(template).render(context)
+
+
+@register.tag()
+def planet_post_list(parser, token):
+    """
+    Render a list of posts using the planet/list.html template.
+
+    Params:
+        limit: limit to this number of entries
+        tag: select only Posts that matches this tag
+        category: select only Posts that belongs to Feeds under this Category
+        template: render using a different template
+
+    Examples:
+        {% planet_post_list with limit=10 tag=tag %}
+        {% planet_post_list with tag="Redis" %}
+        {% planet_post_list with category="PyPy" %}
+    """
+    bits = list(smart_split(token.contents))
+    len_bits = len(bits)
+    kwargs = {}
+    if len_bits > 1:
+        if bits[1] != 'with':
+            raise TemplateSyntaxError(_("if given, fourth argument to %s tag must be 'with'") % bits[0])
+        for i in range(2, len_bits):
+            try:
+                name, value = bits[i].split('=')
+                if name in ('tag', 'category', 'template', 'limit'):
+                    kwargs[str(name)] = value
+                else:
+                    raise TemplateSyntaxError(_("%(tag)s tag was given an invalid option: '%(option)s'") % {
+                        'tag': bits[0],
+                        'option': name,
+                    })
+            except ValueError:
+                raise TemplateSyntaxError(_("%(tag)s tag was given a badly formatted option: '%(option)s'") % {
+                    'tag': bits[0],
+                    'option': bits[i],
+                })
+
+    return PlanetPostList(**kwargs)
 
 
 @register.filter
