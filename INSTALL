@@ -35,6 +35,7 @@ feedparser [3] and django-tagging [4].
     USER_AGENT = "django-planet/0.1"
 
 * run ./manage.py syncdb
+* run ./manage.py migrate
 
 * Add some feeds: 
     ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
