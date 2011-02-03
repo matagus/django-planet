@@ -4,6 +4,8 @@
 import feedparser
 import time
 import mimetypes
+import logging
+
 from BeautifulSoup import BeautifulStoneSoup
 
 from urlparse import urlparse
@@ -27,6 +29,16 @@ def process_feed(feed_url, create=False, category_title=None):
     If create=True then it creates the feed, otherwise it only stores new
     entries  and their related data.
     """
+    plogger = logging.getLogger('PlanetLogger')
+    #TODO read log level from settings.py
+    plogger.setLevel(logging.DEBUG)
+
+    #TODO read filename from settings.py
+    handler = logging.handlers.RotatingFileHandler(
+              '/var/log/planet.log', maxBytes=800, backupCount=20)
+
+    plogger.addHandler(handler)
+
 
     def normalize_tag(tag):
         """
@@ -46,7 +58,7 @@ def process_feed(feed_url, create=False, category_title=None):
     try:
         USER_AGENT = settings.USER_AGENT
     except AttributeError:
-        print "Please set the variable USER_AGENT = <string> in your settings.py"
+        plogger.error("Please set the variable USER_AGENT = <string> in your settings.py")
         exit(0)
 
     feed_url = str(feed_url).strip()
@@ -56,17 +68,17 @@ def process_feed(feed_url, create=False, category_title=None):
     except Feed.DoesNotExist:
         planet_feed = None
 
-    print "*" * 20
-    print "Feed: %s" % feed_url
+    plogger.debug("*" * 20)
+    plogger.debug("Feed: %s" % feed_url)
 
     if create and planet_feed:
         # can't create it due to it already exists
-        print "This feed already exists!"
+        plogger.error("This feed already exists!")
         exit(0)
 
     if not create and not planet_feed:
         # can't update it due to it does not exist
-        print "This feed does not exist!"
+        plogger.error("This feed does not exist!")
         exit(0)
 
     # retrieve and parse feed using conditional GET method
@@ -136,7 +148,7 @@ def process_feed(feed_url, create=False, category_title=None):
         for tag_dict in document.feed.get("tags", []):
             name = tag_dict.get("term")
             if name:
-                print name
+                plogger.debug(name)
 
         for link_dict in feed_links:
             feed_link, created = FeedLink.objects.get_or_create(
@@ -153,15 +165,15 @@ def process_feed(feed_url, create=False, category_title=None):
     new_posts_count = 0
 
     if total_results == 0:
-        print "No entries to store. status: %s %s" % (document.get("status"), document.get("debug_message"))
+        plogger.debug("No entries to store. status: %s %s" % (document.get("status"), document.get("debug_message")))
     else:
-        print "Entries total count: %d" % total_results
+        plogger.debug("Entries total count: %d" % total_results)
         stop_retrieving = False
         while (total_results > len(entries)) and not stop_retrieving:
 
             # retrieve and store feed posts
             entries.extend(document.entries)
-            print "Processing %d entries" % len(document.entries)
+            plogger.debug("Processing %d entries" % len(document.entries))
 
             for entry in document.entries:
                 title = entry.get("title", "")
@@ -187,8 +199,8 @@ def process_feed(feed_url, create=False, category_title=None):
                     post.entry = entry
                     post.save()
                 except PostAlreadyExists:
-                    print "Skipping post %s (%s) because already exists"\
-                        % (guid, url)
+                    plogger.debug("Skipping post %s (%s) because already exists"\
+                        % (guid, url))
                     if not create:
                         # if it is in update-mode then stop retrieving when
                         # it finds repeated posts
@@ -212,7 +224,7 @@ def process_feed(feed_url, create=False, category_title=None):
                             else:
                                 Tag.objects.add_tag(post, '"%s"' % tag_name)
                         except AttributeError, e:
-                            print "Ignoring tag error: %s" % e
+                            plogger.debug("Ignoring tag error: %s" % e)
                     # create post links...
                     for link_dict in entry.get("links", []):
                         post_link, created = PostLink.objects.get_or_create(
@@ -271,21 +283,21 @@ def process_feed(feed_url, create=False, category_title=None):
                             pad.save()
 
                     # We send a post_created signal
-                    print 'post_created.send(sender=post)', post
+                    plogger.debug('post_created.send(sender=post)', post)
                     post_created.send(sender=post, instance=post)
 
             if not stop_retrieving:
                 opensearch_url = "%s?start-index=%d&max-results=%d" %\
                     (feed_url, len(entries) + 1, items_per_page)
 
-                print "retrieving %s..." % opensearch_url
+                plogger.debug("retrieving %s..." % opensearch_url)
                 document = feedparser.parse(opensearch_url, agent=USER_AGENT)
 
         if new_posts_count:
             # update last modified datetime
             planet_feed.last_modified = datetime.now()
             planet_feed.save()
-        print "%d posts were created. Done." % new_posts_count
+        plogger.debug("%d posts were created. Done." % new_posts_count)
 
-    print
+    
     return new_posts_count
