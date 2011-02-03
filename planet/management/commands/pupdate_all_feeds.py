@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import eventlet
-eventlet.monkey_patch(socket=True)
+from gevent import monkey
+monkey.patch_socket()
+from gevent.pool import Group
 from datetime import datetime
 from django.core.management.base import NoArgsCommand
 
@@ -20,8 +21,8 @@ class Command(NoArgsCommand):
         start = datetime.now()
 
         feed_urls = Feed.site_objects.all().values_list("url", flat=True)
-        pool = eventlet.GreenPool()
-        for result in pool.imap(process_feed, feed_urls):
+        pool = Group()
+        for result in pool.imap_unordered(process_feed, feed_urls):
             new_posts_count += result
         
         delta = datetime.now() - start
