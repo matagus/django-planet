@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import sys
 
 import feedparser
 import time
@@ -20,6 +21,13 @@ from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
         Author, PostAuthorData, Enclosure, Category)
 from planet.signals import post_created
 
+
+plogger = logging.getLogger('PlanetLogger')
+plogger.setLevel(settings.PLANET_LOGLEVEL)
+handler = logging.StreamHandler()
+plogger.addHandler(handler)
+
+
 class PostAlreadyExists(Exception):
     pass
 
@@ -29,16 +37,6 @@ def process_feed(feed_url, create=False, category_title=None):
     If create=True then it creates the feed, otherwise it only stores new
     entries  and their related data.
     """
-    plogger = logging.getLogger('PlanetLogger')
-    #TODO read log level from settings.py
-    plogger.setLevel(logging.DEBUG)
-
-    #TODO read filename from settings.py
-    handler = logging.handlers.RotatingFileHandler(
-              '/var/log/planet.log', maxBytes=800, backupCount=20)
-
-    plogger.addHandler(handler)
-
 
     def normalize_tag(tag):
         """
