@@ -13,11 +13,14 @@ class Command(NoArgsCommand):
 
     def handle(self, *args, **options):
         new_posts_count = 0
+        plogger = logging.getLogger('PlanetLogger')
+        plogger.info("Update All Feeds")
+
         start = datetime.now()
         for feed_url in Feed.site_objects.all().values_list("url", flat=True):
             # process feed in create-mode
             new_posts_count += process_feed(feed_url, create=False)
         delta = datetime.now() - start
-        print "Added %s posts in %d seconds" % (new_posts_count, delta.seconds)
+        plogger.info("Added %s posts in %d seconds" % (new_posts_count, delta.seconds))
         feeds_updated.send(sender=self, instance=self)
 

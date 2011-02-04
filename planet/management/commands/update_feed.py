@@ -11,8 +11,11 @@ class Command(BaseCommand):
     args = "<feed_url>"
 
     def handle(self, *args, **options):
+        plogger = logging.getLogger('PlanetLogger')
+        plogger.info("Update Feed")
+
         if not len(args):
-            print "You must provide the feed url as parameter"
+            plogger.error("You must provide the feed url as parameter")
             exit(0)
 
         feed_url = args[0]
