@@ -9,6 +9,9 @@ from planet.signals import feeds_updated
 
 import logging
 
+import socket
+socket.setdefaulttimeout(20.)
+
 class Command(NoArgsCommand):
     help = "Update all feeds"
 

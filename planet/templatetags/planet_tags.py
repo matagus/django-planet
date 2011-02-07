@@ -178,7 +178,7 @@ class PlanetPostList(Node):
 
 
 @register.tag()
-def planet_post_list(parser, token):
+def planet_post_list(__, token):
     """
     Render a list of posts using the planet/list.html template.
 
