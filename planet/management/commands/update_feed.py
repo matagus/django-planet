@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from planet.management.commands import process_feed
 
-
+import logging
 class Command(BaseCommand):
     help = "Update a feed."
     args = "<feed_url>"
