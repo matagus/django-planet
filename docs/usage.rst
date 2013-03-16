@@ -59,16 +59,16 @@ Then create the database structure::
 
 Add some feeds::
 
-    ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
-    ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
-    ./manage.py add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
-    ./manage.py add_feed http://djangodose.com/everything/feed/
-    ./manage.py add_feed http://seeknuance.com/tag/django/feed/atom
-    ./manage.py add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
+    ./manage.py planet_add_feed http://simonwillison.net/atom/tagged/django/ 
+    ./manage.py planet_add_feed http://jannisleidel.com/cat/django/feed/atom/
+    ./manage.py planet_add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
+    ./manage.py planet_add_feed http://djangodose.com/everything/feed/
+    ./manage.py planet_add_feed http://seeknuance.com/tag/django/feed/atom
+    ./manage.py planet_add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
 
 And surely you'll want to add a cron entry to periodically run::
 
-    30 * * * * python manage.py update_all_feeds
+    30 * * * * python manage.py planet_update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
     
