@@ -151,9 +151,9 @@ class Feed(models.Model):
             self.modified = self.etag = None
 
             try:
-                USER_AGENT = settings.USER_AGENT
-            except AttributeError:
-                print "Please set the variable USER_AGENT = <string> in your settings.py"
+                USER_AGENT = settings.PLANET["USER_AGENT"]
+            except (KeyError, AttributeError):
+                print """Please set the PLANET = {"USER_AGENT": <string>} in your settings.py"""
                 exit(0)
 
             document = feedparser.parse(self.url, agent=USER_AGENT,

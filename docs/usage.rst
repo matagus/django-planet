@@ -49,7 +49,9 @@ Create a local_settings.py file::
 
     TIME_ZONE = 'America/Chicago'
 
-    USER_AGENT = "django-planet/0.1"
+    PLANET = {
+        "USER_AGENT": "django-planet/0.1",
+    }
 
 Then create the database structure::
 

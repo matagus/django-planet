@@ -44,9 +44,9 @@ def process_feed(feed_url, create=False, category_title=None):
         return tag
 
     try:
-        USER_AGENT = settings.USER_AGENT
-    except AttributeError:
-        print "Please set the variable USER_AGENT = <string> in your settings.py"
+        USER_AGENT = settings.PLANET["USER_AGENT"]
+    except (KeyError, AttributeError):
+        print """Please set PLANET = {" USER_AGENT": <string>} in your settings.py"""
         exit(0)
 
     feed_url = str(feed_url).strip()
@@ -86,13 +86,12 @@ def process_feed(feed_url, create=False, category_title=None):
 
     if create:
         # then create blog, feed, generator, feed links and feed tags
-
         title = document.feed.get("title", "--")
         subtitle = document.feed.get("subtitle")
         blog_url = document.feed.get("link")
         rights = document.feed.get("rights") or document.feed.get("license")
         info = document.feed.get("info")
-        guid = md5(document.feed.get("id")).hexdigest()
+        guid = md5(document.feed.get("link")).hexdigest()
         image_url = document.feed.get("image", {}).get("href")
         icon_url = document.feed.get("icon")
         language = document.feed.get("language")
@@ -142,7 +141,7 @@ def process_feed(feed_url, create=False, category_title=None):
             feed_link, created = FeedLink.objects.get_or_create(
                 feed=planet_feed,
                 rel=link_dict.get("rel", "--"),
-                mime_type=link_dict.get("type"),
+                mime_type=link_dict.get("type", "text/html"),
                 link=link_dict.get("href", blog_url)
             )
 
@@ -218,7 +217,7 @@ def process_feed(feed_url, create=False, category_title=None):
                         post_link, created = PostLink.objects.get_or_create(
                             post=post,
                             rel=link_dict.get("rel", "--"),
-                            mime_type=link_dict.get("type"),
+                            mime_type=link_dict.get("type", "text/html"),
                             link=link_dict.get("href", "--"),
                             title=link_dict.get("title", "--")
                         )
