@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from datetime import datetime
+from hashlib import md5
+from urlparse import urlparse
 
 import feedparser
 import time
 import mimetypes
 from BeautifulSoup import BeautifulStoneSoup
-
-from urlparse import urlparse
-from datetime import datetime
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -92,7 +92,7 @@ def process_feed(feed_url, create=False, category_title=None):
         blog_url = document.feed.get("link")
         rights = document.feed.get("rights") or document.feed.get("license")
         info = document.feed.get("info")
-        guid = document.feed.get("id")
+        guid = md5(document.feed.get("id")).hexdigest()
         image_url = document.feed.get("image", {}).get("href")
         icon_url = document.feed.get("icon")
         language = document.feed.get("language")
@@ -166,7 +166,7 @@ def process_feed(feed_url, create=False, category_title=None):
             for entry in document.entries:
                 title = entry.get("title", "")
                 url = entry.get("link")
-                guid = entry.get("link")
+                guid = md5(entry.get("link")).hexdigest()
                 content = entry.get('description') or entry.get("content", [{"value": ""}])[0]["value"]
                 comments_url = entry.get("comments")
                 date_modified = entry.get("updated_parsed") or\
