@@ -96,6 +96,8 @@ def process_feed(feed_url, create=False, category_title=None):
         icon_url = document.feed.get("icon")
         language = document.feed.get("language")
         etag = document.get("etag", '')
+
+        updated_parsed = document.get("updated_parsed")
         if updated_parsed:
             last_modified = datetime.fromtimestamp(time.mktime(updated_parsed))
         else:
