@@ -114,7 +114,7 @@ class Feed(models.Model):
     language = models.CharField(_("Language"), max_length=50, blank=True,
                                 null=True)
     # global unique identifier for the feed
-    guid = models.CharField(_("Global Unique Identifier"), max_length=255,
+    guid = models.CharField(_("Global Unique Identifier"), max_length=32,
         blank=True, null=True, db_index=True)
     # icon attribute from Feedparser's Feed object
     icon_url = models.URLField(_("Icon URL"), blank=True, null=True)
@@ -225,7 +225,7 @@ class Post(models.Model):
     title = models.CharField(_("Title"), max_length=255, db_index=True)
     authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
     url = models.URLField(_("Url"), max_length=1000, db_index=True)
-    guid = models.TextField(_("Guid"), db_index=True)
+    guid = models.CharField(_("Guid"), max_length=32, db_index=True)
     content = models.TextField(_("Content"))
     comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
 
