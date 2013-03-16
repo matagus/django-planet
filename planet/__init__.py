@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-VERSION = (0, 1, 3, "a", 0) # following PEP 386
+VERSION = (0, 2, 0) # following PEP 386
 
 def get_version():
     version = "%s.%s" % (VERSION[0], VERSION[1])
