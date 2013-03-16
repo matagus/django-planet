@@ -12,7 +12,8 @@ setup(
     author="Matias Agustin Mendez",
     author_email="me@matagus.com.ar",
 
-    install_requires=["feedparser", "south", "django-tagging", "django-pagination", "Django>=1.4"],
+    install_requires=["feedparser", "south", "django-tagging",
+        "django-pagination", "Django>=1.4", "BeautifulSoup"],
 
     packages=find_packages(exclude=["sample_project"]),
     package_dir={"planet": "planet"},
