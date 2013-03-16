@@ -91,12 +91,15 @@ def process_feed(feed_url, create=False, category_title=None):
         blog_url = document.feed.get("link")
         rights = document.feed.get("rights") or document.feed.get("license")
         info = document.feed.get("info")
-        guid = md5(document.feed.get("link")).hexdigest()
+        guid = unicode(md5(document.feed.get("link")).hexdigest())
         image_url = document.feed.get("image", {}).get("href")
         icon_url = document.feed.get("icon")
         language = document.feed.get("language")
         etag = document.get("etag", '')
-        last_modified = document.get("updated_parsed", datetime.now())
+        if updated_parsed:
+            last_modified = datetime.fromtimestamp(time.mktime(updated_parsed))
+        else:
+            last_modified = datetime.now()
 
         feed_links = document.feed.get("links", [])
         if not blog_url:
@@ -165,7 +168,7 @@ def process_feed(feed_url, create=False, category_title=None):
             for entry in document.entries:
                 title = entry.get("title", "")
                 url = entry.get("link")
-                guid = md5(entry.get("link")).hexdigest()
+                guid = unicode(md5(entry.get("link")).hexdigest())
                 content = entry.get('description') or entry.get("content", [{"value": ""}])[0]["value"]
                 comments_url = entry.get("comments")
                 date_modified = entry.get("updated_parsed") or\
