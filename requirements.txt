@@ -1,5 +1,4 @@
 Django==1.2
-MySQL-python==1.2.2
 django-tagging
 django-pagination
 feedparser
