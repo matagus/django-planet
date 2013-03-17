@@ -10,7 +10,10 @@ def context(request):
         search_form = SearchForm(request.GET)
     else:
         search_form = SearchForm()
-    
-    return {"site": Site.objects.get(pk=settings.SITE_ID),
+
+    site = Site.objects.get(pk=settings.SITE_ID)
+
+    return {"site": site,
+        "SITE_NAME": site.name,
         "search_form": search_form}
 

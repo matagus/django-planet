@@ -1,0 +1,107 @@
+{% load staticfiles %}
+{% load url from future %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} | {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
+        {% block viewport %}
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
+
+        {% block style_base %}
+            <link href="{% static "pinax/css/theme.css" %}" rel="stylesheet">
+            <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+            <link href="{% static "bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+            {% block extra_style %}{% endblock %}
+        {% endblock %}
+
+        {% block html5shim %}
+            <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+            <!--[if lt IE 9]>
+                <script src="{% static "pinax/js/html5shiv.js" %}"></script>
+            <![endif]-->
+        {% endblock %}
+
+        {% block extra_head_base %}
+            {% block extra_head %}{% endblock %}
+        {% endblock %}
+    </head>
+    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
+        <div class="{% block wrapper_class %}{% endblock %}">
+
+            {% block topbar_base %}
+            <div class="navbar navbar-inverse {% block navbar_class %}navbar-fixed-top{% endblock %}">
+                    <div class="navbar-inner">
+                        <div class="container">
+                            {% block topbar %}
+                                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </a>
+                                {% block site_brand %}
+                                    <a class="brand" href="{% url "home" %}">{{ SITE_NAME }}</a>
+                                {% endblock %}
+                                <div class="nav-collapse">
+                                    {% block nav %}
+                                        <ul class="nav">
+                                            <li><a href="{% url 'planet.views.posts_list' %}">Posts</a></li>
+                                            <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a></li>
+                                            <li><a href="{% url 'planet.views.authors_list' %}">Authors</a></li>
+                                            <li><a href="{% url 'planet.views.tags_cloud' %}">Tags</a></li>
+                                        </ul>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+
+            {% block body_base %}
+                <div class="container">
+                    {% include "_messages.html" %}
+                    {% block body %}
+                    <div class="row">
+                        {% block breadcrumb %}
+                        <ul class="breadcrumb">
+                            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+                            {% block breadcrumb_section %}{% endblock %}
+                            {% block breadcrumb_detail %}{% endblock %}
+                        </ul>
+                        {% endblock %}
+                    </div>
+                    <div class="row">
+                        <div class="span2 columns">
+                            {% block right_column %}
+                            {% endblock %}
+                        </div>
+                        <div class="span10 columns">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                    {% endblock %}
+                    {% block footer_base %}
+                        <hr />
+                        <footer>
+                            {% block footer %}{% endblock %}
+                        </footer>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+
+        {% block script_base %}
+            <script src="{% block jquery_src %}{% static "pinax/js/jquery.js" %}{% endblock %}"></script>
+            <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+            <script src="{% static "pinax/js/theme.js" %}"></script>
+            {% block extra_script %}{% endblock %}
+        {% endblock %}
+
+        {% block extra_body_base %}
+            {% block extra_body %}{% endblock %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,36 +1,10 @@
 {% extends 'site_base.html' %}
 {% load i18n tagging_tags planet_tags %}
 
-{% block extrameta %}
+{% block extra_head %}
     <meta name="DC.title" content="{{ site.name }}" />
     <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
-{% endblock %}
-
-{% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url planet_rss_feed %}" />
-{% endblock %}
-
-{% block menu %}
-    <h4>{% trans 'Browse' %}</h4>
-    <ul>
-        <li>
-            <a href="{% url planet_post_list %}">{% trans 'Posts' %}</a>
-        </li>
-        <li>
-            <a href="{% url planet_author_list %}">{% trans 'Authors' %}</a>
-        </li>
-        <li>
-            <a href="{% url planet_blog_list %}">{% trans 'Blogs' %}</a>
-        </li>
-        <li>
-            <a href="{% url planet_feed_list %}">{% trans 'Feeds' %}</a>
-        </li>
-        <li>
-            <a href="{% url planet_tag_cloud %}">{% trans 'Tag Cloud' %}</a>
-        </li>
-        {% block menu_extra %}
-        {% endblock %}
-    </ul>
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url 'planet_rss_feed' %}" />
 {% endblock %}
 
 {% block search %}
@@ -44,40 +18,36 @@
 {% block right_column %}
     {% tag_cloud_for_model planet.Post as tags_cloud with steps=7 min_count=5 distribution=log %}
     {% include 'planet/tags/blocks/cloud.html' %}
-
-    <div id="buttons">
-        <ul>
-            <li>
-                {% block rss_feed %}
-                <a href="{% url planet_rss_feed %}" title="{% trans 'Suscribe to RSS feed' %}">
-                    <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
-                </a>
-                {% endblock %}
-                </li>
-            <li>
-                {% block atom_feed %}
-                {% endblock %}
-            </li>
-            <li>
-                <a href="{% url planet_opml %}" title="OPML">
-                    <img src="{{ MEDIA_URL }}images/button-opml.png"/>
-                </a>
-            </li>
-            <li>
-                <a href="{% url planet_foaf %}" title="FOAF">
-                    <img src="{{ MEDIA_URL }}images/button-foaf.png"/>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.djangoproject.com/" title="{% trans 'This is a django powered site!' %}">
-                    <img src="{{ MEDIA_URL }}images/django_80x15.png" width="80" height="15" alt="Powered by Django." title="Powered by Django"/>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <br/>
+    <ul class="nav nav-list">
+        <li class="nav-header">Feeds</li>
+        <li>
+            <a href="{% url 'planet_rss_feed' %}" title="{% trans 'Suscribe to RSS feed' %}">
+                RSS 2.0 Feed
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'planet_opml' %}" title="OPML">
+                OPML
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'planet_foaf' %}"  title="FOAF">
+                FOAF
+            </a>
+        </li>
+        <li>
+            <a href="">
+            </a>
+        </li>
+        <li>
+            <a href="">
+            </a>
+        </li>
+    </ul>
 {% endblock %}
 
 {% block footer %}
-    <p>{% blocktrans %}A <a href="http://github.com/matagus/django-planet/tree" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
+    <p class="text-right">{% blocktrans %}A <a href="http://github.com/matagus/django-planet/tree" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
     {{ block.super }}
 {% endblock %}

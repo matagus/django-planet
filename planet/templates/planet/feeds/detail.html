@@ -1,26 +1,14 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags tagging_tags planet_tags %}
 
-{% block page_title %}{% trans "Feed" %}: {{ feed.title }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
-{% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Feed' %}: {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
+{% block head_title %}{% trans "Feed" %}: {{ feed.title }} - {% trans 'Posts in' %} {{ block.super }}{% endblock %}
+{% block extra_head %}
+    <meta name="title" content="{% trans 'Feed' %}: {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
     <meta name="description" content="{% trans 'Feed' %} {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
 {% endblock %}
 
-{% block menu_extra %}
-    {% if tag %}
-        <li>
-            <a href="{% url planet_tag_author_list tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
-                {% trans 'People talking about this' %}
-            </a>
-        </li>
-        <li>
-            <a href="{% url planet_tag_feed_list tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Feeds talking about this' %}
-            </a>
-        </li>
-    {% endif %}
-{% endblock %}
+{% block breadcrumb_section %}<li><a href="{% url 'planet.views.feeds_list' %}">Blog Feeds</a> <span class="divider">/</span></li>{% endblock %}
+{% block breadcrumb_detail %}<li class="active">{{ feed.title }}</li>{% endblock %}
 
 {% block content %}
     {% if feed.icon %}
@@ -30,27 +18,25 @@
     {% if feed.subtitle %}
         <p>{{ feed.subtitle|striptags }}</p>
     {% endif %}
-    <ul class="feed details">
-        <li>
-            <a href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
-                <img src="{{ MEDIA_URL }}images/feed.png" alt="{% trans 'RSS 2.0 Feed' %}" />
-            </a>
-            {% trans 'feed' %}: <a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a>
-        </li>
+    <table class="blog details table table-hover table-bordered">
+        <tr>
+            <th>{% trans 'RSS 2.0 Feed' %}</th><td>
+            <a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a></td>
+        </tr>
         {% if feed.generator %}
-        <li>
-            {% trans 'generator' %}: <strong>{{ feed.generator }}</strong>
-        </li>
+        <tr>
+            <th>{% trans 'generator' %}</th><td><strong>{{ feed.generator }}</strong></td>
+        </tr>
         {% endif %}
-        <li>
-            {% trans 'web' %}: <a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a>
-        </li>
-    </ul>
-    
+        <tr>
+            <th>{% trans 'web' %}</th><td><a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a></td>
+        </tr>
+    </table>
+
     {% if tag %}
         <h3>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h3>
     {% endif %}
-    
+
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
@@ -62,7 +48,7 @@
 
 {% block right_column %}
     {# this is too slow % authors_for_feed feed %#}
-    
+
     {% if tag %}
         <div>
             {% related_tags_for tag %}
@@ -71,6 +57,19 @@
             {% feeds_about tag %}
         </div>
     {% endif %}
-    
+
     {% cloud_for_feed feed %}
+
+    {% if tag %}
+        <li>
+            <a href="{% url 'planet_tag_author_list' tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
+                {% trans 'People talking about this' %}
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
+                {% trans 'Feeds talking about this' %}
+            </a>
+        </li>
+    {% endif %}
 {% endblock %}

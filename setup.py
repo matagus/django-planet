@@ -13,7 +13,8 @@ setup(
     author_email="me@matagus.com.ar",
 
     install_requires=["feedparser", "south", "django-tagging",
-        "django-pagination", "Django>=1.4", "BeautifulSoup"],
+        "django-pagination", "Django>=1.4", "BeautifulSoup",
+        "pinax-theme-bootstrap"],
 
     packages=find_packages(exclude=["sample_project"]),
     package_dir={"planet": "planet"},

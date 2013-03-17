@@ -1,11 +1,14 @@
 {% extends "planet/base.html" %}
 {% load i18n planet_tags %}
 
-{% block page_title %}{{ post.title|safe }} - {{ block.super }}{% endblock %}
-{% block extrameta %}
-    <meta name="DC.title" content="{{ post.title|safe }} - {{ site.name }}" />
+{% block head_title %}{{ post.title|safe }} - {{ block.super }}{% endblock %}
+{% block extra_head %}
+    <meta name="title" content="{{ post.title|safe }} - {{ site.name }}" />
     <meta name="description" content="{{ post.title|safe }} - {{ site.name }}" />
 {% endblock %}
+
+{% block breadcrumb_section %}<li><a href="{% url 'planet.views.posts_list' %}">Posts</a> <span class="divider">/</span></li>{% endblock %}
+{% block breadcrumb_detail %}<li class="active">{{ post.title|safe }}</li>{% endblock %}
 
 {% block content %}
     <div class="post clearfix">

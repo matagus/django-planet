@@ -47,6 +47,11 @@ Create a local_settings.py file::
         }
     }
 
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        ...
+        'planet.context_processors.context',
+    )
+
     TIME_ZONE = 'America/Chicago'
 
     PLANET = {
@@ -56,6 +61,7 @@ Create a local_settings.py file::
 Then create the database structure::
 
      ./manage.py syncdb
+     ./manage.py migrate planet
 
 Add some feeds::
 

@@ -4,20 +4,19 @@
         {{ post.title|striptags|safe }}
     </a>
 </h3>
-<p>
-    {% trans 'published in' %} <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
-        {{ post.feed.title }}
-    </a>
-</p>
-<p class="tags list">
-    {% for tag in post.tags.all %}
-        {% if forloop.first %} {% trans "tags" %}: {% endif %}
-        <a href="{% url planet_tag_detail tag.name %}" title="Tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-</p>
 <p class="content">
-    {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url planet_post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+    {% for tag in post.tags.all|slice:":5" %}
+        <span class="label"><a style="color: white;" href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
+    {% endfor %}
+    {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url 'planet_post_detail' post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
 </p>
-<div class="external_links">
-    <a href="{{ post.url }}" title="{% trans 'Read original post' %}">{% trans 'read original post' %}</a> {% trans 'in' %} <strong>{{ post.feed.title }}</strong>  {% trans 'blog' %}.
-</div>
+<table class="blog details table table-hover table-bordered">
+    <tr>
+        <th>{% trans 'published in' %}</th>
+        <td>
+            <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
+                {{ post.feed.title }}
+            </a>
+        </td>
+    </tr>
+</table>

@@ -1,11 +1,13 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags  %}
 
-{% block page_title %}{% trans "Blogs list" %} - {{ block.super }}{% endblock %}
-{% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Blogs list' %} - {{ site.name }}" />
+{% block head_title %}{% trans "Blogs list" %} - {{ block.super }}{% endblock %}
+{% block extra_head %}
+    <meta name="title" content="{% trans 'Blogs list' %} - {{ site.name }}" />
     <meta name="description" content="{% trans 'Blogs list' %} - {{ site.name }}" />
 {% endblock %}
+
+{% block breadcrumb_section %}<li class="active">{% trans 'Blogs' %}</li>{% endblock %}
 
 {% block content %}
 <h2>{% trans "Blogs" %}</h2>
@@ -17,22 +19,22 @@
             <h3>
                 <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
             </h3>
-            <ul class="blog details">
-                <li>
-                    {% trans 'web' %}: <a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</a>
-                </li>
-                <li>
-                    {% trans 'browse' %} <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</a>
-                </li>
+            <table class="blog details table table-hover table-bordered">
+                <tr>
+                    <th>{% trans 'web' %}</th><td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>
+                </tr>
+                <tr>
+                    <th>{% trans 'browse' %}</th><td><a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</td>
+                </tr>
                 {% for feed in blog.feed_set.all %}
-                <li>
-                    {% trans 'feed' %}: <a href="{% url planet_feed_detail feed.pk %}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a>
+                <tr>
+                    <th>{% trans 'feed' %}</th><td><a href="{% url 'planet_feed_detail' feed.pk %}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a>
                     <a href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
                         <img src="{{ MEDIA_URL }}images/feed.png" alt="{% trans 'RSS 2.0 Feed' %}" />
-                    </a>
-                </li>
+                    </a></td>
+                </tr>
                 {% endfor %}
-            </ul>
+            </table>
         </li>
     {% endfor %}
     {% paginate %}

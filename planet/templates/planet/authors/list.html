@@ -1,11 +1,13 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags planet_tags %}
 
-{% block page_title %}{% trans 'Authors list' %} - {{ block.super }}{% endblock %}
-{% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Authors list' %} - {{ site.name }}" />
+{% block head_title %}{% trans 'Authors list' %} - {{ block.super }}{% endblock %}
+{% block extra_head %}
+    <meta name="title" content="{% trans 'Authors list' %} - {{ site.name }}" />
     <meta name="description" content="{% trans 'Authors list' %} - {{ site.name }}" />
 {% endblock %}
+
+{% block breadcrumb_section %}<li class="active">{% trans 'Blog Authors' %}</li>{% endblock %}
 
 {% block content %}
 <h2>{% trans "Authors" %}</h2>

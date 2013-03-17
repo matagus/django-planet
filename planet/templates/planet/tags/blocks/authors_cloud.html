@@ -3,7 +3,7 @@
     <h4>{% trans "Tags cloud for author" %} {{ author.name }}</h4>
     <div class="tags cloud">
         {% for tag in tags_cloud %}
-            <a href="{% url planet_by_tag_author_detail author.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a>
+            <a href="{% url 'planet_by_tag_author_detail' author.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a>
         {% endfor %}
     </div>
 {% endif %}

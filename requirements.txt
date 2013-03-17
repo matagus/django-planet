@@ -2,4 +2,6 @@ Django==1.2
 django-tagging
 django-pagination
 feedparser
-south
+isouth
+pinax-theme-bootstrap
+BeautifulSoup

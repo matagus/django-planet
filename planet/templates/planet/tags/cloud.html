@@ -1,22 +1,21 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags  %}
 
-{% block page_title %}{% trans "Tags cloud" %} - {{ block.super }}{% endblock %}
-{% block extrameta %}
-    <meta name="DC.title" content="{% trans 'Tags cloud' %} - {{ site.name }}" />
+{% block head_title %}{% trans "Tags cloud" %} - {{ block.super }}{% endblock %}
+{% block extra_head %}
+    <meta name="title" content="{% trans 'Tags cloud' %} - {{ site.name }}" />
     <meta name="description" content="{% trans 'Tags cloud' %} - {{ site.name }}" />
 {% endblock %}
+
+{% block breadcrumb_section %}<li class="active">Tags</li>{% endblock %}
 
 {% block content %}
 <h2>{% trans "Tags cloud" %}</h2>
 <div class="tags cloud">
     {% autopaginate tags_cloud 200 %}
     {% for tag in tags_cloud %}
-        <a href="{% url planet_tag_detail tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
+        <a href="{% url 'planet_tag_detail' tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
     {% endfor %}
     {% paginate %}
 </div>
-{% endblock %}
-
-{% block right_column %}
 {% endblock %}
