@@ -20,6 +20,7 @@ setup(
     package_dir={"planet": "planet"},
     package_data={
         "planet": [
+            "static/planet/planet.css",
             "templates/*.html",
             "templates/planet/*.html",
             "templates/planet/*/*.html",
@@ -27,10 +28,6 @@ setup(
             "templates/planet/tags/blocks/*.html",
             "templates/planet/feeds/blocks/*.html",
             "templates/planet/microformats/*.xml",
-            "media/planet/css/*.css",
-            "media/planet/js/*.js",
-            "media/planet/icons/*.gif",
-            "media/planet/images/*.png",
         ]},
 
     classifiers=[
