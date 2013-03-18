@@ -1,5 +1,8 @@
 {% load i18n %}
-<ul class="feeds list">
+<ul class="nav nav-list feed list">
+    <li class="nav-header">
+        {% trans 'Writes for' %}
+    </li>
     {% for feed in feeds_list %}
         <li>
             <a class="nombre" href="{% url 'planet_feed_detail' feed.pk %}" title="{{ feed.title }}">

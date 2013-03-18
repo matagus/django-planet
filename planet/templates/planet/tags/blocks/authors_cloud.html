@@ -1,9 +1,9 @@
 {% load i18n  %}
 {% if tags_cloud %}
-    <h4>{% trans "Tags cloud for author" %} {{ author.name }}</h4>
-    <div class="tags cloud">
-        {% for tag in tags_cloud %}
-            <a href="{% url 'planet_by_tag_author_detail' author.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a>
-        {% endfor %}
-    </div>
+<ul class="nav nav-list">
+    <li class="nav-header">{% trans "Tags cloud for author" %} {{ author.name }}</li>
+    {% for tag in tags_cloud %}
+        <li><a href="{% url 'planet_by_tag_author_detail' author.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a></li>
+    {% endfor %}
+</ul>
 {% endif %}

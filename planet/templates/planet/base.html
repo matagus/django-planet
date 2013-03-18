@@ -18,33 +18,7 @@
 {% block right_column %}
     {% tag_cloud_for_model planet.Post as tags_cloud with steps=7 min_count=5 distribution=log %}
     {% include 'planet/tags/blocks/cloud.html' %}
-    <br/>
-    <ul class="nav nav-list">
-        <li class="nav-header">Feeds</li>
-        <li>
-            <a href="{% url 'planet_rss_feed' %}" title="{% trans 'Suscribe to RSS feed' %}">
-                RSS 2.0 Feed
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'planet_opml' %}" title="OPML">
-                OPML
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'planet_foaf' %}"  title="FOAF">
-                FOAF
-            </a>
-        </li>
-        <li>
-            <a href="">
-            </a>
-        </li>
-        <li>
-            <a href="">
-            </a>
-        </li>
-    </ul>
+    {% include 'planet/feeds/blocks/syndication_block.html' %}
 {% endblock %}
 
 {% block footer %}

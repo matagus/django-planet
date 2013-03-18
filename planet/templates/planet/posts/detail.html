@@ -7,7 +7,11 @@
     <meta name="description" content="{{ post.title|safe }} - {{ site.name }}" />
 {% endblock %}
 
-{% block breadcrumb_section %}<li><a href="{% url 'planet.views.posts_list' %}">Posts</a> <span class="divider">/</span></li>{% endblock %}
+{% block breadcrumb_section %}
+    <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>
+    <li><a href="{{ post.feed.blog.get_absolute_url }}">{{ post.feed.blog.title }}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'planet.views.posts_list' %}">Posts</a> <span class="divider">/</span></li>
+{% endblock %}
 {% block breadcrumb_detail %}<li class="active">{{ post.title|safe }}</li>{% endblock %}
 
 {% block content %}
@@ -21,4 +25,5 @@
 
 {% block right_column %}
     {% cloud_for_feed post.feed %}
+    {% include 'planet/feeds/blocks/syndication_block.html' %}
 {% endblock %}

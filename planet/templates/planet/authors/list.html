@@ -20,8 +20,8 @@
                     {{ author.name }}
                 </a>
             </h3>
-            {% trans 'writes for' %} {% feeds_for_author author %}
-        </p>
+        </li>
+        {% feeds_for_author author %}
     {% endfor %}
     {% paginate %}
 </ul>

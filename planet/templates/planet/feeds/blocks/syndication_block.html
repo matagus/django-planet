@@ -1,0 +1,20 @@
+{% load i18n %}
+<br/>
+<ul class="nav nav-list">
+    <li class="nav-header">Feeds</li>
+    <li>
+        <a href="{% url 'planet_rss_feed' %}" title="{% trans 'Suscribe to RSS feed' %}">
+            RSS 2.0 Feed
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'planet_opml' %}" title="OPML">
+            OPML
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'planet_foaf' %}"  title="FOAF">
+            FOAF
+        </a>
+    </li>
+</ul>

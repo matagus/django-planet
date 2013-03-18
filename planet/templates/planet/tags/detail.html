@@ -40,7 +40,8 @@
     <div>
         {% feeds_about tag %}
     </div>
-    <ul>
+    <ul class="nav nav-list">
+        <li class="nav-header">See also</li>
         <li>
             <a href="{% url 'planet_tag_author_list' tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
                 {% trans 'People talking about this' %}
