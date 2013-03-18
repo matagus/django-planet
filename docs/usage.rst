@@ -88,4 +88,6 @@ Demo Project
 ------------
 
 There's a simple demo project at sample_project directory: just follow 
-sample_project/INSTALL instrucctions :) or see it live at http://www.matagus.com.ar/friends/
+sample_project/INSTALL instrucctions :) or see it live at `django-planet.herokuapp.com`_
+
+.. _django-planet.herokuapp.com: http://django-planet.herokuapp.com/

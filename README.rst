@@ -27,3 +27,9 @@ INSTALLATION
 
     * For installation instructions, see the file INSTALL in this directory.
 
+DEMO
+----
+
+There is a simple demo django-planet [4] at heroku.com.
+
+[4] http://django-planet.herokuapp.com/
