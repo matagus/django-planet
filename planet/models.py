@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.conf import settings
 from django.db.models.signals import pre_delete
+from django.template.defaultfilters import slugify
 
 import tagging
 from tagging.models import Tag
@@ -48,7 +49,11 @@ class Blog(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('planet.views.blog_detail', [str(self.id)])
+        return ('planet.views.blog_detail', [str(self.id), self.get_slug()])
+
+    def get_slug(self):
+        return slugify(self.title)
+
 
 class Generator(models.Model):
     """
@@ -192,7 +197,10 @@ class Feed(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('planet.views.feed_detail', [str(self.id)])
+        return ('planet.views.feed_detail', [str(self.id), self.get_slug()])
+
+    def get_slug(self):
+        return slugify(self.title)
 
 
 class PostAuthorData(models.Model):
@@ -247,7 +255,10 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('planet.views.post_detail', [str(self.id)])
+        return ('planet.views.post_detail', [str(self.id), self.get_slug()])
+
+    def get_slug(self):
+        return slugify(self.title)
 
 # each Post object now will have got a .tags attribute!
 tagging.register(Post)
@@ -280,7 +291,10 @@ class Author(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('planet.views.author_detail', [str(self.id)])
+        return ('planet.views.author_detail', [str(self.id), self.get_slug()])
+
+    def get_slug(self):
+        return slugify(self.name)
 
 
 class FeedLink(models.Model):

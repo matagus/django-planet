@@ -8,7 +8,7 @@
     {% for tag in post.tags.all|slice:":5" %}
         <span class="label"><a style="color: white;" href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
     {% endfor %}
-    {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url 'planet_post_detail' post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
+    {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{{ post.get_absolute_url }}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
 </p>
 <table class="blog details table table-hover table-bordered">
     <tr>

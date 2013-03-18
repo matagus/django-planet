@@ -49,7 +49,7 @@ class PostFeed(Feed):
         return {"type" : "html", }, linebreaks(escape(post.content))
     
     def item_links(self, post):
-        return [{"href" : reverse("planet_post_detail", args=( post.pk,))}]
+        return [{"href" : reverse("planet_post_detail", args=(post.pk, post.get_slug()))}]
     
     def item_authors(self, post):
         return [{"name" : post.author}]
@@ -65,7 +65,7 @@ class AuthorFeed(PostFeed):
             {'author_name': author.name, 'site_name': self.site.name}
 
     def links(self, author):
-        return ({'href': reverse("planet_author_show", args=(author.pk, ))},)
+        return ({'href': reverse("planet_author_show", args=(author.pk, author.get_slug()))},)
 
     def items(self, author):
         return Post.objects.filter(authors=author,

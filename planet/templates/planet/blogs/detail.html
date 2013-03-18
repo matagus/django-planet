@@ -18,7 +18,7 @@
         </tr>
         {% for feed in blog.feed_set.all %}
         <tr>
-            <th>{% trans 'feed' %}</th><td><a href="{% url 'planet_feed_detail' feed.pk %}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a></td>
+            <th>{% trans 'feed' %}</th><td><a href="{{ feed.get_absolute_url }}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a></td>
         </tr>
         {% endfor %}
     </table>

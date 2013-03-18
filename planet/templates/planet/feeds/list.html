@@ -27,7 +27,7 @@
                     <th>{% trans 'web' %}</th><td><a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</td>
                 </tr>
                 <tr>
-                    <th>{% trans 'browse' %}</th><td><a href="{% url 'planet_feed_detail' feed.pk %}" class="feed" title="{% trans 'See the full list of posts from this feed' %}">{% trans 'latest posts' %}</a></td>
+                    <th>{% trans 'browse' %}</th><td><a href="{{ feed.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this feed' %}">{% trans 'latest posts' %}</a></td>
                 </tr>
             </table>
         </li>

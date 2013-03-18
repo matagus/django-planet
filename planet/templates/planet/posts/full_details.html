@@ -5,13 +5,13 @@
     {% for author in post.authors.all %}
     <tr>
         <th>{% trans 'published by' %}</th><td>
-        <a href="{% url 'planet_author_detail' author.pk %}" title="{% trans 'See all posts for this author' %}">
+        <a href="{{ author.get_absolute_url }}" title="{% trans 'See all posts for this author' %}">
             {{ author.name }}
         </a></td>
     </tr>
     {% endfor %}
     <tr>
-    <th>{% trans 'in blog' %}</th><td><a href="{% url 'planet_feed_detail' post.feed.pk %}" title="{% trans 'See all posts for this feed' %}">
+    <th>{% trans 'in blog' %}</th><td><a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
         {{ post.feed.title }}
     </a></td>
     </tr>

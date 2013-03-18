@@ -26,7 +26,7 @@
     {% if tag %}
         <div>
             <p>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></p>
-            <a href="{% url 'planet_author_detail' author.pk %}" title="{% trans 'See all posts by' %} {{ author.name }}">
+            <a href="{{ author.get_absolute_url }}" title="{% trans 'See all posts by' %} {{ author.name }}">
                 {% trans 'See the complete list of posts by this author' %}
             </a>
         </div>

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
 from planet.models import Blog, Feed, Author, Post
@@ -25,8 +24,11 @@ def blogs_list(request):
         {"blogs_list": blogs_list}, context_instance=RequestContext(request))
 
 
-def blog_detail(request, blog_id):
+def blog_detail(request, blog_id, slug=None):
     blog = get_object_or_404(Blog, pk=blog_id)
+
+    if slug is None:
+        return redirect(blog, permanent=True)
 
     posts = Post.site_objects.filter(feed__blog=blog).order_by("-date_modified")
 
@@ -42,8 +44,11 @@ def feeds_list(request):
         {"feeds_list": feeds_list}, context_instance=RequestContext(request))
 
 
-def feed_detail(request, feed_id, tag=None):
+def feed_detail(request, feed_id, tag=None, slug=None):
     feed = get_object_or_404(Feed, pk=feed_id)
+
+    if not slug:
+        return redirect(feed, permanent=True)
 
     if tag:
         tag = get_object_or_404(Tag, name=tag)
@@ -66,8 +71,11 @@ def authors_list(request):
         context_instance=RequestContext(request))
 
 
-def author_detail(request, author_id, tag=None):
+def author_detail(request, author_id, tag=None, slug=None):
     author = get_object_or_404(Author, pk=author_id)
+
+    if not slug:
+        return redirect(author, permanent=True)
 
     if tag:
         tag = get_object_or_404(Tag, name=tag)
@@ -91,8 +99,11 @@ def posts_list(request):
         context_instance=RequestContext(request))
 
 
-def post_detail(request, post_id):
+def post_detail(request, post_id, slug=None):
     post = get_object_or_404(Post, pk=post_id)
+
+    if not slug:
+        return redirect(post, permanent=True)
 
     return render_to_response("planet/posts/detail.html", {"post": post},
         context_instance=RequestContext(request))

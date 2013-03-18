@@ -4,7 +4,7 @@
     <ul class="suscribers">
         {% for author in authors %}
             <li>
-                <a class="nombre" href="{% url 'planet_author_detail' author.pk %}" title="{% trans 'Author of' %} {{ author.feed.title }}">
+                <a class="nombre" href="{{ author.get_absolute_url }}" title="{% trans 'Author of' %} {{ author.feed.title }}">
                     {{ author.name }}
                 </a>
             </li>
