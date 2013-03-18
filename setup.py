@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="django-planet",
@@ -16,6 +16,7 @@ setup(
         "django-pagination", "Django>=1.4", "BeautifulSoup",
         "pinax-theme-bootstrap"],
 
+    packages=find_packages(),
     package_dir={"planet": "planet"},
     package_data={
         "planet": [
