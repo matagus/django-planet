@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-"""
 from django.conf.urls.defaults import patterns, url
+from django.contrib.sitemaps import views as sitemaps_views
+from django.views.decorators.cache import cache_page
 
 from planet.feeds import PostFeed, AuthorFeed, AuthorTagFeed, TagFeed
+from planet.sitemaps import planet_sitemaps_dict
 
-# HTML view's urls
+
 urlpatterns = patterns('planet.views',
     url(r'^blogs/(?P<blog_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "blog_detail", name="planet_blog_detail"),
     url(r'^blogs/(?P<blog_id>\d+)/$', "blog_detail"),
@@ -44,5 +45,15 @@ urlpatterns += patterns('',
     url(r'^feeds/rss/tags/(?P<tag>.*)/$', TagFeed(), name="planet_tag_rss_feed"),
     url(r'^feeds/rss/authors/(?P<author_id>\d+)/$', AuthorFeed(), name="planet_author_rss_feed"),
     url(r'^feeds/rss/authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', AuthorTagFeed(), name="planet_tag_author_rss_feed"),
+)
+
+# sitemaps
+urlpatterns += patterns('',
+    url(r'^sitemap.xml$',
+        cache_page(86400)(sitemaps_views.index),
+        {'sitemaps': planet_sitemaps_dict, 'sitemap_url_name': 'sitemaps'}),
+    url(r'^sitemap-(?P<section>.+)\.xml$',
+        cache_page(86400)(sitemaps_views.sitemap),
+        {'sitemaps': planet_sitemaps_dict}, name='sitemaps'),
 )
 
