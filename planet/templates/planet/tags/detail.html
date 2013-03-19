@@ -5,6 +5,7 @@
 {% block extra_head %}
     <meta name="title" content="{{ tag }} {% trans 'tag in' %} {{ site.name }}" />
     <meta name="description" content="{{ tag }} - {% trans 'Posts in' %} {{ site.name }}" />
+    <meta name="robots" content="noindex, follow" />
 {% endblock %}
 
 {% block head_feeds %}

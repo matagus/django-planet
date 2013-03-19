@@ -5,6 +5,7 @@
 {% block extra_head %}
     <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }} - {% trans 'Posts in' %} {{ site.name }}" />
     <meta name="description" content="{% trans 'Blog' %} {{ blog.title }} - {% trans 'Posts in' %} {{ site.name }}" />
+    <meta name="robots" content="index, follow" />
 {% endblock %}
 
 {% block breadcrumb_section %}<li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>{% endblock %}

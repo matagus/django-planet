@@ -2,9 +2,11 @@
 {% load i18n tagging_tags planet_tags %}
 
 {% block extra_head %}
-    <meta name="DC.title" content="{{ site.name }}" />
+    <meta name="title" content="{{ site.name }}" />
+    <meta name="robots" content="index, follow" />
     <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url 'planet_rss_feed' %}" />
+    <meta name="robots" content="index, follow" />
 {% endblock %}
 
 {% block search %}
