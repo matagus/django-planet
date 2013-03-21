@@ -229,13 +229,23 @@ def process_feed(feed_url, create=False, category_title=None):
 
                     # create and store enclosures...
                     if entry.get('media_thumbnail', False):
-                        mime_type, enc = mimetypes.guess_type(urlparse(entry.get('media_thumbnail').href).path)
-                        post_enclosure, created = Enclosure.objects.get_or_create(
-                            post=post,
-                            length=0,
-                            mime_type=mime_type,
-                            link=entry.get('media_thumbnail').href
-                        )
+                        try:
+                            media_url = entry.get('media_thumbnail').href
+                            media_list = [{"url": media_url}]
+                        except AttributeError:
+                            media_list = entry.get('media_thumbnail', [{"url": None}])
+
+                        for media in media_list:
+                            media_url = media["url"]
+                            mime_type, enc = mimetypes.guess_type(urlparse(media_url).path)
+
+                            post_enclosure, created = Enclosure.objects.get_or_create(
+                                post=post,
+                                length=0,
+                                mime_type=mime_type,
+                                link=media_url
+                            )
+
                     for enclosure_dict in entry.get("enclosures", []):
                         post_enclosure = Enclosure(
                             post=post,
