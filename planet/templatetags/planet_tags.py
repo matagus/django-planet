@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Several useful template tags!
@@ -24,11 +23,11 @@ register = template.Library()
 @register.inclusion_tag('planet/authors/blocks/list_for_tag.html')
 def authors_about(tag):
     """
-    Displays a list of authors who have been written a post tagged with this tag.    
+    Displays a list of authors who have been written a post tagged with this tag.
     """
     post_ids = TaggedItem.objects.get_by_model(
         Post.site_objects, tag).values_list("id", flat=True)
-    
+
     authors = Author.site_objects.filter(post__in=post_ids).distinct()
 
     return {"authors": authors, "tag": tag}
@@ -41,7 +40,7 @@ def feeds_about(tag):
     """
     post_ids = TaggedItem.objects.get_by_model(
         Post.site_objects, tag).values_list("id", flat=True)
-    
+
     feeds_list = Feed.site_objects.filter(post__in=post_ids).distinct()
 
     return {"feeds_list": feeds_list, "tag": tag}
@@ -78,7 +77,7 @@ def post_full_details(post):
 @register.inclusion_tag("planet/tags/blocks/feeds_cloud.html")
 def cloud_for_feed(feed, min_count=3):
     """
-    Displays a tag cloud for a given feed object.    
+i    Displays a tag cloud for a given feed object.
     """
     tags_cloud = Tag.objects.cloud_for_model(
         Post, filters={"feed": feed}, min_count=min_count)
@@ -89,7 +88,7 @@ def cloud_for_feed(feed, min_count=3):
 @register.inclusion_tag("planet/tags/blocks/authors_cloud.html")
 def cloud_for_author(author, min_count=3):
     """
-    Displays a tag cloud for a given author object.    
+    Displays a tag cloud for a given author object.
     """
     tags_cloud = Tag.objects.cloud_for_model(
         Post, filters={"authors": author}, min_count=min_count)
@@ -100,7 +99,7 @@ def cloud_for_author(author, min_count=3):
 @register.inclusion_tag("planet/tags/blocks/blogs_cloud.html")
 def cloud_for_blog(blog, min_count=3):
     """
-    Displays a tag cloud for a given blog object.    
+    Displays a tag cloud for a given blog object.
     """
     tags_cloud = Tag.objects.cloud_for_model(
         Post, filters={"feed__blog": blog}, min_count=min_count)
@@ -118,7 +117,7 @@ def authors_for_feed(feed):
 
 @register.inclusion_tag("planet/feeds/blocks/list_for_author.html")
 def feeds_for_author(author):
-    
+
     feeds = Feed.site_objects.filter(
         post__authors=author).order_by("title").distinct()
 
@@ -169,7 +168,7 @@ class PlanetPostList(Node):
 
         if self.template is None:
             self.template = "planet/list.html"
-        
+
         return (self.template, context)
 
     def render(self, context):
