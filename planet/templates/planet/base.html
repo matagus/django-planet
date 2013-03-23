@@ -1,6 +1,8 @@
 {% extends 'site_base.html' %}
 {% load i18n tagging_tags planet_tags %}
 
+{% block head_title_base %}{% block head_title %}{% endblock %}{% endblock %}
+
 {% block extra_head %}
     <meta name="title" content="{{ site.name }}" />
     <meta name="robots" content="index, follow" />

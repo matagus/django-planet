@@ -1,7 +1,8 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags planet_tags %}
 
-{% block head_title %}{% trans 'Post list' %} - {{ block.super }}{% endblock %}
+{% block head_title %}{% trans 'Post list' %}{{ block.super }}{% endblock %}
+
 {% block extra_head %}
     <meta name="title" content="{% trans 'Post list' %} - {{ site.name }}" />
     <meta name="description" content="{% trans 'Posts list' %} - {{ site.name }}" />
