@@ -5,7 +5,7 @@
 
 {% block extra_head %}
     <meta name="title" content="{{ post.title|safe }} - {{ site.name }}" />
-    <meta name="description" content="{{ post.title|safe }} - {{ site.name }}" />
+    <meta name="description" content="{% get_first_paragraph post.content as description %}{{ description }}" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{{ post.get_absolute_url }}"/>
 {% endblock %}

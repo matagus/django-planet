@@ -6,11 +6,12 @@ Several useful template tags!
 import re
 
 from django import template
-from django.template.defaultfilters import stringfilter
-from django.utils.safestring import mark_safe
 from django.template import TemplateSyntaxError, Node, loader, Variable
-from django.utils.translation import ugettext as _
+from django.template.defaultfilters import stringfilter
+from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
 from django.utils.text import smart_split
+from django.utils.translation import ugettext as _
 
 from planet.models import Author, Feed, Blog, Post
 
@@ -229,3 +230,14 @@ def clean_html(html):
     for (pattern, replacement) in pattern_list:
         html = re.sub(pattern, replacement, html)
     return mark_safe(html)
+
+
+@register.assignment_tag
+def get_first_paragraph(body):
+    if body is None:
+        return ""
+
+    cleaned_text = strip_tags(body)
+    cleaned_text = re.sub("\s+", " ", cleaned_text)
+    splitted = filter(lambda t: len(t) > 80, cleaned_text.split("."))
+    return splitted and splitted[0] or cleaned_text[:80]
