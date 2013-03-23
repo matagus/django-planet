@@ -14,7 +14,7 @@
 {% block breadcrumb_detail %}<li class="active">{{ blog.title }}</li>{% endblock %}
 
 {% block content %}
-    <h2>{% trans "Blog" %}: {{ blog.title }}</h2>
+    <h1>{% trans "Blog" %}: {{ blog.title }}</h1>
     <table class="blog details table table-hover table-bordered">
         <tr>
             <th>{% trans 'web' %}</th><td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</a></td>
@@ -26,7 +26,7 @@
         {% endfor %}
     </table>
     {% if tag %}
-        <h3>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h3>
+        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
     {% endif %}
     
     {% autopaginate posts 20 %}

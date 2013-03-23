@@ -16,7 +16,7 @@
 {% block breadcrumb_detail %}<li class="active">{% trans 'Blog Feeds' %}</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans 'Feeds talking about' %} {{ tag }}</h2>
+<h1>{% trans 'Feeds talking about' %} {{ tag }}</h1>
 <div class="feeds list">
     {% autopaginate feeds_list 40 %}
     {% for feed in feeds_list %}

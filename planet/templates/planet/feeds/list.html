@@ -12,15 +12,15 @@
 {% block breadcrumb_section %}<li class="active">Blog Feeds</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans "Feeds" %}</h2>
+<h1>{% trans "Feeds" %}</h1>
 <div class="feeds list">
     {% autopaginate feeds_list 50 %}
     <ul>
     {% for feed in feeds_list %}
         <li>
-            <h3>
+            <h2>
                 <a href="{{ feed.get_absolute_url }}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a>
-            </h3>
+            </h2>
             <table class="blog details table table-hover table-bordered">
                 <tr>
                     <th>{% trans 'Feed' %}</th><td><a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to this feed' %}">{{ feed.url }}</a></td>

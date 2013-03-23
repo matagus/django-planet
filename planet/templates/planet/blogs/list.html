@@ -12,15 +12,15 @@
 {% block breadcrumb_section %}<li class="active">{% trans 'Blogs' %}</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans "Blogs" %}</h2>
+<h1>{% trans "Blogs" %}</h1>
 <div class="blogs list">
     {% autopaginate blogs_list 50 %}
     <ul>
     {% for blog in blogs_list %}
         <li>
-            <h3>
+            <h2>
                 <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
-            </h3>
+            </h2>
             <table class="blog details table table-hover table-bordered">
                 <tr>
                     <th>{% trans 'web' %}</th><td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>

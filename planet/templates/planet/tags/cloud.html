@@ -12,7 +12,7 @@
 {% block breadcrumb_section %}<li class="active">Tags</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans "Tags cloud" %}</h2>
+<h1>{% trans "Tags cloud" %}</h1>
 <div class="tags cloud">
     {% autopaginate tags_cloud 200 %}
     {% for tag in tags_cloud %}

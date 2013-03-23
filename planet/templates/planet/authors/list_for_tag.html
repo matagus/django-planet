@@ -16,7 +16,7 @@
 {% block breadcrumb_detail %}<li class="active">{% trans 'Authors' %}</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans 'Authors talking about' %} {{ tag }}</h2>
+<h1>{% trans 'Authors talking about' %} {{ tag }}</h1>
 <div class="authors">
     {% autopaginate authors 40 %}
     {% for author in authors %}

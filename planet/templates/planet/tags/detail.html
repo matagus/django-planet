@@ -24,7 +24,7 @@
 {% block breadcrumb_detail %}<li class="active">{{ tag.name }}</li>{% endblock %}
 
 {% block content %}
-    <h2>{% trans "Tag" %}: {{ tag }}</h2>
+    <h1>{% trans "Tag" %}: {{ tag }}</h1>
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">

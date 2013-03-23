@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="date">{{ post.date_modified|date:"M d Y" }}</div>
-<h2>{{ post.title|striptags|safe }}</h2>
+<h1>{{ post.title|striptags|safe }}</h1>
 <table class="blog details table table-hover table-bordered">
     {% for author in post.authors.all %}
     <tr>

@@ -1,9 +1,9 @@
 {% load i18n %}
 <div class="date">{{ post.date_modified|date:"M d Y" }}</div>
-<h3><a href="{{ post.get_absolute_url }}" title="{% trans 'Read ' %} {{ post.title|safe }}">
+<h2><a href="{{ post.get_absolute_url }}" title="{% trans 'Read ' %} {{ post.title|safe }}">
         {{ post.title|striptags|safe }}
     </a>
-</h3>
+</h2>
 <p class="content">
     {% for tag in post.tags.all|slice:":5" %}
         <span class="label"><a style="color: white;" href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>

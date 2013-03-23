@@ -17,7 +17,7 @@
     {% if feed.icon %}
         <img src="{{ feed.icon }}" alt="{% trans 'Feed icon' %}" />
     {% endif %}
-    <h2>{% trans "Feed" %}: {{ feed.title }}</h2>
+    <h1>{% trans "Feed" %}: {{ feed.title }}</h1>
     {% if feed.subtitle %}
         <p>{{ feed.subtitle|striptags }}</p>
     {% endif %}
@@ -37,7 +37,7 @@
     </table>
 
     {% if tag %}
-        <h3>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h3>
+        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
     {% endif %}
 
     {% autopaginate posts 20 %}

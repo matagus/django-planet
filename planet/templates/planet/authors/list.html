@@ -12,16 +12,16 @@
 {% block breadcrumb_section %}<li class="active">{% trans 'Blog Authors' %}</li>{% endblock %}
 
 {% block content %}
-<h2>{% trans "Authors" %}</h2>
+<h1>{% trans "Authors" %}</h1>
 <ul class="author list">
     {% autopaginate authors_list 20 %}
     {% for author in authors_list %}
         <li>
-            <h3>
+            <h2>
                 <a class="nombre" href="{{ author.get_absolute_url }}" title="{% trans 'Author:' %} {{ author.name }}">
                     {{ author.name }}
                 </a>
-            </h3>
+            </h2>
         </li>
         {% feeds_for_author author %}
     {% endfor %}
