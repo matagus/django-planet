@@ -21,6 +21,7 @@ setup(
     package_data={
         "planet": [
             "static/planet/planet.css",
+            "static/planet/images/wavegrid.png",
             "templates/*.html",
             "templates/planet/*.html",
             "templates/planet/*/*.html",
