@@ -12,7 +12,7 @@ urlpatterns = patterns('planet.views',
     url(r'^blogs/(?P<blog_id>\d+)/$', "blog_detail"),
     url(r'^blogs/$', "blogs_list", name="planet_blog_list"),
 
-    url(r'^feeds/(?P<feed_id>\d+)/tags/(?P<tag>.*)/$', "feed_detail", name="planet_by_tag_feed_detail"),
+    url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/tags/(?P<tag>.*)/$', "feed_detail", name="planet_by_tag_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "feed_detail", name="planet_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/$', "feed_detail"),
     url(r'^feeds/$', "feeds_list", name="planet_feed_list"),

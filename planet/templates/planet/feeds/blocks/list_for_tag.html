@@ -6,7 +6,7 @@
         </li>
         {% for feed in feeds_list %}
             <li>
-                <a class="nombre" href="{% url 'planet_by_tag_feed_detail' feed.pk tag.name %}" title="{{ feed.title }}">
+                <a class="nombre" href="{% url 'planet_by_tag_feed_detail' feed.id feed.get_slug tag.name %}" title="{{ feed.title }}">
                     {{ feed.title }}
                 </a>
             </li>
