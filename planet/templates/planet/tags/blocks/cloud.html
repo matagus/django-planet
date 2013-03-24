@@ -1,5 +1,5 @@
 {% load i18n  %}
-<h3>{% trans "Tags cloud" %}</h3>
+<h3>{% trans "Tag cloud" %}</h3>
 <div class="tags cloud">
     {% for tag in tags_cloud %}
         <a href="{% url 'planet_tag_detail' tag.name %}" class=" tag level{{ tag.font_size }}">{{ tag }}</a>

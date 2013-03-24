@@ -1,7 +1,7 @@
 {% load i18n  %}
 {% if tags_cloud %}
 <ul class="nav nav-list">
-    <li class="nav-header">{% trans "Tags cloud for author" %} {{ author.name }}</li>
+    <li class="nav-header">{% trans "Tag cloud" %}</li>
     {% for tag in tags_cloud %}
         <li><a href="{% url 'planet_by_tag_author_detail' author.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a></li>
     {% endfor %}

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% if tags_cloud %}
-<h3>{% trans "Tags cloud for feed" %} {{ feed.title }}</h3>
+<h4>{% trans "Tag cloud" %}</h3>
 <div class="tags cloud">
     {% for tag in tags_cloud %}
         <a href="{% url 'planet_by_tag_feed_detail' feed.pk tag.name %}" class="tag level{{ tag.font_size }}">{{ tag }}</a>
