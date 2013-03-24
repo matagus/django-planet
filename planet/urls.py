@@ -17,7 +17,7 @@ urlpatterns = patterns('planet.views',
     url(r'^feeds/(?P<feed_id>\d+)/$', "feed_detail"),
     url(r'^feeds/$', "feeds_list", name="planet_feed_list"),
 
-    url(r'^authors/(?P<author_id>\d+)/tags/(?P<tag>.*)/$', "author_detail", name="planet_by_tag_author_detail"),
+    url(r'^authors/(?P<author_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/tags/(?P<tag>.*)/$', "author_detail", name="planet_by_tag_author_detail"),
     url(r'^authors/(?P<author_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "author_detail", name="planet_author_detail"),
     url(r'^authors/(?P<author_id>\d+)/$', "author_detail"),
     url(r'^authors/$', "authors_list", name="planet_author_list"),

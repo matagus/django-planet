@@ -10,8 +10,19 @@
     <link rel="canonical" href="http://{{ site.domain }}{{ author.get_absolute_url }}"/>
 {% endblock %}
 
-{% block breadcrumb_section %}<li><a href="{% url 'planet.views.authors_list' %}">Authors</a> <span class="divider">/</span></li>{% endblock %}
-{% block breadcrumb_detail %}<li class="active">{{ author.name }}</li>{% endblock %}
+{% block breadcrumb_section %}
+    <li><a href="{% url 'planet.views.authors_list' %}">Authors</a> <span class="divider">/</span></li>
+    {% if tag %}
+        <li><a href="{{ author.get_absolute_url }}">{{ author.name }}</a> <span class="divider">/</span></li>
+    {% endif %}
+{% endblock %}
+{% block breadcrumb_detail %}
+    {% if tag %}
+        <li class="active">Tag: {{ tag.name }}</li>
+    {% else %}
+        <li class="active">{{ author.name }}</li>
+        {% endif %}
+{% endblock %}
 
 {% block head_feeds %}
     <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ author.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url 'planet_author_rss_feed' author.pk %}" />

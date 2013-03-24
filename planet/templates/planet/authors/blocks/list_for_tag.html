@@ -4,7 +4,7 @@
     <li class="nav-header">{% trans "Authors talking about" %} {{ tag }}</li>
     {% for author in authors %}
         <li>
-            <a class="nombre" href="{% url 'planet_by_tag_author_detail' author.pk tag.name %}" title="{% trans 'Author of' %} {{ author.name }}">
+            <a class="nombre" href="{% url 'planet_by_tag_author_detail' author.id author.get_slug tag.name %}" title="{% trans 'Author of' %} {{ author.name }}">
                 {{ author.name }}
             </a>
         </li>
