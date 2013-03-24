@@ -23,16 +23,21 @@
     {% endif %}
     <table class="blog details table table-hover table-bordered">
         <tr>
+            <th>{% trans 'Blog' %}</th><td>
+            <a href="{{ feed.blog.get_absolute_url }}" class="feed" title="{% trans 'See details and posts for blog' %} {{ feed.blog.title }}">{{ feed.blog.title }}</a></td>
+        </tr>
+        <tr>
             <th>{% trans 'RSS 2.0 Feed' %}</th><td>
             <a href="{{ feed.url }}" class="feed" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a></td>
         </tr>
-        {% if feed.generator %}
-        <tr>
-            <th>{% trans 'generator' %}</th><td><strong>{{ feed.generator }}</strong></td>
-        </tr>
-        {% endif %}
         <tr>
             <th>{% trans 'web' %}</th><td><a href="{{ feed.blog.url }}" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a></td>
+        </tr>
+        <tr>
+            <th>{% trans 'Last Update' %}</th><td>{{ feed.last_checked|date:"m.d.Y" }}</td>
+        </tr>
+        <tr>
+            <th>{% trans 'Posts' %}</th><td>{{ feed.post_set.count }}</td>
         </tr>
     </table>
 
