@@ -13,8 +13,17 @@
 {% block breadcrumb_section %}
     <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>
     <li><a href="{{ feed.blog.get_absolute_url }}">{{ feed.blog.title }}</a> <span class="divider">/</span></li>
+    {% if tag %}
+        <li>Feed: <a href="{{ feed.get_absolute_url }}">{{ feed.title }}</a> <span class="divider">/</span></li>
+    {% endif %}
 {% endblock %}
-{% block breadcrumb_detail %}<li class="active">{{ feed.title }}</li>{% endblock %}
+{% block breadcrumb_detail %}
+    {% if tag %}
+        <li class="active">Tag: {{ tag.name }}</li>
+    {% else %}
+        <li class="active">Feed: {{ feed.title }}</li>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% if feed.icon %}
@@ -24,6 +33,8 @@
     {% if feed.subtitle %}
         <p>{{ feed.subtitle|striptags }}</p>
     {% endif %}
+
+    {% if not tag %}
     <table class="blog details table table-hover table-bordered">
         <tr>
             <th>{% trans 'Blog' %}</th><td>
@@ -43,6 +54,7 @@
             <th>{% trans 'Posts' %}</th><td>{{ feed.post_set.count }}</td>
         </tr>
     </table>
+    {% endif %}
 
     {% if tag %}
         <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
