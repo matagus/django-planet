@@ -4,7 +4,8 @@ django-planet
 This is a generic application for Django projects aiming to provide a planet
 feed aggregator app. 
 
-It is compatible with Pinax [4] and its themed using Twitter Bootstrap [5].
+It is compatible with Pinax [4] and its themed using Twitter Bootstrap [5]
+and Wave-Grind pattern as background from subtlepatter.com [6].
 
 Django-planet is heavily based on Feedjack's [1] models by Gustavo Picon and my
 django app that extends it: feedjack-extension [2]. Changes and addings to
@@ -15,6 +16,7 @@ models were inspired by Mark Pilgrim's Feedparser [3].
 [3] http://www.feedparser.org/
 [4] http://pinaxproject.com/
 [5] http://twitter.github.com/bootstrap/
+[6] http://subtlepatterns.com/wave-grind/
 
 Screenshots:
 ------------
