@@ -10,7 +10,10 @@
     <link rel="canonical" href="http://{{ site.domain }}{{ feed.get_absolute_url }}"/>
 {% endblock %}
 
-{% block breadcrumb_section %}<li><a href="{% url 'planet.views.feeds_list' %}">Blog Feeds</a> <span class="divider">/</span></li>{% endblock %}
+{% block breadcrumb_section %}
+    <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>
+    <li><a href="{{ feed.blog.get_absolute_url }}">{{ feed.blog.title }}</a> <span class="divider">/</span></li>
+{% endblock %}
 {% block breadcrumb_detail %}<li class="active">{{ feed.title }}</li>{% endblock %}
 
 {% block content %}
