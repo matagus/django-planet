@@ -7,16 +7,7 @@
 <p class="content">
     {% for tag in post.tags.all|slice:":5" %}
         <span class="label"><a style="color: white;" href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
-    {% endfor %}
+    {% endfor %}&nbsp;
+    <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">{{ post.feed.title }}</a>:&nbsp;
     {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{{ post.get_absolute_url }}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
 </p>
-<table class="blog details table table-hover table-bordered">
-    <tr>
-        <th>{% trans 'published in' %}</th>
-        <td>
-            <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
-                {{ post.feed.title }}
-            </a>
-        </td>
-    </tr>
-</table>
