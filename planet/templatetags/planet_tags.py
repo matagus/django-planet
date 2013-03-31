@@ -14,6 +14,7 @@ from django.utils.text import smart_split
 from django.utils.translation import ugettext as _
 
 from planet.models import Author, Feed, Blog, Post
+from planet.settings import PLANET_CONFIG
 
 from tagging.models import Tag, TaggedItem
 
@@ -48,7 +49,7 @@ def feeds_about(tag):
 
 
 @register.inclusion_tag("planet/tags/blocks/related_list.html")
-def related_tags_for(tag, count=20):
+def related_tags_for(tag, count=PLANET_CONFIG["RELATED_TAGS_MIN_COUNT"]):
     """
     Displays a list of tags that have been used for tagging Posts instances
     always that <tag> have been used too.
@@ -76,7 +77,7 @@ def post_full_details(post):
 
 
 @register.inclusion_tag("planet/tags/blocks/feeds_cloud.html")
-def cloud_for_feed(feed, min_count=3):
+def cloud_for_feed(feed, min_count=PLANET_CONFIG["FEED_TAG_CLOUD_MIN_COUNT"]):
     """
 i    Displays a tag cloud for a given feed object.
     """
@@ -87,7 +88,7 @@ i    Displays a tag cloud for a given feed object.
 
 
 @register.inclusion_tag("planet/tags/blocks/authors_cloud.html")
-def cloud_for_author(author, min_count=3):
+def cloud_for_author(author, min_count=PLANET_CONFIG["AUTHOR_TAG_CLOUD_MIN_COUNT"]):
     """
     Displays a tag cloud for a given author object.
     """
@@ -98,7 +99,7 @@ def cloud_for_author(author, min_count=3):
 
 
 @register.inclusion_tag("planet/tags/blocks/blogs_cloud.html")
-def cloud_for_blog(blog, min_count=3):
+def cloud_for_blog(blog, min_count=PLANET_CONFIG["BLOG_TAG_CLOUD_MIN_COUNT"]):
     """
     Displays a tag cloud for a given blog object.
     """
