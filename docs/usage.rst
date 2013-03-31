@@ -18,11 +18,12 @@ Screenshots:
 
 The following screenshots are just for demonstration purposes:
 
-   .. image:: http://cloud.github.com/downloads/matagus/django-planet/post_list-my_planet.png
+.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/latest-posts.png
 
-   .. image:: http://cloud.github.com/downloads/matagus/django-planet/tag_view-my_planet.png
+.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/post-view.png
 
-   .. image:: http://cloud.github.com/downloads/matagus/django-planet/author_view-my_planet.png
+.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/tag-view.png
+
  
 INSTALLATION
 ------------
