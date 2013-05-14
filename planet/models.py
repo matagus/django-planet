@@ -52,7 +52,7 @@ class Blog(models.Model):
         return ('planet.views.blog_detail', [str(self.id), self.get_slug()])
 
     def get_slug(self):
-        return slugify(self.title)
+        return slugify(self.title) or "no-title"
 
 
 class Generator(models.Model):
@@ -100,12 +100,12 @@ class Feed(models.Model):
     # a feed belongs to a blog
     blog = models.ForeignKey("planet.Blog", null=True, blank=True)
     # a site where this feed is published
-    site = models.ForeignKey(Site, null=True, blank=True)
+    site = models.ForeignKey(Site, null=True, blank=True, db_index=True)
     # url to retrieve this feed
     url = models.URLField(_("Url"), unique=True, db_index=True)
     # title attribute from Feedparser's Feed object
     title = models.CharField(_("Title"), max_length=255, db_index=True,
-                             blank=True, null=True)
+        blank=True, null=True)
     # subtitle attribute from Feedparser's Feed object. aka tagline
     subtitle = models.TextField(_("Subtitle"), blank=True, null=True)
     # rights or license attribute from Feedparser's Feed object
@@ -149,7 +149,7 @@ class Feed(models.Model):
     class Meta:
         verbose_name = _("Feed")
         verbose_name_plural = _("Feeds")
-        ordering = ('title', 'url',)
+        ordering = ('title', )
 
     def save(self):
         if not self.blog:
@@ -200,7 +200,7 @@ class Feed(models.Model):
         return ('planet.views.feed_detail', [str(self.id), self.get_slug()])
 
     def get_slug(self):
-        return slugify(self.title)
+        return slugify(self.title) or "no-title"
 
 
 class PostAuthorData(models.Model):
@@ -258,7 +258,7 @@ class Post(models.Model):
         return ('planet.views.post_detail', [str(self.id), self.get_slug()])
 
     def get_slug(self):
-        return slugify(self.title)
+        return slugify(self.title) or "no-title"
 
 # each Post object now will have got a .tags attribute!
 tagging.register(Post)
@@ -274,8 +274,8 @@ class Author(models.Model):
     An author is everyone who wrote or has contributed to write a post.
     """
     name = models.CharField(_("Name"), max_length=255, null=True,
-        blank=True, db_index=True)
-    email = models.EmailField(_("Author email"), blank=True)
+        blank=True, db_index=True, db_index=True)
+    email = models.EmailField(_("Author email"), blank=True, db_index=True)
     profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
 
     site_objects = AuthorManager()
@@ -294,7 +294,7 @@ class Author(models.Model):
         return ('planet.views.author_detail', [str(self.id), self.get_slug()])
 
     def get_slug(self):
-        return slugify(self.name)
+        return slugify(self.name) or "no-title"
 
 
 class FeedLink(models.Model):
