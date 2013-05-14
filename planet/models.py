@@ -274,7 +274,7 @@ class Author(models.Model):
     An author is everyone who wrote or has contributed to write a post.
     """
     name = models.CharField(_("Name"), max_length=255, null=True,
-        blank=True, db_index=True, db_index=True)
+        blank=True, db_index=True)
     email = models.EmailField(_("Author email"), blank=True, db_index=True)
     profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
 
