@@ -13,7 +13,7 @@ setup(
     author_email="me@matagus.com.ar",
 
     install_requires=["feedparser", "south", "django-tagging",
-        "django-pagination", "Django==1.5", "BeautifulSoup",
+        "django-pagination", "Django>=1.5", "BeautifulSoup",
         "pinax-theme-bootstrap"],
 
     packages=find_packages(),
