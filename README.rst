@@ -31,3 +31,9 @@ DEMO
 ----
 
 There is a `simple demo django-planet <http://django-planet.herokuapp.com/>`_ at heroku.com.
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/matagus/django-planet/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
