@@ -5,12 +5,15 @@ django-planet
    :alt: Build Status (by travis.ci)
    :target: https://travis-ci.org/matagus/django-planet
 
+.. image:: https://coveralls.io/repos/matagus/django-planet/badge.png
+   :target: https://coveralls.io/r/matagus/django-planet
+
 .. image:: https://d2weczhvl823v0.cloudfront.net/matagus/django-planet/trend.png
    :alt: Bitdeli badge
    :target: https://bitdeli.com/free
 
 This is a generic application for Django projects aiming to provide a planet
-feed aggregator app. 
+feed aggregator app.
 
 It is compatible with `Pinax <http://pinaxproject.com/>`_ and its themed using `Twitter Bootstrap <http://twitter.github.com/bootstrap/>`_
 and `Wave-Grind pattern as background from subtlepatter.com <http://subtlepatterns.com/wave-grind/>`_.
