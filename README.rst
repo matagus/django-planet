@@ -38,6 +38,23 @@ INSTALLATION
 
     * For installation instructions, see the file INSTALL in this directory.
 
+Contribute
+----------
+
+- `Issue Tracker <https://github.com/matagus/django-planet/issues>`_
+- `Source Code <https://github.com/matagus/django-planet>`_
+
+Support
+-------
+
+If you are having issues, please let me know. Drop me an email to matagus at 
+gmail dot com.
+
+License
+-------
+
+The project is licensed under the BSD license.
+
 DEMO
 ----
 
