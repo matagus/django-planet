@@ -178,3 +178,42 @@ class MicroformatsViewsTest(TestCase):
     def test_foaf(self):
         response = self.client.get("/foaf/")
         self.assertEquals(response.status_code, 200)
+
+    def tearDown(self):
+        self.feed.delete()
+
+
+class FeedsViewsTest(TestCase):
+
+    def setUp(self):
+        self.site = Site.objects.get_current()
+        self.feed = FeedFactory.create(title="Feed-1", site=self.site)
+        self.author = AuthorFactory.create(name="Author-1")
+        self.post = PostFactory.create(feed=self.feed, authors=[self.author])
+        self.post.tags = "tag1, tag2"
+
+    def test_rss(self):
+        response = self.client.get("/posts/feeds/rss/")
+        self.assertEquals(response.status_code, 200)
+
+    def test_tag_feeds(self):
+        response = self.client.get("/feeds/rss/tags/tag1/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/feeds/rss/tags/tag2/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/feeds/rss/tags/tag3/")
+        self.assertEquals(response.status_code, 404)
+
+    def test_author_feeds(self):
+        response = self.client.get("/feeds/rss/authors/1/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/feeds/rss/authors/author-1/")
+        self.assertEquals(response.status_code, 404)
+
+    def tearDown(self):
+        self.post.delete()
+        self.author.delete()
+        self.feed.delete()
