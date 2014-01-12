@@ -246,3 +246,34 @@ class IndexViewTest(TestCase):
     def tearDown(self):
         self.post.delete()
         self.feed.delete()
+
+
+class SearchViewTest(TestCase):
+
+    def setUp(self):
+        self.site = Site.objects.get_current()
+        self.feed = FeedFactory.create(title="Feed-1", site=self.site)
+        self.post_list = PostFactory.create_batch(size=5, feed=self.feed)
+
+    def test_invalid_search(self):
+        response = self.client.get("/search/")
+        self.assertEquals(response.status_code, 302)
+
+    def test_post_search(self):
+        response = self.client.get("/search/?search=go&q=post&w=posts")
+        self.assertEquals(response.status_code, 200)
+
+    def test_author_search(self):
+        response = self.client.get("/search/?search=go&q=author&w=authors")
+        self.assertEquals(response.status_code, 200)
+
+    def test_feed_search(self):
+        response = self.client.get("/search/?search=go&q=feed&w=feeds")
+        self.assertEquals(response.status_code, 200)
+
+    def test_tag_search(self):
+        response = self.client.get("/search/?search=go&q=tag&w=tags")
+        self.assertEquals(response.status_code, 200)
+
+    def tearDown(self):
+        self.feed.delete()
