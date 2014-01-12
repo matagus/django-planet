@@ -30,6 +30,7 @@ class BlogViewsTest(TestCase):
 
     def tearDown(self):
         self.blog.delete()
+        self.feed.delete()
 
 
 class FeedViewsTest(TestCase):
@@ -76,6 +77,7 @@ class PostViewsTest(TestCase):
 
     def tearDown(self):
         self.post.delete()
+        self.feed.delete()
 
 
 class AuthorViewsTest(TestCase):
@@ -99,3 +101,28 @@ class AuthorViewsTest(TestCase):
 
     def tearDown(self):
         self.author.delete()
+        self.feed.delete()
+
+
+class TagViewsTest(TestCase):
+
+    def setUp(self):
+        self.site = Site.objects.get_current()
+        self.feed = FeedFactory.create(title="Feed-1", site=self.site)
+        self.post = PostFactory.create(feed=self.feed)
+        self.post.tags = "tag1, tag2"
+
+    def test_list(self):
+        response = self.client.get("/tags/")
+        self.assertEquals(response.status_code, 200)
+
+    def test_detail(self):
+        response = self.client.get("/tags/tag1/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/tags/other-tag/")
+        self.assertEquals(response.status_code, 404)
+
+    def tearDown(self):
+        self.post.delete()
+        self.feed.delete()

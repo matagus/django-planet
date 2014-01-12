@@ -38,19 +38,19 @@ class PostFeed(Feed):
 
     def item_id(self, post):
         return post.guid
-    
+
     def item_updated(self, post):
         return post.date_modified
-    
+
     def item_published(self, post):
         return post.date_created
-    
+
     def item_content(self, post):
         return {"type" : "html", }, linebreaks(escape(post.content))
-    
+
     def item_links(self, post):
         return [{"href" : reverse("planet_post_detail", args=(post.pk, post.get_slug()))}]
-    
+
     def item_authors(self, post):
         return [{"name" : post.author}]
 
@@ -76,13 +76,13 @@ class TagFeed(PostFeed):
 
     def get_object(self, request, tag):
         return get_object_or_404(Tag, name=tag)
-    
+
     def title(self, tag):
         return _("Posts under %(tag)s tag - %(site_name)s") %\
             {'tag': tag, 'site_name': self.site.name}
 
     def links(self, tag):
-        return ({'href': reverse("planet_tag_detail", args=(tag.pk, ))},)
+        return ({'href': reverse("planet_tag_detail", kwargs={"tag": tag.name})},)
 
     def items(self, tag):
         return TaggedItem.objects.get_by_model(
@@ -94,8 +94,8 @@ class AuthorTagFeed(PostFeed):
 
     def get_object(self, request, author_id, tag):
         self.tag = tag
-        return get_object_or_404(Author, pk=author_id)    
-    
+        return get_object_or_404(Author, pk=author_id)
+
     def title(self, author):
         return _("Posts by %(author_name)s under %(tag)s tag - %(site_name)s")\
             % {'author_name': author.name, 'tag': self.tag, 'site_name': self.site.name}
