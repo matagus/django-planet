@@ -42,6 +42,9 @@ class FeedViewsTest(TestCase):
         self.site = Site.objects.get_current()
         self.feed = FeedFactory.create(title="Feed-1", site=self.site)
 
+        self.post = PostFactory.create(feed=self.feed)
+        self.post.tags = "tag1, tag2"
+
     def test_list(self):
         response = self.client.get("/feeds/")
         self.assertEquals(response.status_code, 200)
@@ -56,8 +59,19 @@ class FeedViewsTest(TestCase):
         response = self.client.get("/feeds/2/other-feed/")
         self.assertEquals(response.status_code, 404)
 
+    def test_feed_tags(self):
+        response = self.client.get("/feeds/1/feed-1/tags/tag1/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/feeds/1/feed-1/tags/tag2/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/feeds/1/feed-1/tags/tag3/")
+        self.assertEquals(response.status_code, 404)
+
     def tearDown(self):
         self.feed.delete()
+        self.post.delete()
 
 
 class PostViewsTest(TestCase):
