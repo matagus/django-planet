@@ -125,6 +125,20 @@ class TagViewsTest(TestCase):
         response = self.client.get("/tags/")
         self.assertEquals(response.status_code, 200)
 
+    def test_feed_list(self):
+        response = self.client.get("/tags/tag1/feeds/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/tags/tag3/feeds/")
+        self.assertEquals(response.status_code, 404)
+
+    def test_author_list(self):
+        response = self.client.get("/tags/tag1/authors/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/tags/tag3/authors/")
+        self.assertEquals(response.status_code, 404)
+
     def test_detail(self):
         response = self.client.get("/tags/tag1/")
         self.assertEquals(response.status_code, 200)
