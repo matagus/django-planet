@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import patterns, url
+try:
+    # Django 1.6
+    from django.conf.urls import patterns, url, include
+except ImportError:
+    # Django < 1.6
+    from django.conf.urls.defaults import patterns, url
+
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
 
