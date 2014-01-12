@@ -42,7 +42,7 @@
                                     <span class="icon-bar"></span>
                                 </a>
                                 {% block site_brand %}
-                                    <a class="brand" href="{% url "home" %}">{{ SITE_NAME }}</a>
+                                    <a class="brand" href="/">{{ SITE_NAME }}</a>
                                 {% endblock %}
                                 <div class="nav-collapse">
                                     {% block nav %}
@@ -67,7 +67,7 @@
                     <div class="row">
                         {% block breadcrumb %}
                         <ul class="breadcrumb">
-                            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+                            <li><a href="/">Home</a> <span class="divider">/</span></li>
                             {% block breadcrumb_section %}{% endblock %}
                             {% block breadcrumb_detail %}{% endblock %}
                         </ul>
