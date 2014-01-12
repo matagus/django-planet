@@ -22,6 +22,9 @@ class BlogViewsTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_detail(self):
+        response = self.client.get("/blogs/1/")
+        self.assertEquals(response.status_code, 301)
+
         response = self.client.get("/blogs/1/blog-1/")
         self.assertEquals(response.status_code, 200)
 
@@ -44,6 +47,9 @@ class FeedViewsTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_detail(self):
+        response = self.client.get("/feeds/1/")
+        self.assertEquals(response.status_code, 301)
+
         response = self.client.get("/feeds/1/feed-1/")
         self.assertEquals(response.status_code, 200)
 
@@ -93,6 +99,9 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_detail(self):
+        response = self.client.get("/authors/1/")
+        self.assertEquals(response.status_code, 301)
+
         response = self.client.get("/authors/1/author-1/")
         self.assertEquals(response.status_code, 200)
 
