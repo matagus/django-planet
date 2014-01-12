@@ -24,12 +24,14 @@ The following screenshots are just for demonstration purposes:
 
 .. image:: https://raw.github.com/matagus/django-planet/master/screenshots/tag-view.png
 
- 
-INSTALLATION
+
+Installation
 ------------
 In order to get django-planet working you must:
 
-Create a local_settings.py file::
+Create a local_settings.py file:
+
+.. code-block:: python
 
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
@@ -66,7 +68,7 @@ Then create the database structure::
 
 Add some feeds::
 
-    ./manage.py planet_add_feed http://simonwillison.net/atom/tagged/django/ 
+    ./manage.py planet_add_feed http://simonwillison.net/atom/tagged/django/
     ./manage.py planet_add_feed http://jannisleidel.com/cat/django/feed/atom/
     ./manage.py planet_add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
     ./manage.py planet_add_feed http://djangodose.com/everything/feed/
@@ -78,10 +80,10 @@ And surely you'll want to add a cron entry to periodically run::
     30 * * * * python manage.py planet_update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
-    
+
 And finally run::
 
-     ./manage.py runserver 
+     ./manage.py runserver
 
 Browse ``http://localhost:8000/`` and enjoy it!
 

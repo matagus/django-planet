@@ -30,3 +30,6 @@ settings_local.py
 
 ##PyCharm
 .idea
+
+# Sphinx
+docs/_build
