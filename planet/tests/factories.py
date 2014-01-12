@@ -61,13 +61,24 @@ class PostFactory(factory.DjangoModelFactory):
     url = factory.LazyAttribute(lambda obj: u'post-{}.html'.format(obj.feed.blog.url))
     guid = factory.Sequence(lambda n: u'GUID-{}'.format(n))
     content = FuzzyText(length=200)
-    # TODO: authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
+
+    @factory.post_generation
+    def authors(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for author in extracted:
+                PostAuthorDataFactory.create(post=self, author=author)
 
 
 class PostAuthorDataFactory(factory.DjangoModelFactory):
     FACTORY_FOR = PostAuthorData
 
-    name = factory.Sequence(lambda n: u'post-author-data-{}'.format(n))
+    post = factory.SubFactory(PostFactory)
+    author = factory.SubFactory(AuthorFactory)
 
 
 class PostLinkFactory(factory.DjangoModelFactory):
