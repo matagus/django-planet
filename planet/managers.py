@@ -34,8 +34,8 @@ class GeneratorManager(models.Manager):
     def get_query_set(self):
         qs = super(GeneratorManager, self).get_query_set()
         return qs.filter(feed__site=settings.SITE_ID).distinct()
-    
-    
+
+
 class AuthorManager(models.Manager):
     """
     """

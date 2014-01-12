@@ -19,10 +19,13 @@ install:
     - pip install BeautifulSoup
     - pip install coverage==3.6
     - pip install python-coveralls==2.4.0
+    - pip install factory-boy
+    - pip install mock
+    - pip install django-discover-runner
     - export PYTHONPATH=.
 
 before_script: coverage erase
 
-script: coverage run --source=planet manage.py test
+script: coverage run --source=planet manage.py test --settings=testsettings planet.tests
 
 after_success: coverage report; coveralls
