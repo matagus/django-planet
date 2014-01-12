@@ -217,3 +217,19 @@ class FeedsViewsTest(TestCase):
         self.post.delete()
         self.author.delete()
         self.feed.delete()
+
+
+class IndexViewTest(TestCase):
+
+    def setUp(self):
+        self.site = Site.objects.get_current()
+        self.feed = FeedFactory.create(title="Feed-1", site=self.site)
+        self.post = PostFactory.create(feed=self.feed)
+
+    def test_index(self):
+        response = self.client.get("/")
+        self.assertEquals(response.status_code, 200)
+
+    def tearDown(self):
+        self.post.delete()
+        self.feed.delete()
