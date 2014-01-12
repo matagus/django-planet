@@ -108,6 +108,9 @@ class AuthorViewsTest(TestCase):
         self.author = AuthorFactory.create(name="Author-1")
         self.post_list = PostFactory.create_batch(size=3, feed=self.feed, authors=[self.author])
 
+        post = self.post_list[0]
+        post.tags = "tag1, tag2"
+
     def test_list(self):
         response = self.client.get("/authors/")
         self.assertEquals(response.status_code, 200)
@@ -120,6 +123,16 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
         response = self.client.get("/authors/2/other-author/")
+        self.assertEquals(response.status_code, 404)
+
+    def test_tag_detail(self):
+        response = self.client.get("/authors/1/author-1/tags/tag1/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/authors/1/author-1/tags/tag2/")
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.get("/authors/1/author-1/tags/tag3/")
         self.assertEquals(response.status_code, 404)
 
     def tearDown(self):
