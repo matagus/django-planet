@@ -163,3 +163,18 @@ class TagViewsTest(TestCase):
     def tearDown(self):
         self.post.delete()
         self.feed.delete()
+
+
+class MicroformatsViewsTest(TestCase):
+
+    def setUp(self):
+        self.site = Site.objects.get_current()
+        self.feed = FeedFactory.create(title="Feed-1", site=self.site)
+
+    def test_opml(self):
+        response = self.client.get("/opml/")
+        self.assertEquals(response.status_code, 200)
+
+    def test_foaf(self):
+        response = self.client.get("/foaf/")
+        self.assertEquals(response.status_code, 200)
