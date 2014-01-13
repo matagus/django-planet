@@ -3,5 +3,5 @@ django-tagging
 django-pagination
 feedparser
 south
-pinax-theme-bootstrap
+pinax-theme-bootstrap==3.0a4
 BeautifulSoup

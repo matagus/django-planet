@@ -14,7 +14,7 @@ setup(
 
     install_requires=["feedparser", "south", "django-tagging>=0.3.1",
         "django-pagination", "Django>=1.4", "BeautifulSoup",
-        "pinax-theme-bootstrap"],
+        "pinax-theme-bootstrap==3.0a4"],
 
     packages=find_packages(),
     package_dir={"planet": "planet"},

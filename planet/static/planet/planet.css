@@ -1,3 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic);body 
+* { font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif; }
+.row .span2 { padding: 0 15px; margin: 0 0; background-color: #FFF; border-radius: 4px; }
+.nav > li > a:hover, .nav > li > a:focus { background-color: #0088CC; color: #FFF; }
+body { padding-top: 55px !important; background: url("images/wavegrid.png") repeat scroll 0 0 transparent; }
+.navbar-inverse .brand, .navbar-inverse .nav > li > a { color: #DDD; }
+.navbar-inverse .brand { font-weight: bold; }
+.breadcrumb { background-color: #FFF; }
 .cloud .level1 { font-size: 0.9em; }
 .cloud .level2 { font-size: 1em; }
 .cloud .level3 { font-size: 1.1em; }
@@ -5,4 +13,3 @@
 .cloud .level5 { font-size: 1.3em; }
 .cloud .level6 { font-size: 1.4em; }
 .cloud .level7 { font-size: 1.5em; }
-body { background: url("images/wavegrid.png") repeat scroll 0 0 transparent; }
