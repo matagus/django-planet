@@ -32,13 +32,13 @@ feedparser [3] and django-tagging [4].
 
     TIME_ZONE = 'America/Chicago'
 
-    USER_AGENT = "django-planet/0.1"
+    PLANET = {"USER_AGENT": "django-planet/0.1"}
 
 * run ./manage.py syncdb
 * run ./manage.py migrate
 
-* Add some feeds: 
-    ./manage.py add_feed http://simonwillison.net/atom/tagged/django/ 
+* Add some feeds:
+    ./manage.py add_feed http://simonwillison.net/atom/tagged/django/
     ./manage.py add_feed http://jannisleidel.com/cat/django/feed/atom/
     ./manage.py add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
     ./manage.py add_feed http://djangodose.com/everything/feed/

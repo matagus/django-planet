@@ -1,43 +1,33 @@
-=====
 Usage
 =====
 
-This is a generic application for Django projects aiming to provide a planet
-feed aggregator app.
+Modifiy your projects ``settings.py`` file following the next steps:
 
-Django-planet is heavily based on `Feedjack`_'s models by Gustavo Picon and my
-django app that extends it: `feedjack-extension`_. Changes and addings to
-models were inspired by Mark Pilgrim's `Feedparser`_.
-
-.. _feedjack: http://www.feedjack.org/
-.. _feedjack-extension: http://code.google.com/p/feedjack-extension/
-.. _feedparser: http://www.feedparser.org/
-
-Screenshots:
-------------
-
-The following screenshots are just for demonstration purposes:
-
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/latest-posts.png
-
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/post-view.png
-
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/tag-view.png
-
-
-Installation
-------------
-In order to get django-planet working you must:
-
-Create a local_settings.py file:
+1. Check your ``INSTALLED_APPS`` in your to have installed:
 
 .. code-block:: python
 
-    DEBUG = False
-    TEMPLATE_DEBUG = DEBUG
+  INSTALLED_APPS = (
+    # django required contrib apps
+    'django.contrib.sites',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
+    # 3rd-party required apps:
+    'pagination',
+    'tagging',
+    'pinax_theme_bootstrap',
+    # and finally:
+    'planet',
+  )
 
-    LANGUAGE_COOKIE_NAME = "planetlng"
-    SESSION_COOKIE_NAME = "planetid"
+2. Configure your database. Here goes an example using mysql:
+
+.. code-block:: python
 
     DATABASES = {
         'default': {
@@ -50,46 +40,130 @@ Create a local_settings.py file:
         }
     }
 
+3. Choose a site id:
+
+.. code-block:: python
+
+  SITE_ID = 1
+
+4. Include the following context processors:
+
+.. code-block:: python
+
     TEMPLATE_CONTEXT_PROCESSORS = (
-        ...
+        'django.contrib.auth.context_processors.auth',
+        'django.core.context_processors.debug',
+        'django.core.context_processors.i18n',
+        'django.core.context_processors.media',
+        'django.core.context_processors.static',
+        'django.core.context_processors.tz',
+        'django.core.context_processors.request',
+        'django.contrib.messages.context_processors.messages',
         'planet.context_processors.context',
     )
 
-    TIME_ZONE = 'America/Chicago'
+Please do not forget ``planet.context_processors.context``!
+
+5. Check your middlewares to include:
+
+.. code-block:: python
+
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'pagination.middleware.PaginationMiddleware',
+    )
+
+Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
+
+5. Add planet configuration variables:
+
+.. code-block:: python
 
     PLANET = {
-        "USER_AGENT": "django-planet/0.1",
+        "USER_AGENT": "My Planet/1.0",
     }
 
-Then create the database structure::
+6. Configure properly your static files root directory:
+
+.. code-block:: python
+
+   STATIC_URL = '/static/'
+
+7. Also your projects templates root directory:
+
+.. code-block:: python
+
+    TEMPLATE_DIRS = (
+        '/path/to/planet/porject/templates',
+        # other paths...
+    )
+
+7. And your template loaders must look like these:
+
+.. code-block:: python
+
+    TEMPLATE_LOADERS = (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+        # some other template loaders here...
+    )
+
+8. Finally in your project's templates directory create a ``site_base.html``
+   template if you don't already have one:
+
+.. code-block:: html
+
+    {% extends "base.html" %}
+
+
+9. Optionally, modify cookie names so you don't have login conflicts with other
+   projects:
+
+.. code-block:: python
+
+    LANGUAGE_COOKIE_NAME = "myplanetlng"
+    SESSION_COOKIE_NAME = "myplanetid"
+
+Congratulations! Your settings are complete. Now you'll need to:
+
+1. Add the planet urls include to your porjects ``urls.py`` (remember to
+   also include admin urls so you can use the admin to manage your planet!):
+
+.. code-block:: python
+
+    from django.conf.urls import patterns, include, url
+
+    from django.contrib import admin
+    admin.autodiscover()
+
+    urlpatterns = patterns('',
+        url(r'^', include('planet.urls')),
+        url(r'^admin/', include(admin.site.urls)),
+        # ... other url bits...
+    )
+
+2. Then create the database structure::
 
      ./manage.py syncdb
-     ./manage.py migrate planet
 
-Add some feeds::
+3. Add some feeds::
 
-    ./manage.py planet_add_feed http://simonwillison.net/atom/tagged/django/
-    ./manage.py planet_add_feed http://jannisleidel.com/cat/django/feed/atom/
-    ./manage.py planet_add_feed http://andrewwilkinson.wordpress.com/tag/django/feed/
-    ./manage.py planet_add_feed http://djangodose.com/everything/feed/
-    ./manage.py planet_add_feed http://seeknuance.com/tag/django/feed/atom
-    ./manage.py planet_add_feed http://www.willmcgugan.com/blog/tech/feeds/tag/django/
+    python manage.py planet_add_feed http://www.economonitor.com/feed/rss/
+    python manage.py planet_add_feed http://www.ft.com/rss/home/us
 
-And surely you'll want to add a cron entry to periodically run::
+4. And surely you'll want to add a cron entry to periodically update them all::
 
     30 * * * * python manage.py planet_update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
 
-And finally run::
+5. Now you're done. Just run::
 
-     ./manage.py runserver
+   ./manage.py runserver
 
-Browse ``http://localhost:8000/`` and enjoy it!
-
-Demo Project
-------------
-
-There's a simple demo project live at `django-planet.herokuapp.com`_
-
-.. _django-planet.herokuapp.com: http://django-planet.herokuapp.com/
+and browse your planet at http://localhost:8000/ in your favorite browser!

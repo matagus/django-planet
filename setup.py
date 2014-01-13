@@ -12,8 +12,8 @@ setup(
     author="Matias Agustin Mendez",
     author_email="me@matagus.com.ar",
 
-    install_requires=["feedparser", "south", "django-tagging",
-        "django-pagination", "Django>=1.3", "BeautifulSoup",
+    install_requires=["feedparser", "south", "django-tagging>=0.3.1",
+        "django-pagination", "Django>=1.4", "BeautifulSoup",
         "pinax-theme-bootstrap"],
 
     packages=find_packages(),
