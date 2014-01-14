@@ -1,6 +1,9 @@
 Usage
 =====
 
+Changing your settings.py
+-------------------------
+
 Modifiy your projects ``settings.py`` file following the next steps:
 
 1. Check your ``INSTALLED_APPS`` in your to have installed:
@@ -129,7 +132,11 @@ Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
     LANGUAGE_COOKIE_NAME = "myplanetlng"
     SESSION_COOKIE_NAME = "myplanetid"
 
-Congratulations! Your settings are complete. Now you'll need to:
+Congratulations! Your settings are complete. Now you'll need to chenge other
+files in order to get a running project.
+
+Enable planet urls
+------------------
 
 1. Add the planet urls include to your porjects ``urls.py`` (remember to
    also include admin urls so you can use the admin to manage your planet!):
@@ -147,22 +154,25 @@ Congratulations! Your settings are complete. Now you'll need to:
         # ... other url bits...
     )
 
-2. Then create the database structure::
+Syncdb and add some feeds!
+--------------------------
+
+1. Then create the database structure::
 
      ./manage.py syncdb
 
-3. Add some feeds::
+2. Add some feeds::
 
     python manage.py planet_add_feed http://www.economonitor.com/feed/rss/
     python manage.py planet_add_feed http://www.ft.com/rss/home/us
 
-4. And surely you'll want to add a cron entry to periodically update them all::
+3. And surely you'll want to add a cron entry to periodically update them all::
 
     30 * * * * python manage.py planet_update_all_feeds
 
 This attempts to pull for new posts every 30 minutes.
 
-5. Now you're done. Just run::
+4. Now you're done. Just run::
 
    ./manage.py runserver
 

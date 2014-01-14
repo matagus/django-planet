@@ -34,11 +34,11 @@ Getting Help
 ============
 
 There are two primary ways of getting help. We have a `mailing list`_ hosted at
-Google (http://groups.google.com/group/django-planet/) or you may contact us
+Google (https://groups.google.com/forum/#!forum/django-planet) or you may contact us
 via email to matagus at gmail dot com. You may also `open an issue`_ in our
 github repository (it requires you to have a github account).
 
-.. _`mailing list`: http://groups.google.com/group/django-planet/
+.. _`mailing list`: https://groups.google.com/forum/#!forum/django-planet
 .. _`open an issue`: https://github.com/matagus/django-planet/issues/
 
 
