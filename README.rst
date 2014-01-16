@@ -5,6 +5,9 @@ django-planet
 .. image:: https://badge.fury.io/py/django-planet.png
    :target: http://badge.fury.io/py/django-planet
 
+.. image:: https://pypip.in/d/django-planet/badge.png
+   :target: https://pypi.python.org/pypi/django-planet
+
 .. image:: https://travis-ci.org/matagus/django-planet.png
    :alt: Build Status (by travis.ci)
    :target: https://travis-ci.org/matagus/django-planet
