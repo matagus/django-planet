@@ -28,7 +28,7 @@ class PostFeed(Feed):
         return reverse("planet_rss_feed")
 
     def items(self):
-        return Post.objects.order_by('-date_created')
+        return Post.objects.order_by('-date_modified')
 
     def item_title(self, post):
         return post.title
