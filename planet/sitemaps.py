@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from django.contrib.sitemaps import Sitemap
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
 from planet.models import Post, Blog, Feed, Author
 
+from tagging.models import Tag
+
 
 class BlogSitemap(Sitemap):
 
     changefreq = "monthly"
-    priority = 0.7
+    priority = 1.0
 
     def items(self):
         return Blog.objects.values_list("id", "title", "date_created")
@@ -71,9 +75,26 @@ class FeedSitemap(Sitemap):
             kwargs=dict(feed_id=obj[0], slug=slug))
 
 
+class TagSitemap(Sitemap):
+
+    changefreq = "daily"
+    priority = 0.9
+
+    def items(self):
+        return Tag.objects.values_list("name", flat=True)
+
+    def lastmod(self, obj):
+        return datetime.now()
+
+    def location(self, obj):
+        return reverse("planet.views.tag_detail",
+            kwargs=dict(tag=obj))
+
+
 planet_sitemaps_dict = {
     "blogs": BlogSitemap(),
     "posts": PostSitemap(),
     "authors": AuthorSitemap(),
-    "feeds": FeedSitemap()
+    "feeds": FeedSitemap(),
+    "tags": TagSitemap()
 }
