@@ -45,9 +45,8 @@ class EnclosureInline(admin.StackedInline):
     extra = 0
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "feed", "url", "guid", "date_created", "date_modified")
+    list_display = ("title", "feed", "guid", "date_created", "date_modified")
     list_filter = ("feed", )
-    # filter_horizontal = ('tags',)
     search_fields = ["title", "feed__blog__title"]
 
 admin.site.register(Post, PostAdmin, inlines=[EnclosureInline])
