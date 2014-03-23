@@ -30,11 +30,13 @@ class FeedAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "blog", "language",
         "category", "etag", "last_modified", "last_checked", "is_active")
     list_filter = ("language", "generator", "category")
+    search_fields = ["title", "url", "blog__title"]
 
 admin.site.register(Feed, FeedAdmin)
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("name", "email")
+    search_fields = ["name"]
 
 admin.site.register(Author, AuthorAdmin)
 
@@ -46,12 +48,14 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "feed", "url", "guid", "date_created", "date_modified")
     list_filter = ("feed", )
     # filter_horizontal = ('tags',)
+    search_fields = ["title", "feed__blog__title"]
 
 admin.site.register(Post, PostAdmin, inlines=[EnclosureInline])
 
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "date_created")
+    search_fields = ["title", "url"]
 
 admin.site.register(Blog, BlogAdmin)
 
@@ -70,5 +74,6 @@ admin.site.register(FeedLink, FeedLinkAdmin)
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("title", )
+    search_fields = ["title"]
 
 admin.site.register(Category, CategoryAdmin)
