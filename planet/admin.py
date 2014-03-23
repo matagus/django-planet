@@ -27,8 +27,8 @@ class EnclosureAdmin(admin.ModelAdmin):
 admin.site.register(Enclosure, EnclosureAdmin)
 
 class FeedAdmin(admin.ModelAdmin):
-    list_display = ("title", "url", "blog", "language", "generator",
-                    "category")
+    list_display = ("title", "url", "blog", "language",
+        "category", "etag", "last_modified", "last_checked", "is_active")
     list_filter = ("language", "generator", "category")
 
 admin.site.register(Feed, FeedAdmin)
@@ -43,7 +43,7 @@ class EnclosureInline(admin.StackedInline):
     extra = 0
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "feed", "url")
+    list_display = ("title", "feed", "url", "guid", "date_created", "date_modified")
     list_filter = ("feed", )
     # filter_horizontal = ('tags',)
 
@@ -51,7 +51,7 @@ admin.site.register(Post, PostAdmin, inlines=[EnclosureInline])
 
 
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ("title", "url")
+    list_display = ("title", "url", "date_created")
 
 admin.site.register(Blog, BlogAdmin)
 
