@@ -240,5 +240,5 @@ def get_first_paragraph(body):
 
     cleaned_text = strip_tags(body)
     cleaned_text = re.sub("\s+", " ", cleaned_text)
-    splitted = filter(lambda t: len(t) > 80, cleaned_text.split("."))
+    splitted = [t for t in cleaned_text.split(".") if len(t) > 80]
     return splitted and splitted[0] or cleaned_text[:80]

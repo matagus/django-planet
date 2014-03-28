@@ -1,4 +1,7 @@
 # encoding: utf-8
+# python 3.x compatibility helpers
+from __future__ import unicode_literals
+
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
@@ -7,13 +10,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Changing field 'Post.url'
         db.alter_column('planet_post', 'url', self.gf('django.db.models.fields.URLField')(max_length=1000))
 
 
     def backwards(self, orm):
-        
+
         # Changing field 'Post.url'
         db.alter_column('planet_post', 'url', self.gf('django.db.models.fields.URLField')(max_length=200))
 

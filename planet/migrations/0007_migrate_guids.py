@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# python 3.x compatibility helpers
+from __future__ import unicode_literals
+
 import datetime
 
 from hashlib import md5

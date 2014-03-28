@@ -18,6 +18,6 @@ class Command(NoArgsCommand):
             # process feed in create-mode
             new_posts_count += process_feed(feed_url, create=False)
         delta = datetime.now() - start
-        print "Added %s posts in %d seconds" % (new_posts_count, delta.seconds)
+        print("Added {} posts in {} seconds".format(new_posts_count, delta.seconds))
         feeds_updated.send(sender=self, instance=self)
 

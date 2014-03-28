@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# python 3.x compatibility helpers
+from __future__ import unicode_literals
+
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration

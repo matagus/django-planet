@@ -19,17 +19,17 @@ class BlogViewsTest(TestCase):
 
     def test_list(self):
         response = self.client.get("/blogs/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail(self):
         response = self.client.get("/blogs/1/")
-        self.assertEquals(response.status_code, 301)
+        self.assertEqual(response.status_code, 301)
 
         response = self.client.get("/blogs/1/blog-1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/blogs/2/other-blog/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.blog.delete()
@@ -47,27 +47,27 @@ class FeedViewsTest(TestCase):
 
     def test_list(self):
         response = self.client.get("/feeds/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail(self):
         response = self.client.get("/feeds/1/")
-        self.assertEquals(response.status_code, 301)
+        self.assertEqual(response.status_code, 301)
 
         response = self.client.get("/feeds/1/feed-1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/2/other-feed/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_feed_tags(self):
         response = self.client.get("/feeds/1/feed-1/tags/tag1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/1/feed-1/tags/tag2/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/1/feed-1/tags/tag3/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.feed.delete()
@@ -83,17 +83,17 @@ class PostViewsTest(TestCase):
 
     def test_list(self):
         response = self.client.get("/posts/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail(self):
         response = self.client.get("/posts/1/")
-        self.assertEquals(response.status_code, 301)
+        self.assertEqual(response.status_code, 301)
 
         response = self.client.get("/posts/1/post-1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/posts/2/other-post/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.post.delete()
@@ -113,27 +113,27 @@ class AuthorViewsTest(TestCase):
 
     def test_list(self):
         response = self.client.get("/authors/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail(self):
         response = self.client.get("/authors/1/")
-        self.assertEquals(response.status_code, 301)
+        self.assertEqual(response.status_code, 301)
 
         response = self.client.get("/authors/1/author-1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/authors/2/other-author/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_tag_detail(self):
         response = self.client.get("/authors/1/author-1/tags/tag1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/authors/1/author-1/tags/tag2/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/authors/1/author-1/tags/tag3/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.author.delete()
@@ -150,28 +150,28 @@ class TagViewsTest(TestCase):
 
     def test_list(self):
         response = self.client.get("/tags/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_feed_list(self):
         response = self.client.get("/tags/tag1/feeds/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/tags/tag3/feeds/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_author_list(self):
         response = self.client.get("/tags/tag1/authors/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/tags/tag3/authors/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_detail(self):
         response = self.client.get("/tags/tag1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/tags/other-tag/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.post.delete()
@@ -186,11 +186,11 @@ class MicroformatsViewsTest(TestCase):
 
     def test_opml(self):
         response = self.client.get("/opml/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_foaf(self):
         response = self.client.get("/foaf/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
         self.feed.delete()
@@ -207,24 +207,24 @@ class FeedsViewsTest(TestCase):
 
     def test_rss(self):
         response = self.client.get("/posts/feeds/rss/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_tag_feeds(self):
         response = self.client.get("/feeds/rss/tags/tag1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/rss/tags/tag2/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/rss/tags/tag3/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_author_feeds(self):
         response = self.client.get("/feeds/rss/authors/1/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/feeds/rss/authors/author-1/")
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def tearDown(self):
         self.post.delete()
@@ -241,7 +241,7 @@ class IndexViewTest(TestCase):
 
     def test_index(self):
         response = self.client.get("/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
         self.post.delete()
@@ -257,23 +257,23 @@ class SearchViewTest(TestCase):
 
     def test_invalid_search(self):
         response = self.client.get("/search/")
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     def test_post_search(self):
         response = self.client.get("/search/?search=go&q=post&w=posts")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_author_search(self):
         response = self.client.get("/search/?search=go&q=author&w=authors")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_feed_search(self):
         response = self.client.get("/search/?search=go&q=feed&w=feeds")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_tag_search(self):
         response = self.client.get("/search/?search=go&q=tag&w=tags")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
         self.feed.delete()

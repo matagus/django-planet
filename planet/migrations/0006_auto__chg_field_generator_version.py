@@ -1,4 +1,7 @@
 # encoding: utf-8
+# python 3.x compatibility helpers
+from __future__ import unicode_literals
+
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
@@ -7,13 +10,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Changing field 'Generator.version'
         db.alter_column('planet_generator', 'version', self.gf('django.db.models.fields.CharField')(max_length=200, null=True))
 
 
     def backwards(self, orm):
-        
+
         # Changing field 'Generator.version'
         db.alter_column('planet_generator', 'version', self.gf('django.db.models.fields.CharField')(max_length=5, null=True))
 
