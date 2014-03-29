@@ -262,3 +262,11 @@ def get_authors(blog):
 @register.filter
 def get_blogs(author):
     return Blog.objects.filter(feed__post__authors=author).distinct()
+
+
+@register.assignment_tag
+def latest_posts(count=10):
+    """
+    A way to get latest posts from inside a template
+    """
+    return Post.objects.all()[:count]
