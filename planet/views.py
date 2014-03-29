@@ -92,15 +92,16 @@ def author_detail(request, author_id, tag=None, slug=None):
 
 
 def posts_list(request):
-    posts = Post.site_objects.all().select_related("feed"
-        ).order_by("-date_modified")
+    posts = Post.site_objects.all().select_related("feed", "blog", "authors")\
+        .order_by("-date_modified")
 
     return render_to_response("planet/posts/list.html", {"posts": posts},
         context_instance=RequestContext(request))
 
 
 def post_detail(request, post_id, slug=None):
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(
+        Post.objects.select_related("feed", "authors", "blog"), pk=post_id)
 
     if not slug:
         return redirect(post, permanent=True)

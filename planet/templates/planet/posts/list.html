@@ -1,19 +1,25 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags planet_tags %}
+{% load url from future %}
 
-{% block head_title %}{% trans 'Post list' %}{{ block.super }}{% endblock %}
+{% block head_title %}
+  {% trans 'django-planet: django blog news aggregator' %}{{ block.super }}
+{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Post list' %} - {{ site.name }}" />
-    <meta name="description" content="{% trans 'Posts list' %} - {{ site.name }}" />
-    <meta name="robots" content="noindex, follow" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="{{ site.name }} is a planet website aggregating the best Django blogs and content available around the web" />
+    <meta name="title" content="{{ site.name }}: Django-related news &amp; blog aggregator" />
+    <link rel="canonical" href="http://{{ site.domain }}{% url 'planet.views.posts_list' %}"/>
 {% endblock %}
 
 {% block breadcrumb_section %}<li class="active">{% trans 'Posts' %}</li>{% endblock %}
 
+{% block posts_class %}class="active"{% endblock %}
+
 {% block content %}
-    <h1>{% trans "Latest posts" %}</h1>
-    {% autopaginate posts 10 %}
+    <h1>{% trans "What's new in Django community blogs?" %}</h1>
+    {% autopaginate posts 15 %}
     {% for post in posts %}
         <div class="post">
             {% post_details post %}

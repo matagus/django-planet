@@ -2,19 +2,20 @@
 {% load i18n planet_tags %}
 {% load url from future %}
 
-{% block head_title %}{{ post.title|safe }}{% endblock %}
+{% block head_title %}
+  {{ post.title|safe }}
+{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ post.title|safe }} - {{ site.name }}" />
+    <meta name="title" content="{{ post.title|safe }} " />
     <meta name="description" content="{% get_first_paragraph post.content as description %}{{ description }}" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{{ post.get_absolute_url }}"/>
 {% endblock %}
 
 {% block breadcrumb_section %}
     <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>
     <li><a href="{{ post.feed.blog.get_absolute_url }}">{{ post.feed.blog.title }}</a> <span class="divider">/</span></li>
-    <li><a href="{{ post.feed.get_absolute_url }}">{{ post.feed.title }}</a> <span class="divider">/</span></li>
 {% endblock %}
 {% block breadcrumb_detail %}<li class="active">{{ post.title|safe }}</li>{% endblock %}
 
@@ -22,7 +23,7 @@
     <div class="post clearfix">
         {% post_full_details post %}
         <div class="content">
-            {{ post.content|safe|clean_html }}
+              {{ post.content|safe }}
         </div>
     </div>
 {% endblock %}

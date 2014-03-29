@@ -1,16 +1,1 @@
 {% load i18n %}
-{% load url from future %}
-{% ifnotequal feeds_list|length 1 %}
-    <ul class="nav nav-list feed list">
-        <li class="nav-header">
-            {% trans "Feeds talking about" %} {{ tag }}
-        </li>
-        {% for feed in feeds_list %}
-            <li>
-                <a class="nombre" href="{% url 'planet_by_tag_feed_detail' feed.id feed.get_slug tag.name %}" title="{{ feed.title }}">
-                    {{ feed.title }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endifnotequal %}

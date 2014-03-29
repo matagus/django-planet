@@ -5,27 +5,37 @@
 {% block head_title %}{% trans 'Authors list' %}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Authors list' %} - {{ site.name }}" />
-    <meta name="description" content="{% trans 'Authors list' %} - {{ site.name }}" />
+    <meta name="title" content="{% trans 'Authors list' %} " />
+    <meta name="description" content="{% trans 'Authors list' %} " />
     <meta name="robots" content="noindex, follow" />
 {% endblock %}
 
 {% block breadcrumb_section %}<li class="active">{% trans 'Blog Authors' %}</li>{% endblock %}
 
+{% block authors_class %}class="active"{% endblock %}
+
 {% block content %}
 <h1>{% trans "Authors" %}</h1>
-<ul class="author list">
+<div class="author list">
     {% autopaginate authors_list 20 %}
     {% for author in authors_list %}
-        <li>
-            <h2>
-                <a class="nombre" href="{{ author.get_absolute_url }}" title="{% trans 'Author:' %} {{ author.name }}">
-                    {{ author.name }}
-                </a>
-            </h2>
-        </li>
-        {% feeds_for_author author %}
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a class="nombre" href="{{ author.get_absolute_url }}" title="{% trans 'Author:' %} {{ author.name }}">
+                {{ author.name }}
+            </a>
+          </h3>
+        </div>
+        <div class="panel-body">
+          writes for:
+            {% for blog in author|get_blogs %}
+              <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+              {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+      </div>
     {% endfor %}
     {% paginate %}
-</ul>
+</div>
 {% endblock %}

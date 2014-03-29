@@ -242,3 +242,23 @@ def get_first_paragraph(body):
     cleaned_text = re.sub("\s+", " ", cleaned_text)
     splitted = [t for t in cleaned_text.split(".") if len(t) > 80]
     return splitted and splitted[0] or cleaned_text[:80]
+
+
+@register.filter
+def post_count(obj):
+    if isinstance(obj, Author):
+        return Post.objects.filter(authors=obj).count()
+    elif isinstance(obj, Blog):
+        return Post.objects.filter(feed__blog=obj).distinct().count()
+    else:
+        return 0
+
+
+@register.filter
+def get_authors(blog):
+    return Author.objects.filter(post__feed__blog=blog).distinct()
+
+
+@register.filter
+def get_blogs(author):
+    return Blog.objects.filter(feed__post__authors=author).distinct()

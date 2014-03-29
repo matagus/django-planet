@@ -5,8 +5,8 @@
 {% block head_title %}{% trans "Blog" %}: {{ blog.title }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }} - {% trans 'Posts in' %} {{ site.name }}" />
-    <meta name="description" content="{% trans 'Blog' %} {{ blog.title }} - {% trans 'Posts in' %} {{ site.name }}" />
+    <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }}" />
+    <meta name="description" content="{% trans 'Blog' %} {{ blog.title }}" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{{ blog.get_absolute_url }}"/>
 {% endblock %}
@@ -18,13 +18,21 @@
     <h1>{% trans "Blog" %}: {{ blog.title }}</h1>
     <table class="blog details table table-hover table-bordered">
         <tr>
-            <th>{% trans 'web' %}</th><td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</a></td>
+          <th>{% trans 'web' %}</th>
+          <td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">link</a></td>
         </tr>
-        {% for feed in blog.feed_set.all %}
         <tr>
-            <th>{% trans 'feed' %}</th><td><a href="{{ feed.get_absolute_url }}" class="feed" title="{% trans 'See the full list of post from this feed' %}">{{ feed.title }}</a></td>
+          <th>{% trans 'Author' %}</th>
+          <td>
+            {% for author in blog|get_authors %}
+              <a href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
+            {% endfor %}
+          </td>
         </tr>
-        {% endfor %}
+        <tr>
+          <th>{% trans 'Stats' %}</th>
+          <td>Has published {{ blog|post_count }} posts about or related to Django</td>
+        </tr>
     </table>
     {% if tag %}
         <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
@@ -32,8 +40,8 @@
     
     {% autopaginate posts 20 %}
     {% for post in posts %}
-        <div class="post {% cycle 'even' 'odd' %} clearfix">
-            {% post_details post %}
+        <div class="post short {% cycle 'even' 'odd' %} clearfix">
+            {% post_details post "planet/posts/short.html" %}
         </div>
     {% endfor %}
 
@@ -49,6 +57,6 @@
 {% endblock %}
 
 {% block right_column %}
-    {% cloud_for_blog blog %}
     {% include 'planet/feeds/blocks/syndication_block.html' %}
+    {% cloud_for_blog blog %}
 {% endblock %}

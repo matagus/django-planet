@@ -2,11 +2,11 @@
 {% load i18n pagination_tags tagging_tags planet_tags %}
 {% load url from future %}
 
-{% block head_title %}{{ author.name }} {% trans 'has written the following posts' %}{% endblock %}
+{% block head_title %}{{ author.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ author.name }} {% trans 'has written the following posts' %} - {{ site.name }}" />
-    <meta name="description" content="{{ author.name }} {% trans 'has written the following posts' %} - {{ site.name }}" />
+    <meta name="title" content="{{ author.name }}" />
+    <meta name="description" content="{{ author.name }}: blogs and posts about django-related stuff" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{{ author.get_absolute_url }}"/>
 {% endblock %}
@@ -36,7 +36,25 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ author.name }} {% trans "has written the following posts" %}:</h1>
+    <h1>{{ author.name }}</h1>
+    <table class="author details table table-hover table-bordered">
+        {% for blog in author|get_blogs %}
+        <tr>
+          <th>{% trans 'Blog Info' %}</th>
+          <td><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></td>
+        </tr>
+        {% endfor %}
+        {% for blog in author|get_blogs %}
+        <tr>
+          <th>{% trans 'Blog website' %}</th>
+          <td><a href="{{ blog.url }}">link</a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>{% trans 'Stats' %}</th>
+          <td>Has written {{ author|post_count }} posts about or related to Django</td>
+        </tr>
+    </table>
 
     {% if tag %}
         <div>
@@ -49,8 +67,8 @@
 
     {% autopaginate posts 20 %}
     {% for post in posts %}
-        <div class="post {% cycle 'even' 'odd' %} clearfix">
-            {% post_details post %}
+        <div class="post short {% cycle 'even' 'odd' %} clearfix">
+          {% post_details post "planet/posts/short.html" %}
         </div>
     {% endfor %}
     {% paginate %}
@@ -59,25 +77,9 @@
 {% block right_column %}
     {% if tag %}
         <div>
-            {% related_tags_for tag %}
-        </div>
-        <div>
             {% authors_about tag %}
         </div>
     {% endif %}
 
     {% cloud_for_author author %}
-
-    {% if tag %}
-        <li>
-            <a href="{% url 'planet_tag_author_list' tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
-                {% trans 'People talking about this' %}
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Feeds talking about this' %}
-            </a>
-        </li>
-    {% endif %}
 {% endblock %}

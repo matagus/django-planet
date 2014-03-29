@@ -2,12 +2,15 @@
 {% load i18n pagination_tags tagging_tags planet_tags %}
 {% load url from future %}
 
-{% block head_title %}{% trans 'Posts under tag' %} {{ tag }}{% endblock %}
+{% block head_title %}
+  {{ tag }}: {% trans "django blog posts news" %}
+{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ tag }} {% trans 'tag in' %} {{ site.name }}" />
-    <meta name="description" content="{{ tag }} - {% trans 'Posts in' %} {{ site.name }}" />
-    <meta name="robots" content="noindex, follow" />
+    <meta name="title" content="{{ tag }}: {% trans 'django blog posts news' %}" />
+    <meta name="description" content="{{ tag }}: {% trans 'django web framework related blog posts, news and articles' %}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="http://{{ site.domain }}{% url 'planet.views.tag_detail' tag.name %}"/>
 {% endblock %}
 
 {% block head_feeds %}
@@ -16,7 +19,7 @@
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url 'planet_tag_rss_feed' tag %}" title="{% trans 'Suscribe to RSS feed for tag' %} {{ tag }}">
+    <a href="{% url 'planet_tag_rss_feed' tag %}" title="{% trans 'Subscribe to RSS feed for tag' %} {{ tag }}">
         <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
@@ -28,8 +31,8 @@
     <h1>{% trans "Tag" %}: {{ tag }}</h1>
     {% autopaginate posts 20 %}
     {% for post in posts %}
-        <div class="post {% cycle 'even' 'odd' %} clearfix">
-            {% post_details post %}
+        <div class="post short {% cycle 'even' 'odd' %} clearfix">
+          {% post_details post "planet/posts/short.html" %}
         </div>
     {% endfor %}
 
@@ -37,6 +40,7 @@
 {% endblock %}
 
 {% block right_column %}
+    {% include 'planet/feeds/blocks/syndication_block.html' %}
     <div>
         {% related_tags_for tag %}
     </div>
@@ -47,12 +51,7 @@
         <li class="nav-header">See also</li>
         <li>
             <a href="{% url 'planet_tag_author_list' tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
-                {% trans 'People talking about this' %}
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of feeds talking about this tag' %}">
-                {% trans 'Feeds talking about this' %}
+                {% trans 'Bloggers talking about this' %}
             </a>
         </li>
     </ul>

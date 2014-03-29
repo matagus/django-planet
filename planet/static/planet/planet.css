@@ -13,3 +13,18 @@ body { padding-top: 55px !important; background: url("images/wavegrid.png") repe
 .cloud .level5 { font-size: 1.3em; }
 .cloud .level6 { font-size: 1.4em; }
 .cloud .level7 { font-size: 1.5em; }
+
+span.rss {
+    font: bold 10px Verdana, sans-serif;
+    padding: 0 .2em; border: 1px solid;
+    text-decoration: none;
+    background: #f60;
+    color: #fff;
+    border-color: #ffc8a4 #7d3302 #3f1a01 #ff9a57;
+    margin: 0 3px 0 0;
+    vertical-align: middle;
+}
+a.rss:hover, a.rss:link, a.rss:visited {
+    color: #fff !important;
+    text-decoration: none !important;
+}

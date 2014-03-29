@@ -5,8 +5,8 @@
 {% block head_title %}{% trans "Feed" %}: {{ feed.title }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Feed' %}: {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
-    <meta name="description" content="{% trans 'Feed' %} {{ feed.title }} - {% trans 'Posts in' %} {{ site.name }}" />
+    <meta name="title" content="{% trans 'Feed' %}: {{ feed.title }}" />
+    <meta name="description" content="{% trans 'Feed' %} {{ feed.title }}" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{{ feed.get_absolute_url }}"/>
 {% endblock %}
@@ -64,7 +64,7 @@
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post {% cycle 'even' 'odd' %} clearfix">
-            {% post_details post %}
+            {% post_details post "planet/posts/short.html" %}
         </div>
     {% endfor %}
     {% paginate %}
@@ -72,6 +72,7 @@
 
 {% block right_column %}
     {# this is too slow % authors_for_feed feed %#}
+    {% include 'planet/feeds/blocks/syndication_block.html' %}
 
     {% if tag %}
         <div>
@@ -83,18 +84,4 @@
     {% endif %}
 
     {% cloud_for_feed feed %}
-
-    {% if tag %}
-        <li>
-            <a href="{% url 'planet_tag_author_list' tag.name %}" title="{% trans 'See the list of authors talking about this tag' %}">
-                {% trans 'People talking about this' %}
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Feeds talking about this' %}
-            </a>
-        </li>
-    {% endif %}
-    {% include 'planet/feeds/blocks/syndication_block.html' %}
 {% endblock %}

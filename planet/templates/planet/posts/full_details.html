@@ -12,8 +12,8 @@
     </tr>
     {% endfor %}
     <tr>
-    <th>{% trans 'in blog' %}</th><td><a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
-        {{ post.feed.title }}
+    <th>{% trans 'in blog' %}</th><td><a href="{{ post.feed.blog.get_absolute_url }}" title="{% trans 'See all posts for this blopg' %}">
+        {{ post.feed.blog.title }}
     </a></td>
     </tr>
     <tr>
@@ -22,6 +22,6 @@
 </table>
 <p class="tags list">
     {% for tag in post.tags.all %}
-        <span class="label"><a style="color: white;" href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
+        <span class="label"><a href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
     {% endfor %}
 </p>
