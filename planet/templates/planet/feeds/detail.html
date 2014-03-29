@@ -58,7 +58,7 @@
     {% endif %}
 
     {% if tag %}
-        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
+        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag|safe }}</strong></h2>
     {% endif %}
 
     {% autopaginate posts 20 %}

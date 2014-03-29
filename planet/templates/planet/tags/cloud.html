@@ -19,7 +19,7 @@
 <div class="tags cloud">
     {% autopaginate tags_cloud 200 %}
     {% for tag in tags_cloud %}
-        <a href="{% url 'planet_tag_detail' tag.name %}" class="level{{ tag.font_size }}">{{ tag }}</a>
+        <a href="{% url 'planet_tag_detail' tag.name %}" class="level{{ tag.font_size }}">{{ tag|safe }}</a>&nbsp;
     {% endfor %}
     {% paginate %}
 </div>

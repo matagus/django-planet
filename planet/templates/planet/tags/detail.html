@@ -3,23 +3,23 @@
 {% load url from future %}
 
 {% block head_title %}
-  {{ tag }}: {% trans "django blog posts news" %}
+  {{ tag|safe }}: {% trans "django blog posts news" %}
 {% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ tag }}: {% trans 'django blog posts news' %}" />
-    <meta name="description" content="{{ tag }}: {% trans 'django web framework related blog posts, news and articles' %}" />
+    <meta name="title" content="{{ tag|safe }}: {% trans 'django blog posts news' %}" />
+    <meta name="description" content="{{ tag|safe }}: {% trans 'django web framework related blog posts, news and articles' %}" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="http://{{ site.domain }}{% url 'planet.views.tag_detail' tag.name %}"/>
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_tag_rss_feed tag %}" />
+    <link rel="alternate" type="application/rss+xml" title="{% trans 'tag' %} {{ tag|safe }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_tag_rss_feed tag %}" />
     <link rel="alternate" type="application/rss+xml" title="{% trans 'Posts in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url planet_rss_feed %}" />
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url 'planet_tag_rss_feed' tag %}" title="{% trans 'Subscribe to RSS feed for tag' %} {{ tag }}">
+    <a href="{% url 'planet_tag_rss_feed' tag %}" title="{% trans 'Subscribe to RSS feed for tag' %} {{ tag|safe }}">
         <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
@@ -28,7 +28,7 @@
 {% block breadcrumb_detail %}<li class="active">{{ tag.name }}</li>{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Tag" %}: {{ tag }}</h1>
+    <h1>{% trans "Tag" %}: {{ tag|safe }}</h1>
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post short {% cycle 'even' 'odd' %} clearfix">

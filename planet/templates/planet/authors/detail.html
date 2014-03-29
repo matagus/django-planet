@@ -58,7 +58,7 @@
 
     {% if tag %}
         <div>
-            <p>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></p>
+            <p>{% trans 'Posts under tag' %}: <strong>{{ tag|safe }}</strong></p>
             <a href="{{ author.get_absolute_url }}" title="{% trans 'See all posts by' %} {{ author.name }}">
                 {% trans 'See the complete list of posts by this author' %}
             </a>

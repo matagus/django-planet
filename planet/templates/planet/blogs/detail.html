@@ -35,7 +35,7 @@
         </tr>
     </table>
     {% if tag %}
-        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag }}</strong></h2>
+        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag|safe }}</strong></h2>
     {% endif %}
     
     {% autopaginate posts 20 %}
@@ -48,7 +48,7 @@
     {% if tag %}
         <p>
             <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Other blogs talking about ' %} {{ tag }}
+                {% trans 'Other blogs talking about ' %} {{ tag|safe }}
             </a>
         </p>
     {% endif %}
