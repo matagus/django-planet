@@ -2,3 +2,8 @@
 * actualizar la documentacion con todo lo que cambie!
 * agregar que pinax theme bootstrap es opcional desde ahora
 
+* separar base.css de theme.css asi base.css contiene styles q no themean las
+webs de otros!
+
+* latests posts templatetag
+* latests updated blogs templatetag
