@@ -68,10 +68,4 @@ The project is licensed under the BSD license.
 DEMO
 ----
 
-There is a `simple demo django-planet <http://django-planet.herokuapp.com/>`_ at heroku.com.
-
-
-BUILD YOUR OWN BLOG AGGREGATOR in seconds
------------------------------------------
-
-`Get your own full-customizable ready-to-use blog aggregator <http://your-own-aggregator.launchrock.com/>`_. Launch your news planet importing tons of feeds/blogs in seconds.
+There is a `simple demo django-planet <http://django-planet.com/>`.
