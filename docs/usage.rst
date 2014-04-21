@@ -6,7 +6,7 @@ Changing your settings.py
 
 Modifiy your projects ``settings.py`` file following the next steps:
 
-1. Check your ``INSTALLED_APPS`` in your to have installed:
+1. Check your ``INSTALLED_APPS``:
 
 .. code-block:: python
 
@@ -28,7 +28,7 @@ Modifiy your projects ``settings.py`` file following the next steps:
     'planet',
   )
 
-2. Configure your database. Here goes an example using mysql:
+2. Configure your database. Here is an example using mysql:
 
 .. code-block:: python
 
@@ -91,7 +91,7 @@ Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
         "USER_AGENT": "My Planet/1.0",
     }
 
-6. Configure properly your static files root directory:
+6. Properly configure your static files root directory:
 
 .. code-block:: python
 
@@ -102,7 +102,7 @@ Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
 .. code-block:: python
 
     TEMPLATE_DIRS = (
-        '/path/to/planet/porject/templates',
+        '/path/to/planet/project/templates',
         # other paths...
     )
 
@@ -132,13 +132,13 @@ Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
     LANGUAGE_COOKIE_NAME = "myplanetlng"
     SESSION_COOKIE_NAME = "myplanetid"
 
-Congratulations! Your settings are complete. Now you'll need to chenge other
+Congratulations! Your settings are complete. Now you'll need to change other
 files in order to get a running project.
 
 Enable planet urls
 ------------------
 
-1. Add the planet urls include to your porjects ``urls.py`` (remember to
+1. Add the planet urls include to your project's ``urls.py`` (remember to
    also include admin urls so you can use the admin to manage your planet!):
 
 .. code-block:: python
@@ -170,7 +170,7 @@ Syncdb and add some feeds!
 
     30 * * * * python manage.py planet_update_all_feeds
 
-This attempts to pull for new posts every 30 minutes.
+This attempts to pull in new posts every 30 minutes.
 
 4. Now you're done. Just run::
 
