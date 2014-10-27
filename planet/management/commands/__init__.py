@@ -178,6 +178,7 @@ def process_feed(feed_url, create=False, category_title=None):
                 except NameError:
                     guid = md5(entry.get("link").encode('utf-8')).hexdigest()
                 content = entry.get('description') or entry.get("content", [{"value": ""}])[0]["value"]
+                content = content.encode('ascii', 'xmlcharrefreplace')
                 comments_url = entry.get("comments")
                 date_modified = entry.get("updated_parsed") or\
                     entry.get("published_parsed")
