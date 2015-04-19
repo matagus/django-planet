@@ -16,6 +16,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 import feedparser
 from datetime import datetime
+from time import mktime, struct_time
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -32,15 +33,26 @@ from planet.managers import (FeedManager, AuthorManager, BlogManager,
     EnclosureManager)
 
 
+def _get_user_model():
+    try:
+        # New sinc Dajngo 1.5
+        return settings.AUTH_USER_MODEL
+    except AttributeError:
+        # Django < 1.5
+        return "auth.User"
+
+
 @python_2_unicode_compatible
 class Blog(models.Model):
     """
     A model to store primary info about a blog or website that which feed or
     feeds are aggregated to our planet
     """
+
     title = models.CharField(_("title"), max_length=255, blank=True, db_index=True)
     url = models.URLField(_("Url"), unique=True, db_index=True)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
+    owner = models.ForeignKey(_get_user_model(), null=True, blank=True)
 
     site_objects = BlogManager()
     objects = models.Manager()
@@ -185,7 +197,10 @@ class Feed(models.Model):
             self.icon_url = document.feed.get("icon")
             self.language = document.feed.get("language")
             self.etag = document.get("etag", '')
+
             self.last_modified = document.get("updated_parsed", datetime.now())
+            if isinstance(self.last_modified, struct_time):
+                self.last_modified = datetime.fromtimestamp(mktime(self.last_modified))
 
             self.blog, created = Blog.objects.get_or_create(
                 url=blog_url, defaults={"title": self.title})
@@ -199,6 +214,7 @@ class Feed(models.Model):
                     version=generator_dict.get("version"))
             else:
                 self.generator = None
+
         super(Feed, self).save(*args, **kwargs)
 
     def __str__(self):

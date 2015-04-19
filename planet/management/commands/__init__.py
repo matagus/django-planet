@@ -21,10 +21,12 @@ from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
         Author, PostAuthorData, Enclosure, Category)
 from planet.signals import post_created
 
+
 class PostAlreadyExists(Exception):
     pass
 
-def process_feed(feed_url, create=False, category_title=None):
+
+def process_feed(feed_url, owner=None, create=False, category_title=None):
     """
     Stores a feed, its related data, its entries and their related data.
     If create=True then it creates the feed, otherwise it only stores new
@@ -115,7 +117,7 @@ def process_feed(feed_url, create=False, category_title=None):
                 blog_url = link[0]["href"]
 
         blog, created = Blog.objects.get_or_create(
-            url=blog_url, defaults={"title": title})
+            url=blog_url, defaults={"title": title}, owner=owner)
 
         generator_dict = document.feed.get("generator_detail", {})
 

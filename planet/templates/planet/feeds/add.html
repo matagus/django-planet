@@ -1,0 +1,29 @@
+{% extends "planet/base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title %}{% trans "Add a New Feed" %}{% endblock %}
+
+{% block extra_head %}
+  <meta name="title" content="{% trans 'Add a New Feed' %}" />
+  <meta name="description" content="{% trans 'Add a New Feed' %}" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="http://{{ site.domain }}{{ request.path }}"/>
+{% endblock %}
+
+{% block breadcrumb_section %}
+  <li><a href="{% url 'planet.views.feeds_list' %}">{% trans 'Feeds' %}</a> <span class="divider">/</span></li>
+{% endblock %}
+
+{% block breadcrumb_detail %}
+  <li class="active">{% trans 'Add a New Feed' %}</li>
+{% endblock %}
+
+{% block content %}
+  <h1>{% trans "Add a New Feed" %}</h1>
+  <form action="" method="POST">{% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="{% trans 'Submit' %}" />
+      <a href="javascript: history.back();">{% trans 'Cancel' %}</a>
+  </form>
+{% endblock %}

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
+from django.views.generic.edit import CreateView
 
 from planet.models import Blog, Feed, Author, Post
 from planet.forms import SearchForm
@@ -235,3 +237,28 @@ def search(request):
 
     else:
         return HttpResponseRedirect(reverse("planet_post_list"))
+
+
+class FeedAddView(CreateView):
+    model = Feed
+    fields = ["url"]
+    template_name = 'planet/feeds/add.html'
+
+    def clean_url(self):
+        url = self.cleaned_data['url']
+
+        if Feed.objects.filter(url=url).count() > 0:
+            raise ValidationError('A feed with this URL already exists.')
+
+        return url
+
+    def form_valid(self, form):
+        feed = form.save()
+
+        if self.request.user.is_authenticated():
+            feed.blog.owner = self.request.user
+            feed.blog.save()
+
+        self.object = feed
+
+        return HttpResponseRedirect(reverse("planet_index"))
