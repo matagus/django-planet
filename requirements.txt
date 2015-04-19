@@ -5,3 +5,5 @@ feedparser
 south
 pinax-theme-bootstrap==3.0a4
 beautifulsoup4
+celery>=3.0.0
+django-celery

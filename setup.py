@@ -12,9 +12,16 @@ setup(
     author="Matias Agustin Mendez",
     author_email="me@matagus.com.ar",
 
-    install_requires=["feedparser", "south", "django-tagging>=0.3.1",
-        "django-pagination-py3", "Django>=1.4", "beautifulsoup4"],
-    #    "pinax-theme-bootstrap==3.0a4"],
+    install_requires=[
+        "feedparser",
+        "south",
+        "django-tagging>=0.3.1",
+        "django-pagination-py3",
+        "Django>=1.5",
+        "beautifulsoup4",
+        "celery>=3.0.0",
+        "django-celery"
+    ],
 
     packages=find_packages(),
     package_dir={"planet": "planet"},

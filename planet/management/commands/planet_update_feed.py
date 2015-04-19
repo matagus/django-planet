@@ -3,7 +3,7 @@
 
 from django.core.management.base import BaseCommand
 
-from planet.management.commands import process_feed
+from planet.tasks import process_feed
 
 
 class Command(BaseCommand):
@@ -17,4 +17,4 @@ class Command(BaseCommand):
 
         feed_url = args[0]
         # process feed in create-mode
-        process_feed(feed_url, create=False)
+        process_feed.delay(feed_url, create=False)

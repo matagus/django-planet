@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from optparse import make_option
 
 from django.core.management.base import BaseCommand
-from planet.management.commands import process_feed
-from optparse import make_option
+
+from planet.tasks import process_feed
+
 
 class Command(BaseCommand):
     help = "Add a complete blog feed to our db."
@@ -19,9 +21,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if not len(args):
-            print("You must provide the feed url as parameter")
+            self.stderr.write("You must provide the feed url as parameter")
             exit(0)
 
         feed_url = args[0]
         # process feed in create-mode
-        process_feed(feed_url, create=True, category_title=options['category'])
+        process_feed.delay(feed_url, create=True, category_title=options['category'])
+        self.stdout.write("Feed created. Posts scheduled to be retrived sonn.")
