@@ -23,6 +23,7 @@ class BlogFactory(factory.DjangoModelFactory):
 
     title = factory.Sequence(lambda n: u'blog-{}'.format(n))
     url = factory.LazyAttribute(lambda obj: u'http://{}.blogspot.com/'.format(obj.title))
+    owner = None
 
 
 class GeneratorFactory(factory.DjangoModelFactory):

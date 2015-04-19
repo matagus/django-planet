@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 try:
     # Django 1.6
-    from django.conf.urls import patterns, url, include
+    from django.conf.urls import patterns, url
 except ImportError:
     # Django < 1.6
     from django.conf.urls.defaults import patterns, url
@@ -11,6 +11,7 @@ from django.views.decorators.cache import cache_page
 
 from planet.feeds import PostFeed, AuthorFeed, AuthorTagFeed, TagFeed
 from planet.sitemaps import planet_sitemaps_dict
+from planet.views import FeedAddView
 
 
 urlpatterns = patterns('planet.views',
@@ -18,6 +19,7 @@ urlpatterns = patterns('planet.views',
     url(r'^blogs/(?P<blog_id>\d+)/$', "blog_detail"),
     url(r'^blogs/$', "blogs_list", name="planet_blog_list"),
 
+    url(r'^feeds/add/$', FeedAddView.as_view(), name="planet_feed_add"),
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/tags/(?P<tag>.*)/$', "feed_detail", name="planet_by_tag_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "feed_detail", name="planet_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/$', "feed_detail"),
