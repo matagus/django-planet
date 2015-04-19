@@ -11,32 +11,37 @@ from planet.models import (
 
 
 class SiteFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Site
+    class Meta:
+        model = Site
 
     domain = factory.Sequence(lambda n: u'example-site-{}.com'.format(n))
 
 
 class BlogFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Blog
+    class Meta:
+        model = Blog
 
     title = factory.Sequence(lambda n: u'blog-{}'.format(n))
     url = factory.LazyAttribute(lambda obj: u'http://{}.blogspot.com/'.format(obj.title))
 
 
 class GeneratorFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Generator
+    class Meta:
+        model = Generator
 
     name = factory.Sequence(lambda n: u'generator-{}'.format(n))
 
 
 class CategoryFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Category
+    class Meta:
+        model = Category
 
     title = factory.Sequence(lambda n: u'Category #{}'.format(n))
 
 
 class FeedFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Feed
+    class Meta:
+        model = Feed
 
     title = factory.Sequence(lambda n: u'Feed-{}'.format(n))
     blog = factory.SubFactory(BlogFactory)
@@ -47,14 +52,16 @@ class FeedFactory(factory.DjangoModelFactory):
 
 
 class AuthorFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Author
+    class Meta:
+        model = Author
 
     name = factory.Sequence(lambda n: u'Author #{}'.format(n))
     email = factory.LazyAttribute(lambda obj: u'{}@gmail.com'.format(obj.name))
 
 
 class PostFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Post
+    class Meta:
+        model = Post
 
     title = factory.Sequence(lambda n: u'Post Title #{}'.format(n))
     feed = factory.SubFactory(FeedFactory)
@@ -75,14 +82,16 @@ class PostFactory(factory.DjangoModelFactory):
 
 
 class PostAuthorDataFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = PostAuthorData
+    class Meta:
+        model = PostAuthorData
 
     post = factory.SubFactory(PostFactory)
     author = factory.SubFactory(AuthorFactory)
 
 
 class PostLinkFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = PostLink
+    class Meta:
+        model = PostLink
 
     title = factory.Sequence(lambda n: u'post-link-{}'.format(n))
     post = factory.SubFactory(PostFactory)
@@ -92,7 +101,8 @@ class PostLinkFactory(factory.DjangoModelFactory):
 
 
 class FeedLinkFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = FeedLink
+    class Meta:
+        model = FeedLink
 
     feed = factory.SubFactory(FeedFactory)
     rel = "alternative"
@@ -101,7 +111,8 @@ class FeedLinkFactory(factory.DjangoModelFactory):
 
 
 class EnclosureFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Enclosure
+    class Meta:
+        model = Enclosure
 
     title = factory.Sequence(lambda n: u'enclosure-#{}'.format(n))
     post = factory.SubFactory(PostFactory)
