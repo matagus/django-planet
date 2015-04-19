@@ -163,14 +163,14 @@ def foaf(request):
     feeds = Feed.site_objects.all().select_related("blog")
 
     return render_to_response("planet/microformats/foaf.xml", {"feeds": feeds},
-        context_instance=RequestContext(request), mimetype="text/xml")
+        context_instance=RequestContext(request), content_type="text/xml")
 
 
 def opml(request):
     feeds = Feed.site_objects.all().select_related("blog")
 
     return render_to_response("planet/microformats/opml.xml", {"feeds": feeds},
-        context_instance=RequestContext(request), mimetype="text/xml")
+        context_instance=RequestContext(request), content_type="text/xml")
 
 
 def search(request):
