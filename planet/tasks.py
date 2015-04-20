@@ -39,6 +39,8 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
     entries  and their related data.
     """
 
+    print("[process_feed] URL={}".format(feed_url))
+
     def normalize_tag(tag):
         """
         converts things like "-noise-" to "noise" and "- noise -" to "noise"
@@ -333,17 +335,25 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
             planet_feed.save()
         print("{} posts were created. Done.".format(new_posts_count))
 
-    print()
     return new_posts_count
 
 
-@task
+@task(ignore_results=True)
 def update_feeds():
-    new_posts_count = 0
-    start = datetime.now()
+    """
+    Task for running on celery beat!
+
+    CELERYBEAT_SCHEDULE = {
+        'update_feeds': {
+            'task': 'planet.tasks.update_feeds',
+            'schedule': timedelta(hours=1)
+        }
+    }
+    """
+
     for feed_url in Feed.site_objects.all().values_list("url", flat=True):
-        # process feed in create-mode
-        new_posts_count += process_feed(feed_url, create=False)
-    delta = datetime.now() - start
-    print("Added {} posts in {} seconds".format(new_posts_count, delta.seconds))
+        print("Scheduling feed URL={}...".format(feed_url))
+        process_feed.delay(feed_url, create=False)
+        print("Done!")
+
     feeds_updated.send(sender=None, instance=None)
