@@ -205,7 +205,7 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
                     date_modified = datetime.fromtimestamp(
                         time.mktime(date_modified))
                 except Exception:
-                    date_modified = None
+                    date_modified = planet_feed.last_modified or datetime.now()
 
                 try:
                     if len(Post.objects.filter(url=url, guid=guid)):
