@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import CreateView
 
 from planet.models import Blog, Feed, Author, Post
@@ -243,6 +244,7 @@ class FeedAddView(CreateView):
     model = Feed
     fields = ["url"]
     template_name = 'planet/feeds/add.html'
+    success_message = _("Feed with url=%(url)s was created successfully")
 
     def clean_url(self):
         url = self.cleaned_data['url']
