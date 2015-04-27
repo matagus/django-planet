@@ -9,6 +9,8 @@ env:
     - DJANGO="django==1.5.1 --use-mirrors"
     - DJANGO="django==1.6.1 --use-mirrors"
 
+cache: pip
+
 install:
     - pip install $DJANGO
     - pip install django-tagging
