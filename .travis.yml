@@ -2,6 +2,8 @@ language: python
 
 python:
     - "2.7"
+    - "3.3"
+    - "3.4"
 
 env:
     - DJANGO="django==1.5.1 --use-mirrors"
@@ -10,11 +12,11 @@ env:
 install:
     - pip install $DJANGO
     - pip install django-tagging
-    - pip install django-pagination
+    - pip install django-pagination-py3
     - pip install feedparser
     - pip install south
     - pip install pinax-theme-bootstrap
-    - pip install BeautifulSoup
+    - pip install beautifulsoup4
     - pip install coverage==3.6
     - pip install python-coveralls==2.4.0
     - pip install factory-boy==2.5.0
