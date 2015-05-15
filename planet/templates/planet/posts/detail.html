@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block breadcrumb_section %}
-    <li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'planet.views.blogs_list' %}">{% trans 'Blogs' %}</a> <span class="divider">/</span></li>
     <li><a href="{{ post.feed.blog.get_absolute_url }}">{{ post.feed.blog.title }}</a> <span class="divider">/</span></li>
 {% endblock %}
 {% block breadcrumb_detail %}<li class="active">{{ post.title|safe }}</li>{% endblock %}

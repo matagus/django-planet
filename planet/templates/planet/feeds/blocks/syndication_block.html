@@ -2,20 +2,20 @@
 {% load url from future %}
 <br/>
 <ul class="nav nav-list">
-    <li class="nav-header">Feeds</li>
+    <li class="nav-header">{% trans 'Feeds' %}</li>
     <li>
         <a href="{% url 'planet_rss_feed' %}" title="{% trans 'Suscribe to RSS feed' %}">
-            RSS 2.0 Feed
+            {% trans 'RSS 2.0 Feed' %}
         </a>
     </li>
     <li>
-        <a href="{% url 'planet_opml' %}" title="OPML">
-            OPML
+        <a href="{% url 'planet_opml' %}" title="{% trans 'OPML' %}">
+            {% trans 'OPML' %}
         </a>
     </li>
     <li>
-        <a href="{% url 'planet_foaf' %}"  title="FOAF">
-            FOAF
+        <a href="{% url 'planet_foaf' %}"  title="{% trans 'FOAF' %}">
+          {% trans 'FOAF' %}
         </a>
     </li>
 </ul>

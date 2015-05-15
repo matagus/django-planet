@@ -5,7 +5,7 @@ from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.template.defaultfilters import linebreaks, escape, capfirst
+from django.template.defaultfilters import linebreaks, escape
 from django.utils.translation import ugettext_lazy as _
 
 from planet.models import Post, Author
@@ -22,7 +22,7 @@ class PostFeed(Feed):
         self.site = Site.objects.get_current()
 
     def title(self):
-        return u"%s latest posts" % (self.site.name, )
+        return _(u"%s latest posts") % (self.site.name, )
 
     def link(self):
         return reverse("planet_rss_feed")

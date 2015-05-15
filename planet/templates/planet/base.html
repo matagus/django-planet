@@ -8,7 +8,7 @@
     <meta name="title" content="{{ site.name }}" />
     <meta name="robots" content="index, follow" />
     <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - RSS 2.0 Feed" href="{% url 'planet_rss_feed' %}" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {% blocktrans %}RSS 2.0 Feed{% endblocktrans %}" href="{% url 'planet_rss_feed' %}" />
 {% endblock %}
 
 {% block search %}
@@ -27,5 +27,7 @@
 
 {% block footer %}
     {{ block.super }}
-    <p class="text-right">{% blocktrans %}A <a href="http://github.com/matagus/django-planet" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}</p>
+    <p class="text-right">
+      {% blocktrans %}A <a href="http://github.com/matagus/django-planet" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}
+    </p>
 {% endblock %}

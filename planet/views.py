@@ -250,7 +250,7 @@ class FeedAddView(CreateView):
         url = self.cleaned_data['url']
 
         if Feed.objects.filter(url=url).count() > 0:
-            raise ValidationError('A feed with this URL already exists.')
+            raise ValidationError(_('A feed with this URL already exists.'))
 
         return url
 

@@ -28,7 +28,7 @@
           </h3>
         </div>
         <div class="panel-body">
-          writes for:
+          {% trans "writes for:" %}
             {% for blog in author|get_blogs %}
               <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
               {% if not forloop.last %}, {% endif %}

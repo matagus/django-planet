@@ -16,7 +16,9 @@
     Published at <a href="{{ post.feed.blog.get_absolute_url }}" title="{% trans 'See all posts for this blog' %}">{{ post.feed.blog.title }}</a>
     {% if post.tags.count %} under tags&nbsp;
       {% for tag in post.tags.all|slice:":5" %}
-          <span class="label"><a href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
+        <span class="label">
+          <a href="{% url 'planet_tag_detail' tag.name %}" title="{% trans 'Tag' %}">{{ tag.name }}</a>
+        </span>
       {% endfor %}
     {% endif %}
 </p>
