@@ -6,20 +6,27 @@ except ImportError:
     # Django < 1.6
     from django.conf.urls.defaults import patterns, url
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
 
 from planet.feeds import PostFeed, AuthorFeed, AuthorTagFeed, TagFeed
+from planet.settings import PLANET_CONFIG
 from planet.sitemaps import planet_sitemaps_dict
 from planet.views import FeedAddView
+
+
+if PLANET_CONFIG["LOGIN_REQUIRED_FOR_ADDING_FEED"]:
+    url_add_feed_tuple = url(r'^feeds/add/$', login_required(FeedAddView.as_view()), name="planet_feed_add")
+else:
+    url_add_feed_tuple = url(r'^feeds/add/$', FeedAddView.as_view(), name="planet_feed_add")
 
 
 urlpatterns = patterns('planet.views',
     url(r'^blogs/(?P<blog_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "blog_detail", name="planet_blog_detail"),
     url(r'^blogs/(?P<blog_id>\d+)/$', "blog_detail"),
     url(r'^blogs/$', "blogs_list", name="planet_blog_list"),
-
-    url(r'^feeds/add/$', FeedAddView.as_view(), name="planet_feed_add"),
+    url_add_feed_tuple,
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/tags/(?P<tag>.*)/$', "feed_detail", name="planet_by_tag_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "feed_detail", name="planet_feed_detail"),
     url(r'^feeds/(?P<feed_id>\d+)/$', "feed_detail"),
