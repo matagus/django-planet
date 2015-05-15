@@ -17,7 +17,7 @@ DATABASES = {
     },
 }
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.auth',
@@ -26,7 +26,7 @@ INSTALLED_APPS = (
     'tagging',
     'pagination',
     'planet',
-)
+]
 
 SECRET_KEY = 'abcde12345'
 
@@ -34,7 +34,7 @@ SITE_ID = 1
 
 if django.VERSION[:2] < (1, 6):
     # Since 1.6 version Django comes with discover_runner builtin!
-    INSTALLED_APPS += ('discover_runner', )
+    INSTALLED_APPS += ('discover_runner', 'south')
     TEST_RUNNER = 'discover_runner.DiscoverRunner'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
