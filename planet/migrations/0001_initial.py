@@ -1,257 +1,224 @@
-# encoding: utf-8
-# python 3.x compatibility helpers
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
-
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-
-        # Adding model 'Blog'
-        db.create_table('planet_blog', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(db_index=True, max_length=255, blank=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(unique=True, max_length=200, db_index=True)),
-            ('date_created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('planet', ['Blog'])
-
-        # Adding model 'Generator'
-        db.create_table('planet_generator', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('version', self.gf('django.db.models.fields.CharField')(max_length=5, null=True, blank=True)),
-        ))
-        db.send_create_signal('planet', ['Generator'])
-
-        # Adding unique constraint on 'Generator', fields ['name', 'link', 'version']
-        db.create_unique('planet_generator', ['name', 'link', 'version'])
-
-        # Adding model 'Feed'
-        db.create_table('planet_feed', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('blog', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Blog'], null=True, blank=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'], null=True, blank=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(unique=True, max_length=200, db_index=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(db_index=True, max_length=255, null=True, blank=True)),
-            ('subtitle', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('rights', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('generator', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Generator'], null=True, blank=True)),
-            ('info', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
-            ('guid', self.gf('django.db.models.fields.CharField')(db_index=True, max_length=255, null=True, blank=True)),
-            ('icon_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('image_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('etag', self.gf('django.db.models.fields.CharField')(db_index=True, max_length=50, null=True, blank=True)),
-            ('last_modified', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
-            ('last_checked', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True, db_index=True)),
-        ))
-        db.send_create_signal('planet', ['Feed'])
-
-        # Adding model 'PostAuthorData'
-        db.create_table('planet_postauthordata', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Post'])),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Author'])),
-            ('is_contributor', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('date_created', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('planet', ['PostAuthorData'])
-
-        # Adding model 'Post'
-        db.create_table('planet_post', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('feed', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Feed'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255, db_index=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, db_index=True)),
-            ('guid', self.gf('django.db.models.fields.CharField')(max_length=200, db_index=True)),
-            ('content', self.gf('django.db.models.fields.TextField')()),
-            ('comments_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('date_modified', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
-            ('date_created', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('planet', ['Post'])
-
-        # Adding unique constraint on 'Post', fields ['feed', 'guid']
-        db.create_unique('planet_post', ['feed_id', 'guid'])
-
-        # Adding model 'Author'
-        db.create_table('planet_author', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(db_index=True, max_length=255, null=True, blank=True)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('profile_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-        ))
-        db.send_create_signal('planet', ['Author'])
-
-        # Adding model 'FeedLink'
-        db.create_table('planet_feedlink', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('feed', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Feed'])),
-            ('rel', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('mime_type', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=500, db_index=True)),
-        ))
-        db.send_create_signal('planet', ['FeedLink'])
-
-        # Adding model 'PostLink'
-        db.create_table('planet_postlink', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Post'])),
-            ('rel', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('mime_type', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=500, db_index=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255, db_index=True)),
-        ))
-        db.send_create_signal('planet', ['PostLink'])
-
-        # Adding model 'Enclosure'
-        db.create_table('planet_enclosure', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['planet.Post'])),
-            ('length', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('mime_type', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=500, db_index=True)),
-        ))
-        db.send_create_signal('planet', ['Enclosure'])
+from django.db import models, migrations
+from django.conf import settings
 
 
-    def backwards(self, orm):
+class Migration(migrations.Migration):
 
-        # Removing unique constraint on 'Post', fields ['feed', 'guid']
-        db.delete_unique('planet_post', ['feed_id', 'guid'])
+    dependencies = [
+        ('sites', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-        # Removing unique constraint on 'Generator', fields ['name', 'link', 'version']
-        db.delete_unique('planet_generator', ['name', 'link', 'version'])
-
-        # Deleting model 'Blog'
-        db.delete_table('planet_blog')
-
-        # Deleting model 'Generator'
-        db.delete_table('planet_generator')
-
-        # Deleting model 'Feed'
-        db.delete_table('planet_feed')
-
-        # Deleting model 'PostAuthorData'
-        db.delete_table('planet_postauthordata')
-
-        # Deleting model 'Post'
-        db.delete_table('planet_post')
-
-        # Deleting model 'Author'
-        db.delete_table('planet_author')
-
-        # Deleting model 'FeedLink'
-        db.delete_table('planet_feedlink')
-
-        # Deleting model 'PostLink'
-        db.delete_table('planet_postlink')
-
-        # Deleting model 'Enclosure'
-        db.delete_table('planet_enclosure')
-
-
-    models = {
-        'planet.author': {
-            'Meta': {'ordering': "('name', 'email')", 'object_name': 'Author'},
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'profile_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        },
-        'planet.blog': {
-            'Meta': {'ordering': "('title', 'url')", 'object_name': 'Blog'},
-            'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '255', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'unique': 'True', 'max_length': '200', 'db_index': 'True'})
-        },
-        'planet.enclosure': {
-            'Meta': {'ordering': "('post', 'mime_type', 'link')", 'object_name': 'Enclosure'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'length': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '500', 'db_index': 'True'}),
-            'mime_type': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Post']"})
-        },
-        'planet.feed': {
-            'Meta': {'ordering': "('title', 'url')", 'object_name': 'Feed'},
-            'blog': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Blog']", 'null': 'True', 'blank': 'True'}),
-            'etag': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '50', 'null': 'True', 'blank': 'True'}),
-            'generator': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Generator']", 'null': 'True', 'blank': 'True'}),
-            'guid': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'icon_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'info': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True', 'db_index': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
-            'last_checked': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'last_modified': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'rights': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']", 'null': 'True', 'blank': 'True'}),
-            'subtitle': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'unique': 'True', 'max_length': '200', 'db_index': 'True'})
-        },
-        'planet.feedlink': {
-            'Meta': {'ordering': "('feed', 'rel', 'mime_type')", 'object_name': 'FeedLink'},
-            'feed': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Feed']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '500', 'db_index': 'True'}),
-            'mime_type': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'rel': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'})
-        },
-        'planet.generator': {
-            'Meta': {'ordering': "('name', 'version')", 'unique_together': "(('name', 'link', 'version'),)", 'object_name': 'Generator'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'version': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'})
-        },
-        'planet.post': {
-            'Meta': {'ordering': "('-date_modified',)", 'unique_together': "(('feed', 'guid'),)", 'object_name': 'Post'},
-            'authors': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['planet.Author']", 'through': "orm['planet.PostAuthorData']", 'symmetrical': 'False'}),
-            'comments_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'content': ('django.db.models.fields.TextField', [], {}),
-            'date_created': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'date_modified': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'feed': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Feed']"}),
-            'guid': ('django.db.models.fields.CharField', [], {'max_length': '200', 'db_index': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_index': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'db_index': 'True'})
-        },
-        'planet.postauthordata': {
-            'Meta': {'ordering': "('author', 'post', 'is_contributor')", 'object_name': 'PostAuthorData'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Author']"}),
-            'date_created': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_contributor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Post']"})
-        },
-        'planet.postlink': {
-            'Meta': {'ordering': "('post', 'title', 'rel')", 'object_name': 'PostLink'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '500', 'db_index': 'True'}),
-            'mime_type': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['planet.Post']"}),
-            'rel': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_index': 'True'})
-        },
-        'sites.site': {
-            'Meta': {'ordering': "('domain',)", 'object_name': 'Site', 'db_table': "'django_site'"},
-            'domain': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        }
-    }
-
-    complete_apps = ['planet']
+    operations = [
+        migrations.CreateModel(
+            name='Author',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(db_index=True, max_length=255, null=True, verbose_name='Name', blank=True)),
+                ('email', models.EmailField(db_index=True, max_length=75, verbose_name='Author email', blank=True)),
+                ('profile_url', models.URLField(null=True, verbose_name='Profile URL', blank=True)),
+            ],
+            options={
+                'ordering': ('name', 'email'),
+                'verbose_name': 'Author',
+                'verbose_name_plural': 'Authors',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Blog',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(db_index=True, max_length=255, verbose_name='title', blank=True)),
+                ('url', models.URLField(unique=True, verbose_name='Url', db_index=True)),
+                ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
+                ('owner', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'ordering': ('title', 'url'),
+                'verbose_name': 'Blog',
+                'verbose_name_plural': 'Blogs',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Category',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(unique=True, max_length=100, verbose_name='Category Title')),
+                ('date_created', models.DateField(auto_now_add=True, verbose_name='Date created')),
+            ],
+            options={
+                'ordering': ('title', 'date_created'),
+                'verbose_name': 'Feed Category',
+                'verbose_name_plural': 'Feed Categories',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Enclosure',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('length', models.CharField(max_length=20, verbose_name='Length')),
+                ('mime_type', models.CharField(max_length=50, verbose_name='MIME type', db_index=True)),
+                ('link', models.URLField(max_length=500, verbose_name='Url', db_index=True)),
+            ],
+            options={
+                'ordering': ('post', 'mime_type', 'link'),
+                'verbose_name': 'Post Enclosure',
+                'verbose_name_plural': 'Post Enclosures',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Feed',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('url', models.URLField(unique=True, verbose_name='Url', db_index=True)),
+                ('title', models.CharField(db_index=True, max_length=255, null=True, verbose_name='Title', blank=True)),
+                ('subtitle', models.TextField(null=True, verbose_name='Subtitle', blank=True)),
+                ('rights', models.CharField(max_length=255, null=True, verbose_name='Rights', blank=True)),
+                ('info', models.CharField(max_length=255, null=True, verbose_name='Infos', blank=True)),
+                ('language', models.CharField(max_length=50, null=True, verbose_name='Language', blank=True)),
+                ('guid', models.CharField(db_index=True, max_length=32, null=True, verbose_name='Global Unique Identifier', blank=True)),
+                ('icon_url', models.URLField(null=True, verbose_name='Icon URL', blank=True)),
+                ('image_url', models.URLField(null=True, verbose_name='Image URL', blank=True)),
+                ('etag', models.CharField(db_index=True, max_length=50, null=True, verbose_name='Etag', blank=True)),
+                ('last_modified', models.DateTimeField(db_index=True, null=True, verbose_name='Last modified', blank=True)),
+                ('last_checked', models.DateTimeField(null=True, verbose_name='Last checked', blank=True)),
+                ('is_active', models.BooleanField(default=True, help_text='If disabled, this feed will not be further updated.', db_index=True, verbose_name='Is active')),
+                ('blog', models.ForeignKey(blank=True, to='planet.Blog', null=True)),
+                ('category', models.ForeignKey(blank=True, to='planet.Category', null=True)),
+            ],
+            options={
+                'ordering': ('title',),
+                'verbose_name': 'Feed',
+                'verbose_name_plural': 'Feeds',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='FeedLink',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('rel', models.CharField(max_length=50, verbose_name='Relation', db_index=True)),
+                ('mime_type', models.CharField(max_length=50, verbose_name='MIME type', db_index=True)),
+                ('link', models.URLField(max_length=500, verbose_name='Url', db_index=True)),
+                ('feed', models.ForeignKey(to='planet.Feed')),
+            ],
+            options={
+                'ordering': ('feed', 'rel', 'mime_type'),
+                'verbose_name': 'Feed Link',
+                'verbose_name_plural': 'Feed Links',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Generator',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100, verbose_name='Name')),
+                ('link', models.URLField(null=True, verbose_name='Url', blank=True)),
+                ('version', models.CharField(max_length=200, null=True, verbose_name='Version', blank=True)),
+            ],
+            options={
+                'ordering': ('name', 'version'),
+                'verbose_name': 'Generator',
+                'verbose_name_plural': 'Generators',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Post',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=255, verbose_name='Title', db_index=True)),
+                ('url', models.URLField(max_length=1000, verbose_name='Url', db_index=True)),
+                ('guid', models.CharField(max_length=32, verbose_name='Guid', db_index=True)),
+                ('content', models.TextField(verbose_name='Content')),
+                ('comments_url', models.URLField(null=True, verbose_name='Comments URL', blank=True)),
+                ('date_modified', models.DateTimeField(db_index=True, null=True, verbose_name='Date modified', blank=True)),
+                ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
+            ],
+            options={
+                'ordering': ('-date_created', '-date_modified'),
+                'verbose_name': 'Post',
+                'verbose_name_plural': 'Posts',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='PostAuthorData',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('is_contributor', models.BooleanField(default=False, verbose_name='Is Contributor?')),
+                ('date_created', models.DateField(auto_now_add=True, verbose_name='Date created')),
+                ('author', models.ForeignKey(to='planet.Author')),
+                ('post', models.ForeignKey(to='planet.Post')),
+            ],
+            options={
+                'ordering': ('author', 'post', 'is_contributor'),
+                'verbose_name': 'Post Author Data',
+                'verbose_name_plural': 'Post Author Data',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='PostLink',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('rel', models.CharField(max_length=50, verbose_name='Relation', db_index=True)),
+                ('mime_type', models.CharField(max_length=50, verbose_name='MIME type', db_index=True)),
+                ('link', models.URLField(max_length=500, verbose_name='Url', db_index=True)),
+                ('title', models.CharField(max_length=255, verbose_name='Title', db_index=True)),
+                ('post', models.ForeignKey(to='planet.Post')),
+            ],
+            options={
+                'ordering': ('post', 'title', 'rel'),
+                'verbose_name': 'Post Link',
+                'verbose_name_plural': 'Post Links',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='post',
+            name='authors',
+            field=models.ManyToManyField(to='planet.Author', through='planet.PostAuthorData'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='post',
+            name='feed',
+            field=models.ForeignKey(to='planet.Feed'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='post',
+            unique_together=set([('feed', 'guid')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='generator',
+            unique_together=set([('name', 'link', 'version')]),
+        ),
+        migrations.AddField(
+            model_name='feed',
+            name='generator',
+            field=models.ForeignKey(blank=True, to='planet.Generator', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='feed',
+            name='site',
+            field=models.ForeignKey(blank=True, to='sites.Site', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='enclosure',
+            name='post',
+            field=models.ForeignKey(to='planet.Post'),
+            preserve_default=True,
+        ),
+    ]

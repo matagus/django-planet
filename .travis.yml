@@ -6,24 +6,22 @@ python:
     - "3.4"
 
 env:
-    - DJANGO="django==1.5.1 --use-mirrors"
-    - DJANGO="django==1.6.9 --use-mirrors"
+    - REQUIREMENTS="Django==1.6.9 South==1.0"
+    - REQUIREMENTS="Django==1.7.7"
 
 cache: pip
 
 install:
-    - pip install $DJANGO
+    - pip install $REQUIREMENTS
     - pip install django-tagging
     - pip install django-pagination-py3
     - pip install feedparser
-    - pip install south
     - pip install pinax-theme-bootstrap
     - pip install beautifulsoup4
     - pip install coverage==3.6
     - pip install python-coveralls==2.4.0
     - pip install factory-boy==2.5.0
     - pip install mock
-    - pip install django-discover-runner
     - export PYTHONPATH=.
 
 before_script: coverage erase
