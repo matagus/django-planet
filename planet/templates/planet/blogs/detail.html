@@ -11,7 +11,7 @@
     <link rel="canonical" href="http://{{ site.domain }}{{ blog.get_absolute_url }}"/>
 {% endblock %}
 
-{% block breadcrumb_section %}<li><a href="{% url 'planet.views.blogs_list' %}">Blogs</a> <span class="divider">/</span></li>{% endblock %}
+{% block breadcrumb_section %}<li><a href="{% url 'planet.views.blogs_list' %}">{% trans 'Blogs' %}</a> <span class="divider">/</span></li>{% endblock %}
 {% block breadcrumb_detail %}<li class="active">{{ blog.title }}</li>{% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
     <table class="blog details table table-hover table-bordered">
         <tr>
           <th>{% trans 'web' %}</th>
-          <td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">link</a></td>
+          <td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{% trans 'Link' %}</a></td>
         </tr>
         <tr>
           <th>{% trans 'Author' %}</th>
@@ -31,13 +31,13 @@
         </tr>
         <tr>
           <th>{% trans 'Stats' %}</th>
-          <td>Has published {{ blog|post_count }} posts about or related to Django</td>
+          <td>{% blocktrans with p_count=blog|post_count %}Has published {{ p_count }} posts about or related to Django{% endblocktrans %}</td>
         </tr>
     </table>
     {% if tag %}
         <h2>{% trans 'Posts under tag' %}: <strong>{{ tag|safe }}</strong></h2>
     {% endif %}
-    
+
     {% autopaginate posts 20 %}
     {% for post in posts %}
         <div class="post short {% cycle 'even' 'odd' %} clearfix">

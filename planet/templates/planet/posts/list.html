@@ -8,8 +8,8 @@
 
 {% block extra_head %}
     <meta name="robots" content="index, follow" />
-    <meta name="description" content="{{ site.name }} is a planet website aggregating the best Django blogs and content available around the web" />
-    <meta name="title" content="{{ site.name }}: Django-related news &amp; blog aggregator" />
+    <meta name="description" content="{% blocktrans with site_name=site.name %}{{ site_name }} is a planet website aggregating the best Django blogs and content available around the web{% endblocktrans %}" />
+    <meta name="title" content="{% blocktrans with site_name=site.name %}{{ site_name }}: Django-related news &amp; blog aggregator{% endblocktrans %}" />
     <link rel="canonical" href="http://{{ site.domain }}{% url 'planet.views.posts_list' %}"/>
 {% endblock %}
 
@@ -28,4 +28,3 @@
 
     {% paginate %}
 {% endblock %}
-

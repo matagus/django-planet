@@ -12,25 +12,28 @@
 {% endblock %}
 
 {% block breadcrumb_section %}
-    <li><a href="{% url 'planet.views.authors_list' %}">Authors</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'planet.views.authors_list' %}">{% trans "Authors" %}</a> <span class="divider">/</span></li>
     {% if tag %}
         <li><a href="{{ author.get_absolute_url }}">{{ author.name }}</a> <span class="divider">/</span></li>
     {% endif %}
 {% endblock %}
 {% block breadcrumb_detail %}
     {% if tag %}
-        <li class="active">Tag: {{ tag.name }}</li>
+        <li class="active">{% trans "Tagged" %}: {{ tag.name }}</li>
     {% else %}
         <li class="active">{{ author.name }}</li>
         {% endif %}
 {% endblock %}
 
 {% block head_feeds %}
-    <link rel="alternate" type="application/rss+xml" title="{% trans 'blog' %} {{ author.name }} {% trans 'in' %} {{ site.name }} - RSS 2.0 Feed" href="{% url 'planet_author_rss_feed' author.pk %}" />
+    <link rel="alternate" type="application/rss+xml"
+      title="{% blocktrans with author_name=author.name site_name=site.name  %} blog by {{ author_name }} in {{ site_name }} - RSS 2.0 Feed{% endblocktrans %}"
+      href="{% url 'planet_author_rss_feed' author.pk %}" />
 {% endblock %}
 
 {% block rss_feed %}
-    <a href="{% url 'planet_author_rss_feed' author.pk %}" title="{% trans 'Suscribe to RSS feed for blog' %} {{ author.name }}">
+    <a href="{% url 'planet_author_rss_feed' author.pk %}"
+      title="{% blocktrans with author_name=author.name %}Suscribe to RSS feed for {{ author_name }}'s blog{% endblocktrans %}">
         <img src="{{ MEDIA_URL }}images/rss20.png" alt="RSS 2.0 Feed"/>
     </a>
 {% endblock %}
@@ -47,12 +50,12 @@
         {% for blog in author|get_blogs %}
         <tr>
           <th>{% trans 'Blog website' %}</th>
-          <td><a href="{{ blog.url }}">link</a></td>
+          <td><a href="{{ blog.url }}">{% trans 'Link' %}</a></td>
         </tr>
         {% endfor %}
         <tr>
           <th>{% trans 'Stats' %}</th>
-          <td>Has written {{ author|post_count }} posts about or related to Django</td>
+          <td>{% blocktrans with author_posts=author|post_count %}Has written {{ author_posts }} posts about or related to Django{% endblocktrans %}</td>
         </tr>
     </table>
 
