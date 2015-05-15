@@ -7,7 +7,7 @@ python:
 
 env:
     - DJANGO="django==1.5.1 --use-mirrors"
-    - DJANGO="django==1.6.1 --use-mirrors"
+    - DJANGO="django==1.6.9 --use-mirrors"
 
 cache: pip
 
@@ -28,6 +28,6 @@ install:
 
 before_script: coverage erase
 
-script: coverage run --source=planet manage.py test --settings=testsettings planet.tests
+script: coverage run --source=planet manage.py test --settings=testsettings
 
 after_success: coverage report; coveralls
