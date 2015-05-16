@@ -14,13 +14,12 @@ setup(
 
     install_requires=[
         "feedparser",
-        "south",
-        "django-tagging>=0.3.1",
+        "django-tagging>=0.3.6",
         "django-pagination-py3",
-        "Django>=1.5",
+        "Django>=1.7",
         "beautifulsoup4",
-        "celery>=3.0.0",
-        "django-celery"
+        "celery>=3.1.18",
+        "django-celery>=3.1.16"
     ],
 
     packages=find_packages(),
