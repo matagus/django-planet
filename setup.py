@@ -28,6 +28,7 @@ setup(
         "planet": [
             "static/planet/*.css",
             "static/planet/images/*.png",
+            "locale/*/LC_MESSAGES/*.mo",
             "templates/*.html",
             "templates/planet/*.html",
             "templates/planet/*/*.html",

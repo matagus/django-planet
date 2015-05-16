@@ -1,0 +1,1080 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-16 18:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: build/lib.linux-i686-2.7/planet/feeds.py:25 planet/feeds.py:25
+#, python-format
+msgid "%s latest posts"
+msgstr "Posts recientes de %s"
+
+#: build/lib.linux-i686-2.7/planet/feeds.py:64 build/lib/planet/feeds.py:64
+#: planet/feeds.py:64
+#, python-format
+msgid "Posts by %(author_name)s - %(site_name)s"
+msgstr "Posts por %(author_name)s - %(site_name)s"
+
+#: build/lib.linux-i686-2.7/planet/feeds.py:81 build/lib/planet/feeds.py:81
+#: planet/feeds.py:81
+#, python-format
+msgid "Posts under %(tag)s tag - %(site_name)s"
+msgstr "Posts etiquetados %(tag)s tag - %(site_name)s"
+
+#: build/lib.linux-i686-2.7/planet/feeds.py:100 build/lib/planet/feeds.py:100
+#: planet/feeds.py:100
+#, python-format
+msgid "Posts by %(author_name)s under %(tag)s tag - %(site_name)s"
+msgstr "Posts por %(author_name)s etiquetados %(tag)s tag - %(site_name)s"
+
+#: build/lib.linux-i686-2.7/planet/forms.py:10
+#: build/lib.linux-i686-2.7/planet/models.py:276
+#: build/lib.linux-i686-2.7/planet/templates/base.html:51
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:55
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/list.html:16
+#: build/lib/planet/forms.py:9 build/lib/planet/models.py:260
+#: build/lib/planet/templates/planet/feeds/detail.html:55
+#: build/lib/planet/templates/planet/posts/list.html:16 planet/forms.py:10
+#: planet/models.py:276 planet/templates/base.html:51
+#: planet/templates/planet/feeds/detail.html:55
+#: planet/templates/planet/posts/list.html:16
+msgid "Posts"
+msgstr "Posts"
+
+#: build/lib.linux-i686-2.7/planet/forms.py:11
+#: build/lib.linux-i686-2.7/planet/templates/base.html:54
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:14
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/cloud.html:13
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/list.html:14
+#: build/lib/planet/forms.py:10
+#: build/lib/planet/templates/planet/tags/list.html:14 planet/forms.py:11
+#: planet/templates/base.html:54
+#: planet/templates/planet/authors/list_for_tag.html:14
+#: planet/templates/planet/tags/cloud.html:13
+#: planet/templates/planet/tags/list.html:14
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: build/lib.linux-i686-2.7/planet/forms.py:12
+#: build/lib.linux-i686-2.7/planet/models.py:62
+#: build/lib.linux-i686-2.7/planet/templates/base.html:52
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:14
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:13
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:18
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/detail.html:17
+#: build/lib/planet/forms.py:11 build/lib/planet/models.py:50
+#: build/lib/planet/templates/planet/blogs/list.html:13
+#: build/lib/planet/templates/planet/blogs/list.html:18 planet/forms.py:12
+#: planet/models.py:62 planet/templates/base.html:52
+#: planet/templates/planet/blogs/detail.html:14
+#: planet/templates/planet/blogs/list.html:13
+#: planet/templates/planet/blogs/list.html:18
+#: planet/templates/planet/posts/detail.html:17
+msgid "Blogs"
+msgstr "Blogs"
+
+#: build/lib.linux-i686-2.7/planet/forms.py:13
+#: build/lib.linux-i686-2.7/planet/models.py:314
+#: build/lib.linux-i686-2.7/planet/templates/base.html:53
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list.html:3
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:15
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:18
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:17
+#: build/lib/planet/forms.py:12 build/lib/planet/models.py:298
+#: build/lib/planet/templates/planet/authors/blocks/list.html:3
+#: build/lib/planet/templates/planet/authors/list.html:18
+#: build/lib/planet/templates/planet/authors/list_for_tag.html:17
+#: planet/forms.py:13 planet/models.py:314 planet/templates/base.html:53
+#: planet/templates/planet/authors/blocks/list.html:3
+#: planet/templates/planet/authors/detail.html:15
+#: planet/templates/planet/authors/list.html:18
+#: planet/templates/planet/authors/list_for_tag.html:17
+msgid "Authors"
+msgstr "Autores"
+
+#: build/lib.linux-i686-2.7/planet/forms.py:14
+#: build/lib.linux-i686-2.7/planet/models.py:172
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:15
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:13
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:17
+#: build/lib/planet/forms.py:13 build/lib/planet/models.py:160
+#: build/lib/planet/templates/planet/feeds/list.html:15 planet/forms.py:14
+#: planet/models.py:172 planet/templates/planet/feeds/add.html:15
+#: planet/templates/planet/feeds/blocks/syndication_block.html:5
+#: planet/templates/planet/feeds/list.html:13
+#: planet/templates/planet/feeds/list.html:17
+msgid "Feeds"
+msgstr "Feeds"
+
+#: build/lib.linux-i686-2.7/planet/models.py:52 build/lib/planet/models.py:41
+#: planet/models.py:52
+msgid "title"
+msgstr "título"
+
+#: build/lib.linux-i686-2.7/planet/models.py:53
+#: build/lib.linux-i686-2.7/planet/models.py:82
+#: build/lib.linux-i686-2.7/planet/models.py:126
+#: build/lib.linux-i686-2.7/planet/models.py:262
+#: build/lib.linux-i686-2.7/planet/models.py:336
+#: build/lib.linux-i686-2.7/planet/models.py:358
+#: build/lib.linux-i686-2.7/planet/models.py:382 build/lib/planet/models.py:42
+#: build/lib/planet/models.py:70 build/lib/planet/models.py:114
+#: build/lib/planet/models.py:246 build/lib/planet/models.py:320
+#: build/lib/planet/models.py:342 build/lib/planet/models.py:366
+#: planet/models.py:53 planet/models.py:82 planet/models.py:126
+#: planet/models.py:262 planet/models.py:336 planet/models.py:358
+#: planet/models.py:382
+msgid "Url"
+msgstr "Url"
+
+#: build/lib.linux-i686-2.7/planet/models.py:54
+#: build/lib.linux-i686-2.7/planet/models.py:105
+#: build/lib.linux-i686-2.7/planet/models.py:241
+#: build/lib.linux-i686-2.7/planet/models.py:269 build/lib/planet/models.py:43
+#: build/lib/planet/models.py:93 build/lib/planet/models.py:225
+#: build/lib/planet/models.py:253 planet/models.py:54 planet/models.py:105
+#: planet/models.py:241 planet/models.py:269
+msgid "Date created"
+msgstr "Fecha de creación"
+
+#: build/lib.linux-i686-2.7/planet/models.py:61
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:9
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:18
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:41
+#: build/lib/planet/models.py:49
+#: build/lib/planet/templates/planet/blogs/detail.html:5
+#: build/lib/planet/templates/planet/blogs/detail.html:8
+#: build/lib/planet/templates/planet/blogs/detail.html:9
+#: build/lib/planet/templates/planet/blogs/detail.html:18
+#: build/lib/planet/templates/planet/feeds/detail.html:41 planet/models.py:61
+#: planet/templates/planet/blogs/detail.html:5
+#: planet/templates/planet/blogs/detail.html:8
+#: planet/templates/planet/blogs/detail.html:9
+#: planet/templates/planet/blogs/detail.html:18
+#: planet/templates/planet/feeds/detail.html:41
+msgid "Blog"
+msgstr "Blog"
+
+#: build/lib.linux-i686-2.7/planet/models.py:81
+#: build/lib.linux-i686-2.7/planet/models.py:304 build/lib/planet/models.py:69
+#: build/lib/planet/models.py:288 planet/models.py:81 planet/models.py:304
+msgid "Name"
+msgstr "Nombre"
+
+#: build/lib.linux-i686-2.7/planet/models.py:83 build/lib/planet/models.py:71
+#: planet/models.py:83
+msgid "Version"
+msgstr "Versión"
+
+#: build/lib.linux-i686-2.7/planet/models.py:89 build/lib/planet/models.py:77
+#: planet/models.py:89
+msgid "Generator"
+msgstr "Generador"
+
+#: build/lib.linux-i686-2.7/planet/models.py:90 build/lib/planet/models.py:78
+#: planet/models.py:90
+msgid "Generators"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:104 build/lib/planet/models.py:92
+#: planet/models.py:104
+msgid "Category Title"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:108 build/lib/planet/models.py:96
+#: planet/models.py:108
+msgid "Feed Category"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:109 build/lib/planet/models.py:97
+#: planet/models.py:109
+msgid "Feed Categories"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:128
+#: build/lib.linux-i686-2.7/planet/models.py:260
+#: build/lib.linux-i686-2.7/planet/models.py:359
+#: build/lib/planet/models.py:116 build/lib/planet/models.py:244
+#: build/lib/planet/models.py:343 planet/models.py:128 planet/models.py:260
+#: planet/models.py:359
+msgid "Title"
+msgstr "Título"
+
+#: build/lib.linux-i686-2.7/planet/models.py:131
+#: build/lib/planet/models.py:119 planet/models.py:131
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: build/lib.linux-i686-2.7/planet/models.py:133
+#: build/lib/planet/models.py:121 planet/models.py:133
+msgid "Rights"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:138
+#: build/lib/planet/models.py:126 planet/models.py:138
+msgid "Infos"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:140
+#: build/lib/planet/models.py:128 planet/models.py:140
+msgid "Language"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:143
+#: build/lib/planet/models.py:131 planet/models.py:143
+msgid "Global Unique Identifier"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:146
+#: build/lib/planet/models.py:134 planet/models.py:146
+msgid "Icon URL"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:148
+#: build/lib/planet/models.py:136 planet/models.py:148
+msgid "Image URL"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:151
+#: build/lib/planet/models.py:139 planet/models.py:151
+msgid "Etag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:154
+#: build/lib/planet/models.py:142 planet/models.py:154
+msgid "Last modified"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:157
+#: build/lib/planet/models.py:145 planet/models.py:157
+msgid "Last checked"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:160
+#: build/lib/planet/models.py:148 planet/models.py:160
+msgid "Is active"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:162
+#: build/lib/planet/models.py:150 planet/models.py:162
+msgid "If disabled, this feed will not be further updated."
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:171
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:9
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:33
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:28
+#: build/lib/planet/models.py:159
+#: build/lib/planet/templates/planet/feeds/detail.html:5
+#: build/lib/planet/templates/planet/feeds/detail.html:8
+#: build/lib/planet/templates/planet/feeds/detail.html:9
+#: build/lib/planet/templates/planet/feeds/detail.html:33
+#: build/lib/planet/templates/planet/feeds/list.html:26 planet/models.py:171
+#: planet/templates/planet/feeds/detail.html:5
+#: planet/templates/planet/feeds/detail.html:8
+#: planet/templates/planet/feeds/detail.html:9
+#: planet/templates/planet/feeds/detail.html:33
+#: planet/templates/planet/feeds/list.html:28
+msgid "Feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:240
+#: build/lib/planet/models.py:224 planet/models.py:240
+msgid "Is Contributor?"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:244
+#: build/lib.linux-i686-2.7/planet/models.py:245
+#: build/lib/planet/models.py:228 build/lib/planet/models.py:229
+#: planet/models.py:244 planet/models.py:245
+msgid "Post Author Data"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:263
+#: build/lib/planet/models.py:247 planet/models.py:263
+msgid "Guid"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:264
+#: build/lib/planet/models.py:248 planet/models.py:264
+msgid "Content"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:265
+#: build/lib/planet/models.py:249 planet/models.py:265
+msgid "Comments URL"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:267
+#: build/lib/planet/models.py:251 planet/models.py:267
+msgid "Date modified"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:275
+#: build/lib/planet/models.py:259 planet/models.py:275
+msgid "Post"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:306
+#: build/lib/planet/models.py:290 planet/models.py:306
+msgid "Author email"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:307
+#: build/lib/planet/models.py:291 planet/models.py:307
+msgid "Profile URL"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:313
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:25
+#: build/lib/planet/models.py:297
+#: build/lib/planet/templates/planet/blogs/detail.html:25 planet/models.py:313
+#: planet/templates/planet/blogs/detail.html:25
+msgid "Author"
+msgstr "Autor"
+
+#: build/lib.linux-i686-2.7/planet/models.py:334
+#: build/lib.linux-i686-2.7/planet/models.py:356
+#: build/lib/planet/models.py:318 build/lib/planet/models.py:340
+#: planet/models.py:334 planet/models.py:356
+msgid "Relation"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:335
+#: build/lib.linux-i686-2.7/planet/models.py:357
+#: build/lib.linux-i686-2.7/planet/models.py:381
+#: build/lib/planet/models.py:319 build/lib/planet/models.py:341
+#: build/lib/planet/models.py:365 planet/models.py:335 planet/models.py:357
+#: planet/models.py:381
+msgid "MIME type"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:342
+#: build/lib/planet/models.py:326 planet/models.py:342
+msgid "Feed Link"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:343
+#: build/lib/planet/models.py:327 planet/models.py:343
+msgid "Feed Links"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:365
+#: build/lib/planet/models.py:349 planet/models.py:365
+msgid "Post Link"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:366
+#: build/lib/planet/models.py:350 planet/models.py:366
+msgid "Post Links"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:380
+#: build/lib/planet/models.py:364 planet/models.py:380
+msgid "Length"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:388
+#: build/lib/planet/models.py:372 planet/models.py:388
+msgid "Post Enclosure"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/models.py:389
+#: build/lib/planet/models.py:373 planet/models.py:389
+msgid "Post Enclosures"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/base.html:55
+#: planet/templates/base.html:55
+msgid "Add Feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/base.html:72
+#: planet/templates/base.html:72
+msgid "Home"
+msgstr "Página Principal"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list.html:7
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list_for_tag.html:8
+#: build/lib/planet/templates/planet/authors/blocks/list.html:7
+#: build/lib/planet/templates/planet/authors/blocks/list_for_tag.html:8
+#: planet/templates/planet/authors/blocks/list.html:7
+#: planet/templates/planet/authors/blocks/list_for_tag.html:8
+msgid "Author of"
+msgstr "Autor de"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list_for_feed.html:2
+#: build/lib/planet/templates/planet/authors/blocks/list_for_feed.html:2
+#: planet/templates/planet/authors/blocks/list_for_feed.html:2
+msgid "Authors for this feed"
+msgstr "Autores de este feed"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list_for_tag.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:20
+#: build/lib/planet/templates/planet/authors/blocks/list_for_tag.html:5
+#: build/lib/planet/templates/planet/authors/list_for_tag.html:20
+#: planet/templates/planet/authors/blocks/list_for_tag.html:5
+#: planet/templates/planet/authors/list_for_tag.html:20
+msgid "Authors talking about"
+msgstr "Autores hablando sobre"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:22
+#: planet/templates/planet/authors/detail.html:22
+msgid "Tagged"
+msgstr "Etiquetas"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:30
+#: planet/templates/planet/authors/detail.html:30
+#, python-format
+msgid " blog by %(author_name)s in %(site_name)s - RSS 2.0 Feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:36
+#: planet/templates/planet/authors/detail.html:36
+#, python-format
+msgid "Suscribe to RSS feed for %(author_name)s's blog"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:46
+#: build/lib/planet/templates/planet/authors/detail.html:43
+#: planet/templates/planet/authors/detail.html:46
+msgid "Blog Info"
+msgstr "Información sobre este blog"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:52
+#: build/lib/planet/templates/planet/authors/detail.html:49
+#: planet/templates/planet/authors/detail.html:52
+msgid "Blog website"
+msgstr "Web"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:53
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:22
+#: planet/templates/planet/authors/detail.html:53
+#: planet/templates/planet/blogs/detail.html:22
+msgid "Link"
+msgstr "Enlace"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:57
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:33
+#: build/lib/planet/templates/planet/authors/detail.html:54
+#: build/lib/planet/templates/planet/blogs/detail.html:33
+#: planet/templates/planet/authors/detail.html:57
+#: planet/templates/planet/blogs/detail.html:33
+msgid "Stats"
+msgstr "Estadísticas"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:58
+#: planet/templates/planet/authors/detail.html:58
+#, python-format
+msgid "Has written %(author_posts)s posts about or related to Django"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:64
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:38
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:61
+#: build/lib/planet/templates/planet/authors/detail.html:61
+#: build/lib/planet/templates/planet/blogs/detail.html:38
+#: build/lib/planet/templates/planet/feeds/detail.html:61
+#: planet/templates/planet/authors/detail.html:64
+#: planet/templates/planet/blogs/detail.html:38
+#: planet/templates/planet/feeds/detail.html:61
+msgid "Posts under tag"
+msgstr "Posts etiquetados"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:65
+#: build/lib/planet/templates/planet/authors/detail.html:62
+#: planet/templates/planet/authors/detail.html:65
+msgid "See all posts by"
+msgstr "Ver todos los posts de"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:66
+#: build/lib/planet/templates/planet/authors/detail.html:63
+#: planet/templates/planet/authors/detail.html:66
+msgid "See the complete list of posts by this author"
+msgstr "Ver la lista completa de los posts escritos por este autor"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:9
+#: build/lib/planet/templates/planet/authors/list.html:5
+#: build/lib/planet/templates/planet/authors/list.html:8
+#: build/lib/planet/templates/planet/authors/list.html:9
+#: planet/templates/planet/authors/list.html:5
+#: planet/templates/planet/authors/list.html:8
+#: planet/templates/planet/authors/list.html:9
+msgid "Authors list"
+msgstr "Lista de Autores"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:13
+#: build/lib/planet/templates/planet/authors/list.html:13
+#: planet/templates/planet/authors/list.html:13
+msgid "Blog Authors"
+msgstr "Autores de Blogs"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:25
+#: build/lib/planet/templates/planet/authors/list.html:25
+#: planet/templates/planet/authors/list.html:25
+msgid "Author:"
+msgstr "Autor:"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:31
+#: planet/templates/planet/authors/list.html:31
+msgid "writes for:"
+msgstr "escribe para:"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:5
+#: build/lib/planet/templates/planet/authors/list_for_tag.html:5
+#: planet/templates/planet/authors/list_for_tag.html:5
+msgid "Authors under tag"
+msgstr "Autores etiquetados con"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/authors/list_for_tag.html:9
+#: build/lib/planet/templates/planet/authors/list_for_tag.html:8
+#: build/lib/planet/templates/planet/authors/list_for_tag.html:9
+#: planet/templates/planet/authors/list_for_tag.html:8
+#: planet/templates/planet/authors/list_for_tag.html:9
+msgid "Authors for tag"
+msgstr "Autores etiquetados con"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/base.html:11
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:45
+#: build/lib/planet/templates/planet/feeds/detail.html:45
+#: planet/templates/planet/base.html:11
+#: planet/templates/planet/feeds/blocks/syndication_block.html:8
+#: planet/templates/planet/feeds/detail.html:45
+msgid "RSS 2.0 Feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/base.html:16
+#: build/lib/planet/templates/planet/base.html:16
+#: planet/templates/planet/base.html:16
+msgid "Search in"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/base.html:18
+#: build/lib/planet/templates/planet/base.html:18
+#: planet/templates/planet/base.html:18
+msgid "ok"
+msgstr "ok"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/base.html:31
+#: build/lib/planet/templates/planet/base.html:30
+#: planet/templates/planet/base.html:31
+msgid ""
+"A <a href=\"http://github.com/matagus/django-planet\" title=\"django-planet "
+"Powered\">django-planet</a> powered site"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:21
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:30
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:49
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:31
+#: build/lib/planet/templates/planet/blogs/detail.html:21
+#: build/lib/planet/templates/planet/blogs/list.html:30
+#: build/lib/planet/templates/planet/feeds/detail.html:49
+#: build/lib/planet/templates/planet/feeds/list.html:29
+#: planet/templates/planet/blogs/detail.html:21
+#: planet/templates/planet/blogs/list.html:30
+#: planet/templates/planet/feeds/detail.html:49
+#: planet/templates/planet/feeds/list.html:31
+msgid "web"
+msgstr "sitio web"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:22
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:30
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:49
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:31
+#: build/lib/planet/templates/planet/blogs/detail.html:22
+#: build/lib/planet/templates/planet/blogs/list.html:30
+#: build/lib/planet/templates/planet/feeds/detail.html:49
+#: build/lib/planet/templates/planet/feeds/list.html:29
+#: planet/templates/planet/blogs/detail.html:22
+#: planet/templates/planet/blogs/list.html:30
+#: planet/templates/planet/feeds/detail.html:49
+#: planet/templates/planet/feeds/list.html:31
+msgid "Go to the original blog"
+msgstr "Visitar el blog original"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:28
+#: build/lib/planet/templates/planet/blogs/detail.html:28
+#: planet/templates/planet/blogs/detail.html:28
+msgid "See author profile and his/her blog posts"
+msgstr "Ver el perfil del autor y sus posts"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:34
+#: planet/templates/planet/blogs/detail.html:34
+#, python-format
+msgid "Has published %(p_count)s posts about or related to Django"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:50
+#: build/lib/planet/templates/planet/blogs/detail.html:50
+#: planet/templates/planet/blogs/detail.html:50
+msgid "See the list of blogs talking about this tag"
+msgstr "Ver la lista de blogs hablando sobre esta etiqueta"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:51
+#: build/lib/planet/templates/planet/blogs/detail.html:51
+#: planet/templates/planet/blogs/detail.html:51
+msgid "Other blogs talking about "
+msgstr "Otros blogs hablando sobre "
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:9
+#: build/lib/planet/templates/planet/blogs/list.html:5
+#: build/lib/planet/templates/planet/blogs/list.html:8
+#: build/lib/planet/templates/planet/blogs/list.html:9
+#: planet/templates/planet/blogs/list.html:5
+#: planet/templates/planet/blogs/list.html:8
+#: planet/templates/planet/blogs/list.html:9
+msgid "Blogs list"
+msgstr "Lista de Blogs"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:24
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:33
+#: build/lib/planet/templates/planet/blogs/list.html:24
+#: build/lib/planet/templates/planet/blogs/list.html:33
+#: planet/templates/planet/blogs/list.html:24
+#: planet/templates/planet/blogs/list.html:33
+msgid "See the full list of posts from this blog"
+msgstr "Ver las lista de posts de este blog"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:33
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:34
+#: build/lib/planet/templates/planet/blogs/list.html:33
+#: build/lib/planet/templates/planet/feeds/list.html:32
+#: planet/templates/planet/blogs/list.html:33
+#: planet/templates/planet/feeds/list.html:34
+msgid "browse"
+msgstr "navegar posts"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:33
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:34
+#: build/lib/planet/templates/planet/blogs/list.html:33
+#: build/lib/planet/templates/planet/feeds/list.html:32
+#: planet/templates/planet/blogs/list.html:33
+#: planet/templates/planet/feeds/list.html:34
+msgid "latest posts"
+msgstr "posts recientes"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:37
+#: build/lib/planet/templates/planet/blogs/list.html:37
+#: planet/templates/planet/blogs/list.html:37
+msgid "feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:39
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:46
+#: build/lib/planet/templates/planet/blogs/list.html:39
+#: build/lib/planet/templates/planet/feeds/detail.html:46
+#: planet/templates/planet/blogs/list.html:39
+#: planet/templates/planet/feeds/detail.html:46
+msgid "Subscribe to "
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/blogs/list.html:40
+#: planet/templates/planet/blogs/list.html:40
+msgid "RSS"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:9
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:19
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:23
+#: planet/templates/planet/feeds/add.html:5
+#: planet/templates/planet/feeds/add.html:8
+#: planet/templates/planet/feeds/add.html:9
+#: planet/templates/planet/feeds/add.html:19
+#: planet/templates/planet/feeds/add.html:23
+msgid "Add a New Feed"
+msgstr "Agregar un Nuevo Feed"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:26
+#: planet/templates/planet/feeds/add.html:26
+msgid "Submit"
+msgstr "Guardar"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/add.html:27
+#: planet/templates/planet/feeds/add.html:27
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/list_for_author.html:4
+#: build/lib/planet/templates/planet/feeds/blocks/list_for_author.html:4
+#: planet/templates/planet/feeds/blocks/list_for_author.html:4
+msgid "Writes for"
+msgstr "Escribe para"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:7
+#: build/lib/planet/templates/planet/feeds/blocks/syndication_block.html:7
+#: planet/templates/planet/feeds/blocks/syndication_block.html:7
+msgid "Suscribe to RSS feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:12
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:13
+#: planet/templates/planet/feeds/blocks/syndication_block.html:12
+#: planet/templates/planet/feeds/blocks/syndication_block.html:13
+msgid "OPML"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:17
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:18
+#: planet/templates/planet/feeds/blocks/syndication_block.html:17
+#: planet/templates/planet/feeds/blocks/syndication_block.html:18
+msgid "FOAF"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:31
+#: build/lib/planet/templates/planet/feeds/detail.html:31
+#: planet/templates/planet/feeds/detail.html:31
+msgid "Feed icon"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:42
+#: build/lib/planet/templates/planet/feeds/detail.html:42
+#: planet/templates/planet/feeds/detail.html:42
+msgid "See details and posts for blog"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/detail.html:52
+#: build/lib/planet/templates/planet/feeds/detail.html:52
+#: planet/templates/planet/feeds/detail.html:52
+msgid "Last Update"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:4
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:7
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:8
+#: build/lib/planet/templates/planet/feeds/list.html:4
+#: build/lib/planet/templates/planet/feeds/list.html:7
+#: build/lib/planet/templates/planet/feeds/list.html:8
+#: planet/templates/planet/feeds/list.html:4
+#: planet/templates/planet/feeds/list.html:7
+#: planet/templates/planet/feeds/list.html:8
+msgid "Feeds list"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:24
+#: build/lib/planet/templates/planet/feeds/list.html:22
+#: planet/templates/planet/feeds/list.html:24
+msgid "See the full list of post from this feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:28
+#: build/lib/planet/templates/planet/feeds/list.html:26
+#: planet/templates/planet/feeds/list.html:28
+msgid "Subscribe to this feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list.html:34
+#: build/lib/planet/templates/planet/feeds/list.html:32
+#: planet/templates/planet/feeds/list.html:34
+msgid "See the full list of posts from this feed"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:5
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:5
+#: planet/templates/planet/feeds/list_for_tag.html:5
+msgid "Feeds under tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:9
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:8
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:9
+#: planet/templates/planet/feeds/list_for_tag.html:8
+#: planet/templates/planet/feeds/list_for_tag.html:9
+msgid "Feeds for tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:14
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/short.html:20
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:31
+#: build/lib/planet/templates/planet/tags/detail.html:31
+#: planet/templates/planet/feeds/list_for_tag.html:14
+#: planet/templates/planet/posts/short.html:20
+#: planet/templates/planet/tags/detail.html:31
+msgid "Tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:17
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:17
+#: planet/templates/planet/feeds/list_for_tag.html:17
+msgid "Blog Feeds"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:20
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:20
+#: planet/templates/planet/feeds/list_for_tag.html:20
+msgid "Feeds talking about"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/feeds/list_for_tag.html:25
+#: build/lib/planet/templates/planet/feeds/list_for_tag.html:25
+#: planet/templates/planet/feeds/list_for_tag.html:25
+msgid "Subscribe to feed of"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/list.html:3
+#: build/lib/planet/templates/planet/list.html:3
+#: planet/templates/planet/list.html:3
+msgid "Latest posts"
+msgstr "Posts recientes"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/details.html:4
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/short.html:4
+#: build/lib/planet/templates/planet/posts/details.html:4
+#: build/lib/planet/templates/planet/posts/short.html:4
+#: planet/templates/planet/posts/details.html:4
+#: planet/templates/planet/posts/short.html:4
+msgid "Read "
+msgstr "Leer más"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/details.html:11
+#: build/lib/planet/templates/planet/posts/details.html:11
+#: planet/templates/planet/posts/details.html:11
+msgid "Read an archived version of"
+msgstr "Leer la versión archivada de"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/details.html:13
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/short.html:14
+#: build/lib/planet/templates/planet/posts/details.html:13
+#: build/lib/planet/templates/planet/posts/short.html:14
+#: planet/templates/planet/posts/details.html:13
+#: planet/templates/planet/posts/short.html:14
+msgid "[Archived Version]"
+msgstr "[Versión Archivada de este post]"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/details.html:15
+#: planet/templates/planet/posts/details.html:15
+msgid "Published at"
+msgstr "Publicado el"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/details.html:15
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/short.html:16
+#: build/lib/planet/templates/planet/posts/details.html:15
+#: build/lib/planet/templates/planet/posts/short.html:16
+#: planet/templates/planet/posts/details.html:15
+#: planet/templates/planet/posts/short.html:16
+msgid "See all posts for this blog"
+msgstr "Ver todos los posts de este blog"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:8
+#: build/lib/planet/templates/planet/posts/full_details.html:8
+#: planet/templates/planet/posts/full_details.html:8
+msgid "published by"
+msgstr "publicado por"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:9
+#: build/lib/planet/templates/planet/posts/full_details.html:9
+#: planet/templates/planet/posts/full_details.html:9
+msgid "See all posts for this author"
+msgstr "Ver todos los posts de este autor"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:15
+#: build/lib/planet/templates/planet/posts/full_details.html:15
+#: planet/templates/planet/posts/full_details.html:15
+msgid "in blog"
+msgstr "en el blog"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:15
+#: build/lib/planet/templates/planet/posts/full_details.html:15
+#: planet/templates/planet/posts/full_details.html:15
+msgid "See all posts for this blopg"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:20
+#: build/lib/planet/templates/planet/posts/full_details.html:20
+#: planet/templates/planet/posts/full_details.html:20
+msgid "original entry"
+msgstr "post original"
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/list.html:6
+#: build/lib/planet/templates/planet/posts/list.html:6
+#: planet/templates/planet/posts/list.html:6
+msgid "django-planet: django blog news aggregator"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/list.html:11
+#: planet/templates/planet/posts/list.html:11
+#, python-format
+msgid ""
+"%(site_name)s is a planet website aggregating the best Django blogs and "
+"content available around the web"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/list.html:12
+#: planet/templates/planet/posts/list.html:12
+#, python-format
+msgid "%(site_name)s: Django-related news &amp; blog aggregator"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/posts/list.html:21
+#: build/lib/planet/templates/planet/posts/list.html:21
+#: planet/templates/planet/posts/list.html:21
+msgid "What's new in Django community blogs?"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/blocks/authors_cloud.html:4
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/blocks/blogs_cloud.html:4
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/blocks/cloud.html:3
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/blocks/feeds_cloud.html:4
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/cloud.html:18
+#: build/lib/planet/templates/planet/tags/blocks/authors_cloud.html:4
+#: build/lib/planet/templates/planet/tags/blocks/blogs_cloud.html:4
+#: build/lib/planet/templates/planet/tags/blocks/cloud.html:3
+#: build/lib/planet/templates/planet/tags/blocks/feeds_cloud.html:4
+#: build/lib/planet/templates/planet/tags/cloud.html:18
+#: planet/templates/planet/tags/blocks/authors_cloud.html:4
+#: planet/templates/planet/tags/blocks/blogs_cloud.html:4
+#: planet/templates/planet/tags/blocks/cloud.html:3
+#: planet/templates/planet/tags/blocks/feeds_cloud.html:4
+#: planet/templates/planet/tags/cloud.html:18
+msgid "Tag cloud"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/blocks/related_list.html:5
+#: build/lib/planet/templates/planet/tags/blocks/related_list.html:5
+#: planet/templates/planet/tags/blocks/related_list.html:5
+msgid "Related tags"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/cloud.html:5
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/cloud.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/cloud.html:9
+#: build/lib/planet/templates/planet/tags/cloud.html:5
+#: build/lib/planet/templates/planet/tags/cloud.html:8
+#: build/lib/planet/templates/planet/tags/cloud.html:9
+#: planet/templates/planet/tags/cloud.html:5
+#: planet/templates/planet/tags/cloud.html:8
+#: planet/templates/planet/tags/cloud.html:9
+msgid "Tags cloud"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:6
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:10
+#: build/lib/planet/templates/planet/tags/detail.html:6
+#: build/lib/planet/templates/planet/tags/detail.html:10
+#: planet/templates/planet/tags/detail.html:6
+#: planet/templates/planet/tags/detail.html:10
+msgid "django blog posts news"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:11
+#: build/lib/planet/templates/planet/tags/detail.html:11
+#: planet/templates/planet/tags/detail.html:11
+msgid "django web framework related blog posts, news and articles"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:17
+#: build/lib/planet/templates/planet/tags/detail.html:17
+#: planet/templates/planet/tags/detail.html:17
+msgid "tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:17
+#: build/lib/planet/templates/planet/authors/detail.html:29
+#: build/lib/planet/templates/planet/tags/detail.html:17
+#: planet/templates/planet/tags/detail.html:17
+msgid "in"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:18
+#: build/lib/planet/templates/planet/tags/detail.html:18
+#: planet/templates/planet/tags/detail.html:18
+msgid "Posts in"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:22
+#: build/lib/planet/templates/planet/tags/detail.html:22
+#: planet/templates/planet/tags/detail.html:22
+msgid "Subscribe to RSS feed for tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:53
+#: build/lib/planet/templates/planet/tags/detail.html:53
+#: planet/templates/planet/tags/detail.html:53
+msgid "See the list of authors talking about this tag"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/detail.html:54
+#: build/lib/planet/templates/planet/tags/detail.html:54
+#: planet/templates/planet/tags/detail.html:54
+msgid "Bloggers talking about this"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/list.html:5
+#: build/lib/planet/templates/planet/tags/list.html:5
+#: planet/templates/planet/tags/list.html:5
+msgid "List of tags and categories"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/list.html:8
+#: build/lib.linux-i686-2.7/planet/templates/planet/tags/list.html:9
+#: build/lib/planet/templates/planet/tags/list.html:8
+#: build/lib/planet/templates/planet/tags/list.html:9
+#: planet/templates/planet/tags/list.html:8
+#: planet/templates/planet/tags/list.html:9
+msgid "Tags list"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templatetags/planet_tags.py:202
+#: build/lib/planet/templatetags/planet_tags.py:202
+#: planet/templatetags/planet_tags.py:202
+#, python-format
+msgid "if given, fourth argument to %s tag must be 'with'"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templatetags/planet_tags.py:209
+#: build/lib/planet/templatetags/planet_tags.py:209
+#: planet/templatetags/planet_tags.py:209
+#, python-format
+msgid "%(tag)s tag was given an invalid option: '%(option)s'"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/templatetags/planet_tags.py:214
+#: build/lib/planet/templatetags/planet_tags.py:214
+#: planet/templatetags/planet_tags.py:214
+#, python-format
+msgid "%(tag)s tag was given a badly formatted option: '%(option)s'"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/views.py:247 planet/views.py:250
+#, python-format
+msgid "Feed with url=%(url)s was created successfully"
+msgstr ""
+
+#: build/lib.linux-i686-2.7/planet/views.py:253 planet/views.py:256
+msgid "A feed with this URL already exists."
+msgstr ""
+
+#: build/lib/planet/templates/planet/authors/detail.html:29
+msgid "blog"
+msgstr ""
+
+#: build/lib/planet/templates/planet/authors/detail.html:33
+msgid "Suscribe to RSS feed for blog"
+msgstr ""
