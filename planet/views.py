@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic.edit import CreateView
+from django.views.generic import ListView
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import CreateView, DeleteView
+from django.http import Http404
 
 from planet.models import Blog, Feed, Author, Post
 from planet.forms import SearchForm
@@ -264,3 +267,37 @@ class FeedAddView(CreateView):
         self.object = feed
 
         return HttpResponseRedirect(reverse("planet_index"))
+
+
+class BlogListByUserView(ListView):
+    template_name = 'planet/blogs/list_by_user.html'
+    model = Blog
+
+    def get_queryset(self):
+        return Blog.objects.filter(owner=self.request.user)
+
+
+class OwnedObjectMixin(SingleObjectMixin):
+    """
+    An object that needs to verify current user ownership
+    before allowing manipulation.
+
+    From https://github.com/PyAr/pyarweb/blob/b4095c5c1b474a207e45918683de400974f6a739/community/views.py#L43
+    """
+
+    def get_object(self, *args, **kwargs):
+        obj = super(OwnedObjectMixin, self).get_object(*args, **kwargs)
+
+        try:
+            if not obj.owner == self.request.user:
+                raise Http404()
+        except AttributeError:
+            pass
+
+        return obj
+
+
+class BlogDeleteView(DeleteView, OwnedObjectMixin):
+    template_name = 'planet/blogs/confirm_delete.html'
+    model = Blog
+    success_url = reverse_lazy('planet_blog_list_by_user')

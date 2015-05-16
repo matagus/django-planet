@@ -13,7 +13,7 @@ from django.views.decorators.cache import cache_page
 from planet.feeds import PostFeed, AuthorFeed, AuthorTagFeed, TagFeed
 from planet.settings import PLANET_CONFIG
 from planet.sitemaps import planet_sitemaps_dict
-from planet.views import FeedAddView
+from planet.views import FeedAddView, BlogListByUserView, BlogDeleteView
 
 
 if PLANET_CONFIG["LOGIN_REQUIRED_FOR_ADDING_FEED"]:
@@ -23,8 +23,10 @@ else:
 
 
 urlpatterns = patterns('planet.views',
+    url(r'^blogs/(?P<pk>\d+)/delete/$', login_required(BlogDeleteView.as_view()), name="planet_blog_delete"),
     url(r'^blogs/(?P<blog_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/$', "blog_detail", name="planet_blog_detail"),
     url(r'^blogs/(?P<blog_id>\d+)/$', "blog_detail"),
+    url(r'^blogs/my-blogs/$', login_required(BlogListByUserView.as_view()), name="planet_blog_list_by_user"),
     url(r'^blogs/$', "blogs_list", name="planet_blog_list"),
     url_add_feed_tuple,
     url(r'^feeds/(?P<feed_id>\d+)/(?P<slug>[a-zA-Z0-9_\-]+)/tags/(?P<tag>.*)/$', "feed_detail", name="planet_by_tag_feed_detail"),
