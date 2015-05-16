@@ -9,7 +9,7 @@ class FeedManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(FeedManager, self).get_query_set()
+        qs = super(FeedManager, self).get_queryset()
         return qs.filter(site=settings.SITE_ID, is_active=True)
 
     if django.VERSION < (1, 6):
@@ -20,7 +20,7 @@ class FeedLinkManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(FeedLinkManager, self).get_query_set()
+        qs = super(FeedLinkManager, self).get_queryset()
         return qs.filter(feed__site=settings.SITE_ID)
 
     if django.VERSION < (1, 6):
@@ -31,7 +31,7 @@ class BlogManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(BlogManager, self).get_query_set()
+        qs = super(BlogManager, self).get_queryset()
         return qs.filter(feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
@@ -42,7 +42,7 @@ class GeneratorManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(GeneratorManager, self).get_query_set()
+        qs = super(GeneratorManager, self).get_queryset()
         return qs.filter(feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
@@ -53,7 +53,7 @@ class AuthorManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(AuthorManager, self).get_query_set()
+        qs = super(AuthorManager, self).get_queryset()
         return qs.filter(post__feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
@@ -64,7 +64,7 @@ class PostManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(PostManager, self).get_query_set()
+        qs = super(PostManager, self).get_queryset()
         return qs.filter(feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
@@ -75,7 +75,7 @@ class PostLinkManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(PostLinkManager, self).get_query_set()
+        qs = super(PostLinkManager, self).get_queryset()
         return qs.filter(post__feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
@@ -86,7 +86,7 @@ class EnclosureManager(models.Manager):
     """
     """
     def get_queryset(self):
-        qs = super(EnclosureManager, self).get_query_set()
+        qs = super(EnclosureManager, self).get_queryset()
         return qs.filter(post__feed__site=settings.SITE_ID).distinct()
 
     if django.VERSION < (1, 6):
