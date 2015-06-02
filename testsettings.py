@@ -1,7 +1,7 @@
 import django
 
 DEBUG = False
-TEMPLATE_DEBUiG = DEBUG
+TEMPLATE_DEBUG = DEBUG
 
 ROOT_URLCONF = "planet.urls"
 
