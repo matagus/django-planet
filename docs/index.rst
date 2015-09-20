@@ -79,7 +79,7 @@ common reasons for django-planet.
 * You need to quickly create a blog aggregator website with a nice look & feel.
 * You want a full website for browsing blog posts and its authors and tags,
   feeds and blogs.
-* SEO matters to you: django-planet has templates with SEO metatgas and it
+* SEO matters to you: django-planet has templates with SEO metatags and it
   includes sitemaps so you may submit them to your favorite search engines.
 * You want searching posts, blogs, tags and authors.
 * You need to customize templates and have a rich set of template tags to do it.
@@ -102,7 +102,7 @@ Then running the tests is as simple as::
   # From the same directory as above:
   $ tox
 
-That will test django-planet using python 2.7 combinated with Django 1.4,
+That will test django-planet using Python 2.7 combinated with Django 1.4,
 Django 1.5 and Django 1.6.
 
 
