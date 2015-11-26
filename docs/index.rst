@@ -54,12 +54,14 @@ Required
 --------
 
 * Python 2.6+
-* Django 1.4+
-* django-tagging 0.3.1+
+* Django 1.6/1.7
+* django-tagging 0.3.6+
 * django-pagination 1.0.0+
 * feedparser
 * pinax-theme-bootstrap 3.0
-* BeautifulSoup
+* BeautifulSoup4
+* Celery 3.1.18
+* django-celery 3.1.16
 
 Optional
 --------
