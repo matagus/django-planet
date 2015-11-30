@@ -25,7 +25,12 @@ from django.conf import settings
 from django.db.models.signals import pre_delete
 from django.template.defaultfilters import slugify
 
-import tagging
+# Patch for handle new and old version of django-tagging
+try:
+    from tagging import register
+except ImportError:
+    from tagging.registry import register
+
 from tagging.models import Tag
 
 from planet.managers import (FeedManager, AuthorManager, BlogManager,
@@ -288,7 +293,7 @@ class Post(models.Model):
         return slugify(self.title) or "no-title"
 
 # each Post object now will have got a .tags attribute!
-tagging.register(Post)
+register(Post)
 
 # Deleting all asociated tags.
 def delete_asociated_tags(sender, **kwargs):
