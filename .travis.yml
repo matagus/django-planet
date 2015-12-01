@@ -13,7 +13,7 @@ cache: pip
 
 install:
     - pip install $REQUIREMENTS
-    - pip install django-tagging
+    - pip install django-tagging==0.3.6
     - pip install django-pagination-py3
     - pip install feedparser
     - pip install pinax-theme-bootstrap
