@@ -1,5 +1,5 @@
 Django>=1.6,<1.8
-django-tagging>=0.3.6
+django-tagging==0.3.6
 django-pagination
 feedparser
 pinax-theme-bootstrap==3.0a4
