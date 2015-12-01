@@ -14,7 +14,7 @@ setup(
 
     install_requires=[
         "feedparser",
-        "django-tagging>=0.3.6",
+        "django-tagging==0.3.6",
         "django-pagination-py3",
         "Django>=1.7",
         "beautifulsoup4",

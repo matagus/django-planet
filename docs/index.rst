@@ -55,7 +55,7 @@ Required
 
 * Python 2.6+
 * Django 1.6/1.7
-* django-tagging 0.3.6+
+* django-tagging 0.3.6
 * django-pagination 1.0.0+
 * feedparser
 * pinax-theme-bootstrap 3.0
