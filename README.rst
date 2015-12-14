@@ -5,9 +5,6 @@ django-planet
 .. image:: https://badge.fury.io/py/django-planet.png
    :target: http://badge.fury.io/py/django-planet
 
-.. image:: https://pypip.in/d/django-planet/badge.png
-   :target: https://pypi.python.org/pypi/django-planet
-
 .. image:: https://travis-ci.org/matagus/django-planet.png
    :alt: Build Status (by travis.ci)
    :target: https://travis-ci.org/matagus/django-planet
@@ -54,11 +51,6 @@ Contribute
 - `Issue Tracker <https://github.com/matagus/django-planet/issues>`_
 - `Source Code <https://github.com/matagus/django-planet>`_
 
-Support
-=======
-
-If you are having issues or questions, visit `our forum <https://groups.google.com/forum/#!forum/django-planet>`_
-and feel free to ask. I'll be glad to help you.
 
 License
 =======
