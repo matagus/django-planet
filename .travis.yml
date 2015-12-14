@@ -8,6 +8,7 @@ python:
 env:
     - REQUIREMENTS="Django==1.6.9 South==1.0"
     - REQUIREMENTS="Django==1.7.7"
+    - REQUIREMENTS="Django==1.8.7"
 
 cache: pip
 
