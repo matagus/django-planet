@@ -60,6 +60,10 @@ Required
 * feedparser
 * pinax-theme-bootstrap 3.0
 * BeautifulSoup4
+
+Optionally, install celery if you want to add and update feeds using async &
+parallel tasks:
+
 * Celery 3.1.18
 * django-celery 3.1.16
 

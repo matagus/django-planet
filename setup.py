@@ -17,9 +17,7 @@ setup(
         "django-tagging==0.3.6",
         "django-pagination-py3",
         "Django>=1.6",
-        "beautifulsoup4",
-        "celery>=3.1.18",
-        "django-celery>=3.1.16"
+        "beautifulsoup4"
     ],
 
     packages=find_packages(),
