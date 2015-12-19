@@ -2,7 +2,11 @@
 
 from __future__ import absolute_import
 
-from celery import task
+try:
+    from celery import task
+except ImportError:
+    from planet.utils import task_faker as task
+
 from datetime import datetime
 from hashlib import md5
 try:
@@ -31,7 +35,7 @@ class PostAlreadyExists(Exception):
     pass
 
 
-@task
+@task(ignore_results=True)
 def process_feed(feed_url, owner_id=None, create=False, category_title=None):
     """
     Stores a feed, its related data, its entries and their related data.
