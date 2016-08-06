@@ -44,6 +44,9 @@ INSTALLATION
 ============
 
     * For installation instructions, see `the docs <http://django-planet.readthedocs.org/>`_.
+    
+Note for Django 1.9 : you have to clone the `django-pagination-py3 repository <https://github.com/matagus/django-pagination-py3>`_ as
+the pip version is not yet compatible with Django 1.9.
 
 Contribute
 ==========
