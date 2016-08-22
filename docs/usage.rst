@@ -49,7 +49,35 @@ Modifiy your projects ``settings.py`` file following the next steps:
 
   SITE_ID = 1
 
-4. Include the following context processors:
+4. For Django 1.8 include the following context processors:
+
+.. code-block:: python
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            '/path/to/project/templates',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+				'django.template.context_processors.i18n',
+				'django.template.context_processors.media',
+				'django.template.context_processors.static',
+				'django.template.context_processors.tz',
+                'planet.context_processors.context',
+            ],
+        },
+    },
+]
+
+If you're still using Django 1.6.x or 1.7.x, then set `TEMPLATE_CONTEXT_PROCESSORS`
+this way:
 
 .. code-block:: python
 
@@ -64,8 +92,6 @@ Modifiy your projects ``settings.py`` file following the next steps:
         'django.contrib.messages.context_processors.messages',
         'planet.context_processors.context',
     )
-
-Please do not forget ``planet.context_processors.context``!
 
 5. Check your middlewares to include:
 
@@ -97,16 +123,16 @@ Please do not forget ``pagination.middleware.PaginationMiddleware`` middleware!
 
    STATIC_URL = '/static/'
 
-7. Also your projects templates root directory:
+7. Only for Django 1.6.x or 1.7.x set your projects templates root directory:
 
 .. code-block:: python
 
     TEMPLATE_DIRS = (
-        '/path/to/planet/project/templates',
+        '/path/to/project/templates',
         # other paths...
     )
 
-7. And your template loaders must look like these:
+and your template loaders:
 
 .. code-block:: python
 
