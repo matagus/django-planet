@@ -78,12 +78,12 @@
                         {% endblock %}
                     </div>
                     <div class="row">
-                        <div class="span2 columns">
-                            {% block right_column %}
-                            {% endblock %}
-                        </div>
                         <div class="span10 columns">
                             {% block content %}
+                            {% endblock %}
+                        </div>
+                        <div class="span2 columns">
+                            {% block right_column %}
                             {% endblock %}
                         </div>
                     </div>
@@ -99,7 +99,11 @@
         </div>
 
         {% block script_base %}
-            <script src="{% block jquery_src %}{% static "pinax/js/jquery.js" %}{% endblock %}"></script>
+						<script
+							src="https://code.jquery.com/jquery-3.1.0.min.js"
+							integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+							crossorigin="anonymous">
+						</script>
             <script
               src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
               integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"

@@ -53,24 +53,24 @@ using Pip_ will also install them. Just type::
 Required
 --------
 
-* Python 2.6+
-* Django 1.6/1.7
+* Python 3.4+ or 2.7+
+* Django 1.6 or 1.7 or 1.8
 * django-tagging 0.3.6
-* django-pagination 1.0.0+
-* feedparser
-* pinax-theme-bootstrap 3.0
-* BeautifulSoup4
+* django-pagination 1.0.0+ for python 2.7 or django-pagination-py3 for python 3.5
+* feedparser >= 5.0
+* pinax-theme-bootstrap >= 3.0
+* BeautifulSoup4 >= 4.0
 
 Optionally, install celery if you want to add and update feeds using async &
 parallel tasks:
 
-* Celery 3.1.18
-* django-celery 3.1.16
+* Celery >= 3.0
+* django-celery >= 3.0
 
 Optional
 --------
 
-* south
+* south (only required if you're using Dajngo 1.6.x)
 
 .. _Pip: http://pip.openplans.org/
 
