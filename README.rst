@@ -60,4 +60,5 @@ The project is licensed under the BSD license.
 DEMO
 ----
 
-There is a `simple demo django-planet <http://django-planet.com/>`_.
+There is a `simple demo django-planet <http://django-planet.com/>`_ and a
+`working project and its code open-sourced at github <https://github.com/matagus/django-planet-demo>`_.
