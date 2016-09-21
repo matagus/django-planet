@@ -53,28 +53,28 @@ Modifiy your projects ``settings.py`` file following the next steps:
 
 .. code-block:: python
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            '/path/to/project/templates',
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-				'django.template.context_processors.i18n',
-				'django.template.context_processors.media',
-				'django.template.context_processors.static',
-				'django.template.context_processors.tz',
-                'planet.context_processors.context',
-            ],
-        },
-    },
-]
+	TEMPLATES = [
+	    {
+	        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+	        'DIRS': [
+	            '/path/to/project/templates',
+	        ],
+	        'APP_DIRS': True,
+	        'OPTIONS': {
+	            'context_processors': [
+	                'django.template.context_processors.debug',
+	                'django.template.context_processors.request',
+	                'django.contrib.auth.context_processors.auth',
+	                'django.contrib.messages.context_processors.messages',
+					'django.template.context_processors.i18n',
+					'django.template.context_processors.media',
+					'django.template.context_processors.static',
+					'django.template.context_processors.tz',
+	                'planet.context_processors.context',
+	            ],
+	        },
+	    },
+	]
 
 If you're still using Django 1.6.x or 1.7.x, then set `TEMPLATE_CONTEXT_PROCESSORS`
 this way:
