@@ -103,8 +103,8 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
 
     if create:
         # then create blog, feed, generator, feed links and feed tags
-        title = document.feed.get("title", "--")
-        subtitle = document.feed.get("subtitle")
+        title = document.feed.get("title", "--").encode('ascii', 'xmlcharrefreplace')
+        subtitle = document.feed.get("subtitle").encode('ascii', 'xmlcharrefreplace')
         blog_url = document.feed.get("link")
         rights = document.feed.get("rights") or document.feed.get("license")
         info = document.feed.get("info")
@@ -194,7 +194,7 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
             print("Processing {} entries".format(len(document.entries)))
 
             for entry in document.entries:
-                title = entry.get("title", "")
+                title = entry.get("title", "").encode('ascii', 'xmlcharrefreplace')
                 url = entry.get("link")
                 try:
                     guid = unicode(md5(entry.get("link")).hexdigest())
@@ -202,6 +202,7 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
                     guid = md5(entry.get("link").encode('utf-8')).hexdigest()
                 content = entry.get('description') or entry.get(
                     "content", [{"value": ""}])[0]["value"]
+                content = content.encode('ascii', 'xmlcharrefreplace')
                 comments_url = entry.get("comments")
                 date_modified = entry.get("updated_parsed") or\
                     entry.get("published_parsed")
@@ -310,9 +311,9 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
                     # create and store contributors...
                     for contributor_dict in entry.get("contributors", []):
                         contributor, created = Author.objects.get_or_create(
-                            name=author_dict.get("name", ""),
-                            email=author_dict.get("email", ""),
-                            profile_url=contributor_dict.get("href")
+                            name=author_dict.get("name", "").encode('ascii', 'xmlcharrefreplace'),
+                            email=author_dict.get("email", "").encode('ascii', 'xmlcharrefreplace'),
+                            profile_url=contributor_dict.get("href").encode('ascii', 'xmlcharrefreplace')
                         )
                         try:
                             PostAuthorData.objects.get(
