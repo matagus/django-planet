@@ -1,28 +1,23 @@
 language: python
 
 python:
-    - "2.7"
-    - "3.3"
-    - "3.4"
+    - "3.9"
+    - "3.10"
+    - "3.11"
 
 env:
-    - REQUIREMENTS="Django==1.6.9 South==1.0"
-    - REQUIREMENTS="Django==1.7.7"
-    - REQUIREMENTS="Django==1.8.7"
+    - REQUIREMENTS="Django==3.2.16"
+    - REQUIREMENTS="Django==4.1.5"
 
 cache: pip
 
 install:
     - pip install $REQUIREMENTS
-    - pip install django-tagging==0.3.6
     - pip install django-pagination-py3
-    - pip install feedparser
-    - pip install pinax-theme-bootstrap
-    - pip install beautifulsoup4
-    - pip install coverage==3.6
-    - pip install python-coveralls==2.4.0
-    - pip install factory-boy==2.5.0
-    - pip install mock
+    - pip install feedparser==6.0.10
+    - pip install coverage==7.1.0
+    - pip install python-coveralls==2.9.3
+    - pip install factory-boy==3.2.1
     - export PYTHONPATH=.
 
 before_script: coverage erase

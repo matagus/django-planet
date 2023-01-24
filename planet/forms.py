@@ -3,12 +3,11 @@
 """
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 
 SEARCH_CHOICES = (
     ("posts", _("Posts")),
-    ("tags", _("Tags")),
     ("blogs", _("Blogs")),
     ("authors", _("Authors")),
     ("feeds", _("Feeds")),

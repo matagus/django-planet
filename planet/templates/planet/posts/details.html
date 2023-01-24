@@ -1,25 +1,19 @@
 {% load i18n %}
-{% load url from future %}
-<h2>
-  <a href="{{ post.url }}" title="{% trans 'Read ' %} {{ post.title|safe }}"
-    onclick="javascript: _gaq.push(['_trackEvent', 'Title Link', 'Click', 'long-content']);">
+<div class="card mb-4 border-0">
+  <div class="card-body p-0">
+    <h2 c target="_blank"lass="card-title">
+      <a target="_blank" class="text-success text-decoration-none" href="{{ post.url }}" title="{% trans 'Read more' %}">
         {{ post.title|striptags|safe }}
-  </a>
-</h2>
-<p class="content">
-    <span class="date">{{ post.date_modified|date:"M d Y" }}</span> &square;
-    <a href="{{ post.get_absolute_url }}" title="{% trans 'Read an archived version of' %} {{ post.title|safe }}"
-      onclick="javascript: _gaq.push(['_trackEvent', 'Archived Version Link', 'Click', 'long-content']);">
-      {% trans "[Archived Version]" %}
-    </a> &square;
-    {% trans "Published at" %} <a href="{{ post.feed.blog.get_absolute_url }}" title="{% trans 'See all posts for this blog' %}">{{ post.feed.blog.title }}</a>
-    {% if post.tags.count %} under tags&nbsp;
-      {% for tag in post.tags.all|slice:":5" %}
-          <span class="label"><a href="{% url 'planet_tag_detail' tag.name %}" title="Tag">{{ tag.name }}</a></span>
-      {% endfor %}
-    {% endif %}
-    <div>
-      {{ post.content|safe }}
-    </div>
-</p>
-<br/>
+        </a>
+    </h2>
+    <p>
+      <span class="date">{{ post.date_published|date }}</span> &raquo; 
+      <a href="{{ post.feed.get_absolute_url }}" class="text-success text-decoration-none">{{ post.feed.title }}</a> &raquo; 
+      <a href="{{ post.get_absolute_url }}" class="text-success text-decoration-none" title="{% trans 'Read an archived version of' %} {{ post.title|safe }}">{% trans "[Archived Version]" %}</a>
+    </p>
+    <p class="card-text">
+      {{ post.content|safe|striptags|truncatechars_html:500 }}
+    </p>
+    <a target="_blank" href="{{ post.url }}" class="btn btn-success" title="{% trans 'Read ' %} {{ post.title|safe }}">Read More</a>
+  </div>
+</div>

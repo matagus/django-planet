@@ -1,6 +1,3 @@
-Django>=1.6,<1.9
-django-tagging==0.3.6
+Django>=3
 django-pagination-py3
-feedparser
-pinax-theme-bootstrap==3.0a4
-beautifulsoup4
+feedparser==6.0.10

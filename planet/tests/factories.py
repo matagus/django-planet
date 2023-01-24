@@ -1,23 +1,12 @@
 import factory
 
 from factory.fuzzy import FuzzyText
+from factory.django import DjangoModelFactory
 
-from django.contrib.sites.models import Site
-
-from planet.models import (
-    Blog, Feed, Post, Generator, PostAuthorData,
-    PostLink, Enclosure, FeedLink, Author, Category
-)
+from planet.models import Blog, Feed, Post, PostAuthorData, Author
 
 
-class SiteFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Site
-
-    domain = factory.Sequence(lambda n: u'example-site-{}.com'.format(n))
-
-
-class BlogFactory(factory.DjangoModelFactory):
+class BlogFactory(DjangoModelFactory):
     class Meta:
         model = Blog
 
@@ -26,33 +15,17 @@ class BlogFactory(factory.DjangoModelFactory):
     owner = None
 
 
-class GeneratorFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Generator
-
-    name = factory.Sequence(lambda n: u'generator-{}'.format(n))
-
-
-class CategoryFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Category
-
-    title = factory.Sequence(lambda n: u'Category #{}'.format(n))
-
-
-class FeedFactory(factory.DjangoModelFactory):
+class FeedFactory(DjangoModelFactory):
     class Meta:
         model = Feed
 
     title = factory.Sequence(lambda n: u'Feed-{}'.format(n))
     blog = factory.SubFactory(BlogFactory)
     url = factory.LazyAttribute(lambda obj: '{}feed-{}.rss'.format(obj.blog.url, obj.title))
-    generator = factory.SubFactory(GeneratorFactory)
     language = "en"
-    site = factory.SubFactory(SiteFactory)
 
 
-class AuthorFactory(factory.DjangoModelFactory):
+class AuthorFactory(DjangoModelFactory):
     class Meta:
         model = Author
 
@@ -60,7 +33,7 @@ class AuthorFactory(factory.DjangoModelFactory):
     email = factory.LazyAttribute(lambda obj: u'{}@gmail.com'.format(obj.name))
 
 
-class PostFactory(factory.DjangoModelFactory):
+class PostFactory(DjangoModelFactory):
     class Meta:
         model = Post
 
@@ -82,41 +55,9 @@ class PostFactory(factory.DjangoModelFactory):
                 PostAuthorDataFactory.create(post=self, author=author)
 
 
-class PostAuthorDataFactory(factory.DjangoModelFactory):
+class PostAuthorDataFactory(DjangoModelFactory):
     class Meta:
         model = PostAuthorData
 
     post = factory.SubFactory(PostFactory)
     author = factory.SubFactory(AuthorFactory)
-
-
-class PostLinkFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = PostLink
-
-    title = factory.Sequence(lambda n: u'post-link-{}'.format(n))
-    post = factory.SubFactory(PostFactory)
-    rel = "alternative"
-    mime_type = "application/html"
-    link = factory.LazyAttribute(lambda obj: u'{}post-links/{}.html'.format(obj.feed.blog.url, obj.title))
-
-
-class FeedLinkFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = FeedLink
-
-    feed = factory.SubFactory(FeedFactory)
-    rel = "alternative"
-    mime_type = "application/html"
-    link = factory.LazyAttribute(lambda obj: u'{}feed-links/{}.rss'.format(obj.feed.blog.url, obj.feed.title))
-
-
-class EnclosureFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Enclosure
-
-    title = factory.Sequence(lambda n: u'enclosure-#{}'.format(n))
-    post = factory.SubFactory(PostFactory)
-    mime_type = "image/png"
-    link = factory.Sequence(lambda obj: u'{}post-{}/image-{}.png'.format(obj.post.feed.blog.url, obj.post.title, obj.title))
-    Length = 1024

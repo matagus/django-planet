@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+"""
+Reference Specs:
+
+* RSS: https://validator.w3.org/feed/docs/rss2.html
+* ATOM: https://www.rfc-editor.org/rfc/rfc4287.txt
+
+"""
 
 try:
     from celery import task
@@ -9,10 +15,7 @@ except ImportError:
 
 from datetime import datetime
 from hashlib import md5
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 import feedparser
 import time
@@ -27,8 +30,6 @@ from tagging.models import Tag
 
 from planet.models import (Blog, Generator, Feed, FeedLink, Post, PostLink,
                            Author, PostAuthorData, Enclosure, Category)
-from planet.signals import feeds_updated
-from planet.signals import post_created
 
 
 class PostAlreadyExists(Exception):
@@ -149,7 +150,7 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
             generator = None
 
         if category_title:
-            # TODO: site_objects!
+            # TODO: objects!
             category = Category.objects.get(title=category_title)
         else:
             category = None
@@ -322,10 +323,6 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
                                                  is_contributor=True)
                             pad.save()
 
-                    # We send a post_created signal
-                    print('post_created.send(sender=post)', post)
-                    post_created.send(sender=post, instance=post)
-
             if not stop_retrieving:
                 opensearch_url = "{}?start-index={}&max-results={}".format(
                     feed_url, len(entries) + 1, items_per_page)
@@ -342,22 +339,6 @@ def process_feed(feed_url, owner_id=None, create=False, category_title=None):
     return new_posts_count
 
 
-@task(ignore_results=True)
 def update_feeds():
-    """
-    Task for running on celery beat!
-
-    CELERYBEAT_SCHEDULE = {
-        'update_feeds': {
-            'task': 'planet.tasks.update_feeds',
-            'schedule': timedelta(hours=1)
-        }
-    }
-    """
-
-    for feed_url in Feed.site_objects.all().values_list("url", flat=True):
-        print("Scheduling feed URL={}...".format(feed_url))
-        process_feed.delay(feed_url, create=False)
-        print("Done!")
-
-    feeds_updated.send(sender=None, instance=None)
+    for feed in Feed.active_objects.iterator():
+        feed.retrieve_and_update()

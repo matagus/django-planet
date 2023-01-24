@@ -24,6 +24,8 @@ pip-log.txt
 *.pot
 settings_local.py
 *.sqlite
+*.sqlite3
+.env
 
 ## VIM
 *.swp
@@ -34,4 +36,11 @@ settings_local.py
 # Sphinx
 docs/_build
 
-TODO
+# thumbnails, etc
+screenshots/.DS_Store
+
+TODO.md
+
+# example project static files
+project/statics
+project/statics/*

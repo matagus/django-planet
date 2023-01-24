@@ -1,0 +1,48 @@
+{% if is_paginated %}
+{% load i18n %}
+<nav aria-label="Page Navigation">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link text-success" href="?page={{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}" aria-label="{% trans "previous" %}">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" aria-label="{% trans "previous" %}">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    {% for page in pages %}
+        {% if page %}
+            {% if page == page_obj.number %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">{{ page }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link text-success" href="?page={{ page }}{{ getvars }}{{ hashtag }}">{{ page }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link text-success" href="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}" aria-label="{% trans "next" %}">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" aria-label="{% trans "next" %}">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

@@ -1,49 +1,48 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags  %}
-{% load url from future %}
 
-{% block head_title %}{% trans "Blogs list" %}{% endblock %}
+{% block head_title %}{% trans "Blogs about Django" %} :: {{ site.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Blogs list' %} " />
-    <meta name="description" content="{% trans 'Blogs list' %} " />
+    <meta name="title" content="{% trans 'Blogs' %} :: {{ site.name }} " />
+    <meta name="description" content="{% trans 'Blogs about Django' %} " />
     <meta name="robots" content="noindex, follow" />
 {% endblock %}
 
-{% block breadcrumb_section %}<li class="active">{% trans 'Blogs' %}</li>{% endblock %}
+{% block breadcrumb_section %}
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Blogs' %}</li>
+{% endblock %}
 
 {% block blogs_class %}class="active"{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Blogs" %}</h1>
-    {% autopaginate blogs_list 50 %}
-      {% for blog in blogs_list %}
-        <div class="panel panel-success">
-          <div class="panel-heading">
+    <h1 class="mb-4">{% trans "Blogs" %}</h1>
+    {% autopaginate blogs_list 20 %}
+    <div class="content">
+        {% for blog in blogs_list %}
+        <div class="row pd-0">
             <h3 class="panel-title">
-                <a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
+                <a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
             </h3>
-          </div>
-          <div class="panel-body">
-            <table class="blog details table table-hover table-bordered">
+            <table class="table table-bordered mx-2 w-75">
                 <tr>
-                    <th>{% trans 'web' %}</th><td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>
+                    <th>{% trans 'web' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>
                 </tr>
                 <tr>
-                    <th>{% trans 'browse' %}</th><td><a href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</td>
+                    <th>{% trans 'browse' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</td>
                 </tr>
                 {% for feed in blog.feed_set.all %}
                 <tr>
                     <th>{% trans 'feed' %}</th>
                     <td>
-                      <a href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
+                      <a class="text-success text-decoration-none" href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
                         <span class="rss">{% trans "RSS" %}</span>
                       </a></td>
                 </tr>
                 {% endfor %}
             </table>
-          </div>
         </div>
     {% endfor %}
+    </div>
     {% paginate %}
 {% endblock %}

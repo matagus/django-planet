@@ -1,8 +1,0 @@
-{% load i18n  %}
-{% load url from future %}
-<h4>{% trans "Tag cloud" %}</h4>
-<div class="tags cloud">
-    {% for tag in tags_cloud %}
-        <a href="{% url 'planet_tag_detail' tag.name %}" class=" tag level{{ tag.font_size }}">{{ tag|safe }}</a>&nbsp;
-    {% endfor %}
-</div>

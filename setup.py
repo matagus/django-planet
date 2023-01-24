@@ -13,11 +13,9 @@ setup(
     author_email="matagus+planet@gmail.com",
 
     install_requires=[
-        "feedparser",
-        "django-tagging==0.3.6",
+        "feedparser>=6.0.10",
         "django-pagination-py3",
-        "Django>=1.6",
-        "beautifulsoup4"
+        "Django>=3"
     ],
 
     packages=find_packages(),
@@ -30,10 +28,7 @@ setup(
             "templates/*.html",
             "templates/planet/*.html",
             "templates/planet/*/*.html",
-            "templates/planet/authors/blocks/*.html",
-            "templates/planet/tags/blocks/*.html",
-            "templates/planet/feeds/blocks/*.html",
-            "templates/planet/microformats/*.xml",
+            "templates/planet/*/*/*.html",
         ]},
 
     classifiers=[
@@ -43,11 +38,12 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
     ],
