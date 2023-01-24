@@ -1,34 +1,36 @@
 {% extends "planet/base.html" %}
 {% load i18n planet_tags %}
-{% load url from future %}
 
 {% block head_title %}
-  {{ post.title|safe }}
+  {{ post.title|safe }} :: {{ site.name }}
 {% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ post.title|safe }} " />
+    <meta name="title" content="{{ post.title|safe }} :: {{ site.name }}" />
     <meta name="description" content="{% get_first_paragraph post.content as description %}{{ description }}" />
     <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href="http://{{ site.domain }}{{ post.get_absolute_url }}"/>
+    <link rel="canonical" href="//{{ site.domain }}{{ post.get_absolute_url }}"/>
 {% endblock %}
 
 {% block breadcrumb_section %}
-    <li><a href="{% url 'planet.views.blogs_list' %}">{% trans 'Blogs' %}</a> <span class="divider">/</span></li>
-    <li><a href="{{ post.feed.blog.get_absolute_url }}">{{ post.feed.blog.title }}</a> <span class="divider">/</span></li>
+    <li class="breadcrumb-item">
+        <a class="text-success" href="{% url 'planet:blog-list' %}">{% trans 'Blogs' %}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a class="text-success" href="{{ post.feed.blog.get_absolute_url }}">{{ post.feed.blog.title }}</a>
+    </li>
 {% endblock %}
-{% block breadcrumb_detail %}<li class="active">{{ post.title|safe }}</li>{% endblock %}
+{% block breadcrumb_detail %}
+    <li class="breadcrumb-item active" aria-current="page">{{ post.title|safe }}</li>
+{% endblock %}
 
 {% block content %}
-    <div class="post clearfix">
-        {% post_full_details post %}
-        <div class="content">
-              {{ post.content|safe }}
+    <div class="content pd-0 post">
+        <div class="row">
+            {% include "planet/posts/full_details.html" %}
+        </div>
+        <div class="row">
+            <p>{{ post.content|safe }}</p>
         </div>
     </div>
-{% endblock %}
-
-{% block right_column %}
-    {% cloud_for_feed post.feed %}
-    {% include 'planet/feeds/blocks/syndication_block.html' %}
 {% endblock %}

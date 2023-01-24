@@ -1,13 +1,11 @@
 {% load i18n %}
-<ul class="nav nav-list feed list">
-    <li class="nav-header">
-        {% trans 'Writes for' %}
-    </li>
-    {% for feed in feeds_list %}
-        <li>
-            <a class="nombre" href="{{ feed.get_absolute_url }}" title="{{ feed.title }}">
-                {{ feed.title }}
-            </a>
-        </li>
+<nav class="nav flex-column mt-3">
+    <h5 class="text-decoration-none">
+        {% trans "Feeds" %}
+    </h5>
+    {% for feed in feed_list %}
+    <a class="nav-link text-success text-decoration-none px-0" href="{{ feed.get_absolute_url }}" title="{{ feed.title }}">
+        {{ feed.title }}
+    </a>
     {% endfor %}
-</ul>
+</nav>

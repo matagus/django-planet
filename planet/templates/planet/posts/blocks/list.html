@@ -1,0 +1,11 @@
+{% load i18n %}
+<nav class="nav flex-column">
+    <h5 class="text-decoration-none">
+        {% trans "Recent Posts" %}
+    </h5>
+    {% for post in post_list %}
+    <a class="nav-link text-success text-decoration-none px-0" href="{{ post.get_absolute_url }}" title="{{ post.title }}">
+        {{ post.title }}
+    </a>
+    {% endfor %}
+</nav>

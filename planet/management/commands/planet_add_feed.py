@@ -1,30 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from optparse import make_option
+from django.core.management.base import CommandError, LabelCommand
 
-from django.core.management.base import BaseCommand
+from planet.models import Author, PostAuthorData, Blog, Feed, Post
+from planet.utils import parse_feed
 
-from planet.tasks import process_feed
 
+class Command(LabelCommand):
+    help = "Add a new feed to the database"
+    label = "url"
 
-class Command(BaseCommand):
-    help = "Add a complete blog feed to our db."
-    args = "<feed_url>"
-    option_list = BaseCommand.option_list + (
-        make_option('-c', '--category',
-            action='store',
-            dest='category',
-            default=None,
-            metavar='Title',
-            help='Add this feed to a Category'),
+    def handle_label(self, label, **options):
+        feed_url = label
+
+        try:
+            feed_data = parse_feed(feed_url)
+        except Exception as e:
+            raise CommandError(f"Error retrieving feed {feed_url}: {e}")
+
+        blog, created = Blog.objects.get_or_create(
+            url=feed_data.feed.link, defaults={"title": feed_data.feed.title}
         )
 
-    def handle(self, *args, **options):
-        if not len(args):
-            self.stderr.write("You must provide the feed url as parameter")
-            exit(0)
+        try:
+            feed = Feed.objects.get_by_url(feed_url)
+            self.stdout.write(f"Feed for url={feed.url} already exists!")
+        except Feed.DoesNotExist:
+            feed = Feed.objects.create_from(feed_data, blog=blog)
+            self.stdout.write(f"Feed for url={feed.url} was successfully created!")
 
-        feed_url = args[0]
-        # process feed in create-mode
-        process_feed.delay(feed_url, create=True, category_title=options['category'])
-        self.stdout.write("Feed created. Posts scheduled to be retrived soon.")
+            for entry in feed_data.entries:
+                post = Post.objects.create_from(entry, feed)
+
+                # Some feeds doesn't have authors information
+                for author_dict in entry.get('authors', []):
+                    # FIXME: move this logic to a custom Author's create method, do validations there!
+                    try:
+                        name = author_dict['name'].strip()
+                    except Exception:
+                        continue
+
+                    if name:
+                        author, created = Author.objects.get_or_create(name=name)
+                        PostAuthorData.objects.create(post=post, author=author)

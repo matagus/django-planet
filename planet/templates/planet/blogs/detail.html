@@ -1,62 +1,54 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags planet_tags %}
-{% load url from future %}
 
-{% block head_title %}{% trans "Blog" %}: {{ blog.title }}{% endblock %}
+{% block head_title %}{% trans "Blog" %}: {{ blog.title }} :: {{ site.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }}" />
+    <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }} :: {{ site.name }}" />
     <meta name="description" content="{% trans 'Blog' %} {{ blog.title }}" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="http://{{ site.domain }}{{ blog.get_absolute_url }}"/>
+    <link rel="canonical" href="//{{ site.domain }}{{ blog.get_absolute_url }}"/>
 {% endblock %}
 
-{% block breadcrumb_section %}<li><a href="{% url 'planet.views.blogs_list' %}">{% trans 'Blogs' %}</a> <span class="divider">/</span></li>{% endblock %}
-{% block breadcrumb_detail %}<li class="active">{{ blog.title }}</li>{% endblock %}
+{% block breadcrumb_section %}
+    <li class="breadcrumb-item">
+        <a class="text-success" href="{% url 'planet:blog-list' %}">{% trans 'Blogs' %}</a>
+    </li>
+{% endblock %}
+{% block breadcrumb_detail %}
+    <li class="breadcrumb-item active" aria-current="page">{{ blog.title }}</li>
+{% endblock %}
 
 {% block content %}
     <h1>{% trans "Blog" %}: {{ blog.title }}</h1>
-    <table class="blog details table table-hover table-bordered">
+    <table class="blog details table table-bordered w-75">
         <tr>
           <th>{% trans 'web' %}</th>
-          <td><a href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{% trans 'Link' %}</a></td>
+          <td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}" target="_blank">{{ blog.url }}</a></td>
         </tr>
         <tr>
           <th>{% trans 'Author' %}</th>
           <td>
-            {% for author in blog|get_authors %}
-              <a href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
+            {% get_authors_for_blog blog as blog_authors %}
+            {% for author in blog_authors %}
+              <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
             {% endfor %}
           </td>
         </tr>
-        <tr>
-          <th>{% trans 'Stats' %}</th>
-          <td>{% blocktrans with p_count=blog|post_count %}Has published {{ p_count }} posts about or related to Django{% endblocktrans %}</td>
-        </tr>
     </table>
-    {% if tag %}
-        <h2>{% trans 'Posts under tag' %}: <strong>{{ tag|safe }}</strong></h2>
-    {% endif %}
 
-    {% autopaginate posts 20 %}
+    <div class="container px-0">
+    {% autopaginate posts 10 %}
     {% for post in posts %}
-        <div class="post short {% cycle 'even' 'odd' %} clearfix">
-            {% post_details post "planet/posts/short.html" %}
+        <div class="post row">
+            {% include "planet/posts/details.html" %}
         </div>
     {% endfor %}
-
-    {% if tag %}
-        <p>
-            <a href="{% url 'planet_tag_feed_list' tag.name %}" title="{% trans 'See the list of blogs talking about this tag' %}">
-                {% trans 'Other blogs talking about ' %} {{ tag|safe }}
-            </a>
-        </p>
-    {% endif %}
-
     {% paginate %}
+    </div>
 {% endblock %}
 
 {% block right_column %}
-    {% include 'planet/feeds/blocks/syndication_block.html' %}
-    {% cloud_for_blog blog %}
+    {% recent_blogs %}
+    {{ block.super }}
 {% endblock %}

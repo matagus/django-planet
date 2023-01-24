@@ -1,0 +1,11 @@
+Django==4.1.5
+django-environ==0.9.0
+django-extensions==3.2.1
+django-pagination-py3==1.2.0
+django-planet @ git+https://github.com/matagus/django-planet@c3f5fd61dd2e33f1651c5ed8740f0f9d9fe190bb
+django_debug_toolbar==3.8.1
+feedparser==6.0.10
+ipython==8.8.0
+gunicorn==20.1.0
+psycopg2-binary==2.9.5
+whitenoise==6.4.0

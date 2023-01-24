@@ -1,40 +1,40 @@
 {% extends "planet/base.html" %}
 {% load i18n pagination_tags planet_tags %}
-{% load url from future %}
 
-{% block head_title %}{% trans 'Authors list' %}{% endblock %}
+{% block head_title %}{% trans 'Authors list' %} :: {{ site.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Authors list' %} " />
-    <meta name="description" content="{% trans 'Authors list' %} " />
+    <meta name="title" content="{% trans 'Authors' %} :: {{ site.name }}" />
+    <meta name="description" content="{% trans 'Authors of blogs about Django' %} " />
     <meta name="robots" content="noindex, follow" />
 {% endblock %}
 
-{% block breadcrumb_section %}<li class="active">{% trans 'Blog Authors' %}</li>{% endblock %}
+{% block breadcrumb_section %}
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Authors' %}</li>
+{% endblock %}
 
 {% block authors_class %}class="active"{% endblock %}
 
 {% block content %}
 <h1>{% trans "Authors" %}</h1>
-<div class="author list">
+<div class="author-list container px-0">
     {% autopaginate authors_list 20 %}
     {% for author in authors_list %}
-      <div class="panel panel-success">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <a class="nombre" href="{{ author.get_absolute_url }}" title="{% trans 'Author:' %} {{ author.name }}">
-                {{ author.name }}
-            </a>
-          </h3>
-        </div>
-        <div class="panel-body">
+    <div class="row mb-3">
+        <h3>
+          <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'Author:' %} {{ author.name }}">
+              {{ author.name }}
+          </a>
+        </h3>
+        <div>
           {% trans "writes for:" %}
-            {% for blog in author|get_blogs %}
-              <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
-              {% if not forloop.last %}, {% endif %}
-            {% endfor %}
+          {% blogs_for_author author as author_blogs %}
+          {% for blog in author_blogs %}
+            <a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+            {% if not forloop.last %}, {% endif %}
+          {% endfor %}
         </div>
-      </div>
+    </div>
     {% endfor %}
     {% paginate %}
 </div>
