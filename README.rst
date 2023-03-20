@@ -2,48 +2,32 @@
 django-planet
 =============
 
-.. image:: https://badge.fury.io/py/django-planet.png
-   :target: http://badge.fury.io/py/django-planet
+A Django app that provides everything you need to build planet feed aggregator website. 
 
-.. image:: https://travis-ci.org/matagus/django-planet.png
-   :alt: Build Status (by travis.ci)
-   :target: https://travis-ci.org/matagus/django-planet
-
-.. image:: https://coveralls.io/repos/matagus/django-planet/badge.png
-   :target: https://coveralls.io/r/matagus/django-planet
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/matagus/django-planet/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
-
-This is a generic application for Django projects aiming to provide a planet
-feed aggregator app.
-
-It is compatible with `Pinax <http://pinaxproject.com/>`_ and its themed using `Twitter Bootstrap <http://twitter.github.com/bootstrap/>`_
-and `Wave-Grind pattern as background from subtlepatter.com <http://subtlepatterns.com/wave-grind/>`_.
+**Notes**: `main` branch has been unmaintained for years but since February 2023 I've been making `some work in a new branch <https://github.com/matagus/django-planet/tree/upgrade-to-django4x-drop-python2-support-minimal-version>`_ in order to provide a simpler app (with less dependencies, better tests, and simplified packaging using `hatch <https://github.com/pypa/hatch>`_) and a working sample project with full features. I'm deplying `a demo website <https://django-planet.fly.dev/>`_ to Fly.io and keeping it updated. See some screenshots below. **Warning: this new branch is unstable and backwards incompatible!**
 
 Screenshots
 ===========
 
-Post list
+Post List
 ---------
 
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/latest-posts.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/post-list.png
 
-Post view
+Blog View
 ---------
 
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/post-view.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/blog.png
 
-Tag view
---------
+Author View
+-----------
 
-.. image:: https://raw.github.com/matagus/django-planet/master/screenshots/tag-view.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/blog.png
 
-INSTALLATION
-============
+Full Post View
+--------------
 
-    * For installation instructions, see `the docs <http://django-planet.readthedocs.org/>`_.
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/full-post.png
 
 Contribute
 ==========
@@ -60,5 +44,4 @@ The project is licensed under the BSD license.
 DEMO
 ----
 
-There is a `simple demo django-planet <http://django-planet.com/>`_ and a
-`working project and its code open-sourced at github <https://github.com/matagus/django-planet-demo>`_.
+* `Link <https://django-planet.fly.dev/>`_
