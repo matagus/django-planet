@@ -2,9 +2,9 @@
 django-planet
 =============
 
-A Django app that provides everything you need to build planet feed aggregator website. 
+A Django app that provides everything you need to build planet feed aggregator website.
 
-**Notes**: `main` branch has been unmaintained for years but since February 2023 I've been making `some work in a new branch <https://github.com/matagus/django-planet/tree/upgrade-to-django4x-drop-python2-support-minimal-version>`_ in order to provide a simpler app (with less dependencies, better tests, and simplified packaging using `hatch <https://github.com/pypa/hatch>`_) and a working sample project with full features. I'm deplying `a demo website <https://django-planet.fly.dev/>`_ to Fly.io and keeping it updated. See some screenshots below. **Warning: this new branch is unstable and backwards incompatible!**
+**WARNING**: Latest changes are backward incompatible with previous versions. I'm working in a new, minimal version compatible w/ latest Django and Python versions.
 
 Screenshots
 ===========
@@ -44,4 +44,4 @@ The project is licensed under the BSD license.
 DEMO
 ----
 
-* `Link <https://django-planet.fly.dev/>`_
+* `Link <https://django-planet.matagus.dev/>`_

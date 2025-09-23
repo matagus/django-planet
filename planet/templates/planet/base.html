@@ -1,33 +1,21 @@
-{% extends 'site_base.html' %}
-{% load i18n tagging_tags planet_tags %}
-{% load url from future %}
+{% extends 'base.html' %}
+{% load i18n planet_tags %}
 
 {% block head_title_base %}{% block head_title %}{% endblock %}{% endblock %}
 
 {% block extra_head %}
     <meta name="title" content="{{ site.name }}" />
     <meta name="robots" content="index, follow" />
-    <meta name="generator" content="django-planet http://github.com/matagus/django-planet/tree">
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {% blocktrans %}RSS 2.0 Feed{% endblocktrans %}" href="{% url 'planet_rss_feed' %}" />
-{% endblock %}
-
-{% block search %}
-    <form name="search_form" id="search_form" action="{% url planet_search %}" method="GET">
-        <label>{% trans 'Search in' %}</label>
-        {{ search_form }}
-        <button name="search" value="go">{% trans 'ok' %}</button>
-    </form>
+    <meta name="generator" content="django-planet https://github.com/matagus/django-planet">
 {% endblock %}
 
 {% block right_column %}
-    {% include 'planet/feeds/blocks/syndication_block.html' %}
-    {% tag_cloud_for_model planet.Post as tags_cloud with steps=7 min_count=5 distribution=log %}
-    {% include 'planet/tags/blocks/cloud.html' %}
+    {% recent_posts %}
 {% endblock %}
 
 {% block footer %}
     {{ block.super }}
     <p class="text-right">
-      {% blocktrans %}A <a href="http://github.com/matagus/django-planet" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}
+      {% blocktrans %}A <a target="_blank" class="text-success" href="https://github.com/matagus/django-planet" title="django-planet Powered">django-planet</a> powered site{% endblocktrans %}
     </p>
 {% endblock %}
