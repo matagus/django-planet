@@ -6,6 +6,6 @@ django-planet @ git+https://github.com/matagus/django-planet@c3f5fd61dd2e33f1651
 django_debug_toolbar==3.8.1
 feedparser==6.0.10
 ipython==8.10.0
-gunicorn==20.1.0
+gunicorn==23.0.0
 psycopg2-binary==2.9.5
 whitenoise==6.4.0
