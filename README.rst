@@ -45,3 +45,5 @@ DEMO
 ----
 
 * `Link <https://django-planet.matagus.dev/>`_
+
+Code for the demo site is available at the `project/` directory.
