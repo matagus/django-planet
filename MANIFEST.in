@@ -1,4 +1,3 @@
 recursive-include planet/templates *.html *.xml
 recursive-include planet/static *.jpg *.png *.gif *.css
-recursive-include docs *.rst
 recursive-include locale *.po *.mo
