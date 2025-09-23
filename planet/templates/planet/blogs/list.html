@@ -24,23 +24,25 @@
             <h3 class="panel-title">
                 <a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{{ blog.title }}</a>
             </h3>
-            <table class="table table-bordered mx-2 w-75">
-                <tr>
-                    <th>{% trans 'web' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'browse' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</td>
-                </tr>
-                {% for feed in blog.feed_set.all %}
-                <tr>
-                    <th>{% trans 'feed' %}</th>
-                    <td>
-                      <a class="text-success text-decoration-none" href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
-                        <span class="rss">{% trans "RSS" %}</span>
-                      </a></td>
-                </tr>
-                {% endfor %}
-            </table>
+            <div class="table-responsive px-0">
+                <table class="table table-bordered mb-4">
+                    <tr>
+                        <th>{% trans 'web' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}">{{ blog.url }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'browse' %}</th><td><a class="text-success text-decoration-none" href="{{ blog.get_absolute_url }}" class="feed" title="{% trans 'See the full list of posts from this blog' %}">{% trans 'latest posts' %}</td>
+                    </tr>
+                    {% for feed in blog.feed_set.all %}
+                    <tr>
+                        <th>{% trans 'feed' %}</th>
+                        <td>
+                          <a class="text-success text-decoration-none" href="{{ feed.url }}" title="{% trans 'Subscribe to ' %} {{ feed.title }}">
+                            <span class="rss">{% trans "RSS" %}</span>
+                          </a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     {% endfor %}
     </div>

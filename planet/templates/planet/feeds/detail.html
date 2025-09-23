@@ -34,26 +34,28 @@
 
     <div class="content">
         <div class="row">
-            <table class="table table-bordered mx-2 w-75">
-                <tr>
-                    <th>{% trans 'Blog' %}</th>
-                    <td><a href="{{ feed.blog.get_absolute_url }}" class="text-success text-decoration-none" title="{% trans 'See details and posts for blog' %} {{ feed.blog.title }}">{{ feed.blog.title }}</a></td>
-                </tr>
-                <tr>
-                    <th>{% trans 'RSS 2.0 Feed' %}</th>
-                    <td><a href="{{ feed.url }}" class="text-success text-decoration-none" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a></td>
-                </tr>
-                <tr>
-                    <th>{% trans 'web' %}</th>
-                    <td><a target="_blank" href="{{ feed.blog.url }}" class="text-success text-decoration-none" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a></td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Last Update' %}</th><td>{{ feed.last_checked|date:"m.d.Y" }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans 'Posts' %}</th><td>{{ feed.post_set.count }}</td>
-                </tr>
-            </table>
+            <div class="table-responsive px-0">
+                <table class="table table-bordered mb-4">
+                    <tr>
+                        <th>{% trans 'Blog' %}</th>
+                        <td><a href="{{ feed.blog.get_absolute_url }}" class="text-success text-decoration-none" title="{% trans 'See details and posts for blog' %} {{ feed.blog.title }}">{{ feed.blog.title }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'RSS 2.0 Feed' %}</th>
+                        <td><a href="{{ feed.url }}" class="text-success text-decoration-none" title="{% trans 'Subscribe to ' %} {{ feed.title }}">{{ feed.title }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'web' %}</th>
+                        <td><a target="_blank" href="{{ feed.blog.url }}" class="text-success text-decoration-none" title="{% trans 'Go to the original blog' %}">{{ feed.blog.url }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Last Update' %}</th><td>{{ feed.last_checked|date:"m.d.Y" }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Posts' %}</th><td>{{ feed.post_set.count }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
