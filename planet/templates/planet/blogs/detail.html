@@ -21,21 +21,23 @@
 
 {% block content %}
     <h1>{% trans "Blog" %}: {{ blog.title }}</h1>
-    <table class="blog details table table-bordered w-75">
-        <tr>
-          <th>{% trans 'web' %}</th>
-          <td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}" target="_blank">{{ blog.url }}</a></td>
-        </tr>
-        <tr>
-          <th>{% trans 'Author' %}</th>
-          <td>
-            {% get_authors_for_blog blog as blog_authors %}
-            {% for author in blog_authors %}
-              <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
-            {% endfor %}
-          </td>
-        </tr>
-    </table>
+    <div class="table-responsive px-0">
+        <table class="blog details table table-bordered mb-4">
+            <tr>
+              <th>{% trans 'web' %}</th>
+              <td><a class="text-success text-decoration-none" href="{{ blog.url }}" title="{% trans 'Go to the original blog' %}" target="_blank">{{ blog.url }}</a></td>
+            </tr>
+            <tr>
+              <th>{% trans 'Author' %}</th>
+              <td>
+                {% get_authors_for_blog blog as blog_authors %}
+                {% for author in blog_authors %}
+                  <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
+                {% endfor %}
+              </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="container px-0">
     {% autopaginate posts 10 %}

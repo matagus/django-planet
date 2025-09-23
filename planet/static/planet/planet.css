@@ -1,3 +1,9 @@
 header ul.nav li.nav-item:hover a.nav-link {
     background-color: rgb(var(--bs-primary-rgb)) !important;
 }
+
+/* Responsive helpers */
+img, video { max-width: 100%; height: auto; }
+.breadcrumb { flex-wrap: wrap; }
+.table td, .table th { word-wrap: anywhere; }
+.navbar .form-select { min-width: 8rem; }

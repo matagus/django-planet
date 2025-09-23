@@ -1,25 +1,27 @@
 {% load i18n %}
 <div class="date">{{ post.date_published|date }}</div>
 <h1>{{ post.title|striptags|safe }}</h1>
-<table class="blog details table table-bordered w-75 mx-2">
-    {% for author in post.authors.all %}
-    <tr>
-        <th>{% trans 'published by' %}</th><td>
-        <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See all posts for this author' %}">
-            {{ author.name }}
-        </a></td>
-    </tr>
-    {% endfor %}
-    <tr>
-        <th>{% trans 'in blog' %}</th>
-        <td>
-            <a class="text-success text-decoration-none" href="{{ post.feed.blog.get_absolute_url }}" title="{% trans 'See all posts for this blopg' %}">
-                {{ post.feed.blog.title }}
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <th>{% trans 'original entry' %}</th>
-        <td><a class="text-success text-decoration-none" href="{{ post.url }}">{{ post.title|safe }}</a>
-    </tr>
-</table>
+<div class="table-responsive px-0">
+    <table class="blog details table table-bordered mb-4">
+        {% for author in post.authors.all %}
+        <tr>
+            <th>{% trans 'published by' %}</th><td>
+            <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See all posts for this author' %}">
+                {{ author.name }}
+            </a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <th>{% trans 'in blog' %}</th>
+            <td>
+                <a class="text-success text-decoration-none" href="{{ post.feed.blog.get_absolute_url }}" title="{% trans 'See all posts for this blopg' %}">
+                    {{ post.feed.blog.title }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans 'original entry' %}</th>
+            <td><a class="text-success text-decoration-none" href="{{ post.url }}">{{ post.title|safe }}</a>
+        </tr>
+    </table>
+</div>
