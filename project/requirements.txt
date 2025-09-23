@@ -1,4 +1,4 @@
-Django==4.1.5
+Django==4.2.24
 django-environ==0.9.0
 django-extensions==3.2.1
 django-pagination-py3==1.2.0
