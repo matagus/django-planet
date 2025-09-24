@@ -12,22 +12,22 @@ Screenshots
 Post List
 ---------
 
-.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/post-list.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/post-list.png
 
 Blog View
 ---------
 
-.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/blog.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/blog.png
 
 Author View
 -----------
 
-.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/blog.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/blog.png
 
 Full Post View
 --------------
 
-.. image:: https://raw.githubusercontent.com/matagus/django-planet/upgrade-to-django4x-drop-python2-support-minimal-version/screenshots/full-post.png
+.. image:: https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/full-post.png
 
 Contribute
 ==========
