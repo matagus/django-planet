@@ -349,7 +349,7 @@ msgstr ""
 #: build/lib/planet/templates/planet/blogs/detail.html:25 planet/models.py:313
 #: planet/templates/planet/blogs/detail.html:25
 msgid "Author"
-msgstr "Autor"
+msgstr "Author"
 
 #: build/lib.linux-i686-2.7/planet/models.py:334
 #: build/lib.linux-i686-2.7/planet/models.py:356
@@ -419,7 +419,7 @@ msgstr "Página Principal"
 #: planet/templates/planet/authors/blocks/list.html:7
 #: planet/templates/planet/authors/blocks/list_for_tag.html:8
 msgid "Author of"
-msgstr "Autor de"
+msgstr "Author de"
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/blocks/list_for_feed.html:2
 #: build/lib/planet/templates/planet/authors/blocks/list_for_feed.html:2
@@ -450,7 +450,7 @@ msgstr ""
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:36
 #: planet/templates/planet/authors/detail.html:36
 #, python-format
-msgid "Suscribe to RSS feed for %(author_name)s's blog"
+msgid "Subscribe to RSS feed for %(author_name)s's blog"
 msgstr ""
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/detail.html:46
@@ -509,7 +509,7 @@ msgstr "Ver todos los posts de"
 #: build/lib/planet/templates/planet/authors/detail.html:63
 #: planet/templates/planet/authors/detail.html:66
 msgid "See the complete list of posts by this author"
-msgstr "Ver la lista completa de los posts escritos por este autor"
+msgstr "Ver la lista completa de los posts escritos por este author"
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:5
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:8
@@ -533,7 +533,7 @@ msgstr "Autores de Blogs"
 #: build/lib/planet/templates/planet/authors/list.html:25
 #: planet/templates/planet/authors/list.html:25
 msgid "Author:"
-msgstr "Autor:"
+msgstr "Author:"
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/authors/list.html:31
 #: planet/templates/planet/authors/list.html:31
@@ -619,7 +619,7 @@ msgstr "Visitar el blog original"
 #: build/lib/planet/templates/planet/blogs/detail.html:28
 #: planet/templates/planet/blogs/detail.html:28
 msgid "See author profile and his/her blog posts"
-msgstr "Ver el perfil del autor y sus posts"
+msgstr "Ver el perfil del author y sus posts"
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/blogs/detail.html:34
 #: planet/templates/planet/blogs/detail.html:34
@@ -730,7 +730,7 @@ msgstr "Escribe para"
 #: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:7
 #: build/lib/planet/templates/planet/feeds/blocks/syndication_block.html:7
 #: planet/templates/planet/feeds/blocks/syndication_block.html:7
-msgid "Suscribe to RSS feed"
+msgid "Subscribe to RSS feed"
 msgstr ""
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/feeds/blocks/syndication_block.html:12
@@ -892,7 +892,7 @@ msgstr "publicado por"
 #: build/lib/planet/templates/planet/posts/full_details.html:9
 #: planet/templates/planet/posts/full_details.html:9
 msgid "See all posts for this author"
-msgstr "Ver todos los posts de este autor"
+msgstr "Ver todos los posts de este author"
 
 #: build/lib.linux-i686-2.7/planet/templates/planet/posts/full_details.html:15
 #: build/lib/planet/templates/planet/posts/full_details.html:15
@@ -1076,5 +1076,5 @@ msgid "blog"
 msgstr ""
 
 #: build/lib/planet/templates/planet/authors/detail.html:33
-msgid "Suscribe to RSS feed for blog"
+msgid "Subscribe to RSS feed for blog"
 msgstr ""

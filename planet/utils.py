@@ -9,15 +9,15 @@ from planet.settings import PLANET_CONFIG
 
 
 def parse_feed(url, etag=None, modified=None):
-    kwargs = dict(agent=PLANET_CONFIG['USER_AGENT'])
+    kwargs = dict(agent=PLANET_CONFIG["USER_AGENT"])
 
     if etag is None:
         if modified is None:
             pass
         else:
-            kwargs['modified'] = modified
+            kwargs["modified"] = modified
     else:
-        kwargs['etag'] = etag
+        kwargs["etag"] = etag
 
     return feedparser.parse(url, **kwargs)
 
@@ -30,10 +30,11 @@ def to_datetime(time_struct):
 
 
 def md5_hash(value):
-    return hashlib.md5(value.encode('utf-8')).hexdigest()
+    return hashlib.md5(value.encode("utf-8")).hexdigest()
+
 
 def normalize_language(value):
     if value is None:
         return
 
-    return value.split('-')[0]
+    return value.split("-")[0]

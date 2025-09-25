@@ -14,5 +14,5 @@
  * @MissFilly
  * @angvp (Angel Velasquez)
  * @jimr (James Rutherford)
- * @jilljenn (Jill-Jênn Vie)
+ * @jilljenn (Jill-Jênn Via)
  * @eluttine (Elias Luttinen)

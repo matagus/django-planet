@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf import settings
 from django.contrib.sites.models import Site
 
@@ -15,5 +13,4 @@ def context(request):
 
     site = Site.objects.get(pk=settings.SITE_ID)
 
-    return {"site": site, "SITE_NAME": site.name,
-        "search_form": search_form, "PLANET_CONFIG": PLANET_CONFIG}
+    return {"site": site, "SITE_NAME": site.name, "search_form": search_form, "PLANET_CONFIG": PLANET_CONFIG}

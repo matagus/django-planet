@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
 from django.test import TestCase
 
-from .factories import (
-    BlogFactory, FeedFactory, PostFactory, AuthorFactory
-)
+from .factories import BlogFactory, FeedFactory, PostFactory, AuthorFactory
 
 
 class BlogViewsTest(TestCase):

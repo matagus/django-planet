@@ -12,8 +12,8 @@ class BlogFactory(DjangoModelFactory):
     class Meta:
         model = Blog
 
-    title = factory.Sequence(lambda n: u'blog-{}'.format(n))
-    url = factory.LazyAttribute(lambda obj: u'http://{}.blogspot.com/'.format(obj.title))
+    title = factory.Sequence(lambda n: f"blog-{n}")
+    url = factory.LazyAttribute(lambda obj: f"http://{obj.title}.blogspot.com/")
 
 
 class FeedFactory(DjangoModelFactory):
@@ -21,9 +21,9 @@ class FeedFactory(DjangoModelFactory):
         model = Feed
 
     guid = factory.LazyFunction(uuid.uuid4)
-    title = factory.Sequence(lambda n: u'Feed-{}'.format(n))
+    title = factory.Sequence(lambda n: f"Feed-{n}")
     blog = factory.SubFactory(BlogFactory)
-    url = factory.LazyAttribute(lambda obj: '{}feed-{}.rss'.format(obj.blog.url, obj.title))
+    url = factory.LazyAttribute(lambda obj: f"{obj.blog.url}feed-{obj.title}.rss")
     language = "en"
 
 
@@ -31,18 +31,18 @@ class AuthorFactory(DjangoModelFactory):
     class Meta:
         model = Author
 
-    name = factory.Sequence(lambda n: u'Author #{}'.format(n))
-    email = factory.LazyAttribute(lambda obj: u'{}@gmail.com'.format(obj.name))
+    name = factory.Sequence(lambda n: f"Author #{n}")
+    email = factory.LazyAttribute(lambda obj: f"{obj.name}@gmail.com")
 
 
 class PostFactory(DjangoModelFactory):
     class Meta:
         model = Post
 
-    title = factory.Sequence(lambda n: u'Post Title #{}'.format(n))
+    title = factory.Sequence(lambda n: f"Post Title #{n}")
     feed = factory.SubFactory(FeedFactory)
-    url = factory.LazyAttribute(lambda obj: u'post-{}.html'.format(obj.feed.blog.url))
-    guid = factory.Sequence(lambda n: u'GUID-{}'.format(n))
+    url = factory.LazyAttribute(lambda obj: f"post-{obj.feed.blog.url}.html")
+    guid = factory.Sequence(lambda n: f"GUID-{n}")
     content = FuzzyText(length=200)
     date_published = FuzzyDateTime(timezone.now())
 

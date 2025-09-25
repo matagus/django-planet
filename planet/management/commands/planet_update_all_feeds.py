@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.utils import timezone
 from django.core.management.base import BaseCommand
 
@@ -27,10 +25,10 @@ class Command(BaseCommand):
                     post = Post.objects.create_from(entry, feed)
 
                     # Some feeds doesn't have authors information
-                    for author_dict in entry.get('authors', []):
+                    for author_dict in entry.get("authors", []):
                         # FIXME: move this logic to a custom Author's create method, do validations there!
                         try:
-                            name = author_dict['name'].strip()
+                            name = author_dict["name"].strip()
                         except Exception:
                             continue
 
