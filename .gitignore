@@ -45,3 +45,6 @@ TODO.md
 # example project static files
 project/statics
 project/statics/*
+
+# AI Agents
+WARP.md
