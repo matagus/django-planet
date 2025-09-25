@@ -1,0 +1,34 @@
+name: Bug Report
+description: File a bug
+body:
+- type: input
+  id: macos_version
+  attributes:
+    label: Operating System
+    description: Which operating system were you using?
+    placeholder: MacOS Sonoma 14.3
+  validations:
+    required: false
+- type: input
+  id: package_version
+  attributes:
+    label: Package Version
+    description: Which version of this package were you using? If not the latest version, please check this issue has not since been resolved.
+    placeholder: 0.2.0
+  validations:
+    required: false
+- type: input
+  id: python_version
+  attributes:
+    label: Python Version
+    description: Which version of Python were you using?
+    placeholder: 3.12.0
+  validations:
+    required: false
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: Please describe the bug
+  validations:
+    required: true
