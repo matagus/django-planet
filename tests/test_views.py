@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 
-from planet.tests.factories import (
+from .factories import (
     BlogFactory, FeedFactory, PostFactory, AuthorFactory
 )
 

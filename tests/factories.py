@@ -1,6 +1,8 @@
+import uuid
 import factory
+from django.utils import timezone
 
-from factory.fuzzy import FuzzyText
+from factory.fuzzy import FuzzyDateTime, FuzzyText
 from factory.django import DjangoModelFactory
 
 from planet.models import Blog, Feed, Post, PostAuthorData, Author
@@ -12,13 +14,13 @@ class BlogFactory(DjangoModelFactory):
 
     title = factory.Sequence(lambda n: u'blog-{}'.format(n))
     url = factory.LazyAttribute(lambda obj: u'http://{}.blogspot.com/'.format(obj.title))
-    owner = None
 
 
 class FeedFactory(DjangoModelFactory):
     class Meta:
         model = Feed
 
+    guid = factory.LazyFunction(uuid.uuid4)
     title = factory.Sequence(lambda n: u'Feed-{}'.format(n))
     blog = factory.SubFactory(BlogFactory)
     url = factory.LazyAttribute(lambda obj: '{}feed-{}.rss'.format(obj.blog.url, obj.title))
@@ -42,6 +44,7 @@ class PostFactory(DjangoModelFactory):
     url = factory.LazyAttribute(lambda obj: u'post-{}.html'.format(obj.feed.blog.url))
     guid = factory.Sequence(lambda n: u'GUID-{}'.format(n))
     content = FuzzyText(length=200)
+    date_published = FuzzyDateTime(timezone.now())
 
     @factory.post_generation
     def authors(self, create, extracted, **kwargs):

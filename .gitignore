@@ -17,6 +17,7 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+coverage.json
 .tox
 
 ## DJANGO
