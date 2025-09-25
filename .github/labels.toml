@@ -1,0 +1,149 @@
+[accessibility]
+color = "687DEA"
+name = "accessibility"
+description = "Accessibility issues"
+
+[admin]
+color = "2E6BAB"
+name = "admin"
+description = "Admin related issue"
+
+["blocked/needs-investigation"]
+color = "BD134F"
+name = "blocked/needs-investigation"
+description = "This is blocked: it needs investigation"
+
+["blocked/user-responsee"]
+color = "3C0113"
+name = "blocked/user-responsee"
+description = "Blocked: this issue is waiting for user response"
+
+[breaking]
+color = "EF24EB"
+name = "breaking"
+description = "This is a breaking change"
+
+[bug]
+color = "d73a4a"
+name = "bug"
+description = "Something isn't working"
+
+["code quality"]
+color = "4D8FA9"
+name = "code quality"
+description = "Code Quality"
+
+["could not reproduce"]
+color = "E4B665"
+name = "could not reproduce"
+description = "Could not reproduce"
+
+[dependencies]
+color = "D7AFA0"
+name = "dependencies"
+description = "Dependencies"
+
+[documentation]
+color = "0075ca"
+name = "documentation"
+description = "Improvements or additions to documentation"
+
+[duplicate]
+color = "cfd3d7"
+name = "duplicate"
+description = "This issue or pull request already exists"
+
+[enhancement]
+color = "a2eeef"
+name = "enhancement"
+description = "New feature or request"
+
+[epic]
+color = "4471DE"
+name = "epic"
+description = "This is an Epic"
+
+["feature request"]
+color = "AF6601"
+name = "feature request"
+description = "Feature Requests"
+
+[github-actions]
+color = "595E8A"
+name = "github-actions"
+description = "Github Actions"
+
+["good first issue"]
+color = "2AF655"
+name = "good first issue"
+description = "Good for newcomers"
+
+["help wanted"]
+color = "008672"
+name = "help wanted"
+description = "Extra attention is needed"
+
+[i18n]
+color = "1D3BFB"
+name = "i18n"
+description = "Internacionalization and translations"
+
+[implemented]
+color = "071BB8"
+name = "implemented"
+description = "This has already been implemented"
+
+[invalid]
+color = "e4e669"
+name = "invalid"
+description = "This doesn't seem right"
+
+[non-code-contribution]
+color = "63B6DA"
+name = "non-code-contribution"
+description = "Contributions that doesn't involve programming"
+
+[nonchangelog]
+color = "9A9D37"
+name = "nonchangelog"
+description = "Ignore this issue when building the changelog"
+
+["on hold"]
+color = "A9221E"
+name = "on hold"
+description = "On Hold"
+
+[question]
+color = "d876e3"
+name = "question"
+description = "Further information is requested"
+
+[security]
+color = "B1661C"
+name = "security"
+description = "Security related issue"
+
+[stale]
+color = "FD622F"
+name = "stale"
+description = "Stale issues"
+
+[tests]
+color = "E2AC68"
+name = "tests"
+description = "Issue about a test"
+
+[ux]
+color = "AACC48"
+name = "ux"
+description = "User Experience related issues"
+
+[wip]
+color = "5B8E1C"
+name = "wip"
+description = "Work in progress"
+
+[wontfix]
+color = "ffffff"
+name = "wontfix"
+description = "This will not be worked on"
