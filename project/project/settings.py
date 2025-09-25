@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'planet',
     'pagination',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

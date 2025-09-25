@@ -1,0 +1,137 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-planet"
+dynamic = ["version"]
+description = "A django planet and feeds (RSS and ATOM) aggregator application for Django."
+readme = "README.md"
+license = "BSD-3-clause"
+authors = [
+    { name = "Matias Agustin Mendez", email = "matagus@gmail.com" },
+]
+keywords = []
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
+]
+dependencies = [
+    "Django>=4.0",
+    "django-pagination-py3>=2.1.0",
+    "feedparser>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/matagus/django-planet"
+Issues = "https://.github.com/matagus/django-planet/issues"
+Repository = "https://github.com/matagus/django-planet"
+Changelog = "https://githib.com/matagus/django-planet/releases"
+Pypi = "https://pypi.org/project/django-planet"
+
+[tool.hatch.version]
+path = "planet/__about__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "planet/",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "planet/",
+]
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "pygments",
+    "pymdown-extensions",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "Django>=4.0", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug"
+]
+
+[tool.hatch.envs.docs]
+dependencies = ["mkdocs", "mkdocs-material", "pygments", "pymdown-extensions"]
+
+[tool.hatch.envs.docs.scripts]
+new = "mkdocs new ."
+build = "mkdocs build {args}"
+serve = "mkdocs serve {args}"
+
+[tool.hatch.envs.project]
+dependencies = [
+    "Django>=4.0", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug", "django-environ",
+    "whitenoise",
+]
+
+[tool.hatch.envs.project.scripts]
+runserver = "python project/manage.py runserver_plus {args}"
+shell = "python project/manage.py shell_plus {args}"
+migrate = "python project/manage.py migrate {args}"
+makemigrations = "python project/manage.py makemigrations {args}"
+createsuperuser = "python project/manage.py createsuperuser {args}"
+
+# Test environment
+[[tool.hatch.envs.test.matrix]]
+django = ["4.0"]
+python = ["3.9", "3.10"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["4.1"]
+python = ["3.9", "3.10", "3.11"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["4.2"]
+python = ["3.9", "3.10", "3.11", "3.12"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["5.0"]
+python = ["3.10", "3.11", "3.12"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["5.1"]
+python = ["3.11", "3.12"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["5.2"]
+python = ["3.11", "3.12"]
+
+[tool.hatch.envs.test]
+dependencies = ["coverage[toml]", "django~={matrix:django}.0", "factory_boy"]
+
+[tool.hatch.envs.test.scripts]
+test = "python -m django test --settings tests.settings {args}"
+test-cov = "coverage run -m django test --settings tests.settings {args}"
+cov-report = ["coverage json", "coverage report"]
+cov = ["test-cov", "cov-report"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.black]
+line-length = 120
