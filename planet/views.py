@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -18,9 +17,7 @@ def blog_list(request, query=None):
     else:
         blogs_list = Blog.objects.search(query)
 
-    return render(
-        request, "planet/blogs/list.html", {"blogs_list": blogs_list}
-    )
+    return render(request, "planet/blogs/list.html", {"blogs_list": blogs_list})
 
 
 def blog_detail(request, blog_id, slug=None):
@@ -29,37 +26,29 @@ def blog_detail(request, blog_id, slug=None):
     if slug is None:
         return redirect(blog, permanent=True)
 
-    posts = Post.objects.for_blog(blog)\
-        .select_related("feed", "feed__blog").prefetch_related("authors")
+    posts = Post.objects.for_blog(blog).select_related("feed", "feed__blog").prefetch_related("authors")
 
-    return render(
-        request, "planet/blogs/detail.html", {"blog": blog, "posts": posts}
-    )
+    return render(request, "planet/blogs/detail.html", {"blog": blog, "posts": posts})
 
 
 def feed_list(request, query=None):
     if query is None:
-        feed_list = Feed.objects.all().select_related('blog')
+        feed_list = Feed.objects.all().select_related("blog")
     else:
         feed_list = Feed.objects.search(query)
 
-    return render(
-        request, "planet/feeds/list.html", {"feeds_list": feed_list}
-    )
+    return render(request, "planet/feeds/list.html", {"feeds_list": feed_list})
 
 
 def feed_detail(request, feed_id, tag=None, slug=None):
-    feed = get_object_or_404(Feed.objects.select_related('blog'), pk=feed_id)
+    feed = get_object_or_404(Feed.objects.select_related("blog"), pk=feed_id)
 
     if not slug:
         return redirect(feed, permanent=True)
 
-    posts = Post.objects.for_feed(feed)\
-        .select_related("feed", "feed__blog").prefetch_related("authors")
+    posts = Post.objects.for_feed(feed).select_related("feed", "feed__blog").prefetch_related("authors")
 
-    return render(
-        request, "planet/feeds/detail.html", {"feed": feed, "posts": posts}
-    )
+    return render(request, "planet/feeds/detail.html", {"feed": feed, "posts": posts})
 
 
 def author_list(request, query=None):
@@ -68,9 +57,7 @@ def author_list(request, query=None):
     else:
         authors = Author.objects.all()
 
-    return render(
-        request, "planet/authors/list.html", {"authors_list": authors}
-    )
+    return render(request, "planet/authors/list.html", {"authors_list": authors})
 
 
 def author_detail(request, author_id, tag=None, slug=None):
@@ -79,13 +66,9 @@ def author_detail(request, author_id, tag=None, slug=None):
     if not slug:
         return redirect(author, permanent=True)
 
-    posts = Post.objects.for_author(author)\
-        .select_related("feed", "feed__blog").prefetch_related("authors")
+    posts = Post.objects.for_author(author).select_related("feed", "feed__blog").prefetch_related("authors")
 
-    return render(
-        request, "planet/authors/detail.html",
-        {"author": author, "posts": posts}
-    )
+    return render(request, "planet/authors/detail.html", {"author": author, "posts": posts})
 
 
 def post_list(request, query=None):
@@ -95,19 +78,14 @@ def post_list(request, query=None):
         posts = Post.objects.search(query)
 
     return render(
-        request, "planet/posts/list.html",
-        {
-            "posts": posts.select_related("feed", "feed__blog").prefetch_related("authors")
-        }
+        request,
+        "planet/posts/list.html",
+        {"posts": posts.select_related("feed", "feed__blog").prefetch_related("authors")},
     )
 
 
 def post_detail(request, post_id, slug=None):
-    post = get_object_or_404(
-        Post.objects.select_related("feed", "feed__blog")
-            .prefetch_related("authors"),
-        pk=post_id
-    )
+    post = get_object_or_404(Post.objects.select_related("feed", "feed__blog").prefetch_related("authors"), pk=post_id)
 
     if not slug:
         return redirect(post, permanent=True)

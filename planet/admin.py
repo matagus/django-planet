@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import admin
 
-from planet.models import (Blog, Feed, Post, Author, PostAuthorData)
+from planet.models import Blog, Feed, Post, Author, PostAuthorData
 
 
 @admin.register(PostAuthorData)
@@ -13,10 +11,8 @@ class PostAuthorDataAdmin(admin.ModelAdmin):
 
 @admin.register(Feed)
 class FeedAdmin(admin.ModelAdmin):
-    list_display = (
-        "title", "url", "blog", "language", "etag", "last_modified", "last_checked", "is_active"
-    )
-    list_filter = ("language", )
+    list_display = ("title", "url", "blog", "language", "etag", "last_modified", "last_checked", "is_active")
+    list_filter = ("language",)
     search_fields = ["title", "url", "blog__title"]
 
 

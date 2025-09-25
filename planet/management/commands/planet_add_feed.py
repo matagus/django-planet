@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.core.management.base import CommandError, LabelCommand
 
 from planet.models import Author, PostAuthorData, Blog, Feed, Post
@@ -18,9 +16,7 @@ class Command(LabelCommand):
         except Exception as e:
             raise CommandError(f"Error retrieving feed {feed_url}: {e}")
 
-        blog, created = Blog.objects.get_or_create(
-            url=feed_data.feed.link, defaults={"title": feed_data.feed.title}
-        )
+        blog, created = Blog.objects.get_or_create(url=feed_data.feed.link, defaults={"title": feed_data.feed.title})
 
         try:
             feed = Feed.objects.get_by_url(feed_url)
@@ -33,10 +29,10 @@ class Command(LabelCommand):
                 post = Post.objects.create_from(entry, feed)
 
                 # Some feeds doesn't have authors information
-                for author_dict in entry.get('authors', []):
+                for author_dict in entry.get("authors", []):
                     # FIXME: move this logic to a custom Author's create method, do validations there!
                     try:
-                        name = author_dict['name'].strip()
+                        name = author_dict["name"].strip()
                     except Exception:
                         continue
 

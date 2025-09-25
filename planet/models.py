@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     django-planet models
 
@@ -39,12 +38,15 @@ class Blog(models.Model):
     class Meta:
         verbose_name = _("Blog")
         verbose_name_plural = _("Blogs")
-        ordering = ('title', 'url', )
+        ordering = (
+            "title",
+            "url",
+        )
         indexes = [
-            models.Index(fields=['title']),
-            models.Index(fields=['url']),
-            models.Index(fields=['-date_created']),
-            models.Index(fields=['title', 'url']),
+            models.Index(fields=["title"]),
+            models.Index(fields=["url"]),
+            models.Index(fields=["-date_created"]),
+            models.Index(fields=["title", "url"]),
         ]
 
     def __str__(self):
@@ -52,7 +54,7 @@ class Blog(models.Model):
 
     def get_absolute_url(self):
         kwargs = dict(blog_id=self.id, slug=self.get_slug())
-        return reverse('planet:blog-detail', kwargs=kwargs)
+        return reverse("planet:blog-detail", kwargs=kwargs)
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
@@ -62,6 +64,7 @@ class Feed(models.Model):
     """
     A model to store detailed info about a parsed Atom or RSS feed
     """
+
     # a feed belongs to a blog
     blog = models.ForeignKey("planet.Blog", on_delete=models.CASCADE)
     # url to retrieve this feed
@@ -71,32 +74,21 @@ class Feed(models.Model):
     # subtitle attribute from Feedparser's Feed object. aka tagline
     subtitle = models.TextField(_("Subtitle"), blank=True, null=True)
     # rights or license attribute from Feedparser's Feed object
-    rights = models.CharField(
-        _("Rights"), max_length=255, blank=True, null=True
-    )
+    rights = models.CharField(_("Rights"), max_length=255, blank=True, null=True)
     # language name or code. language attribute from Feedparser's Feed object
-    language = models.CharField(
-        _("Language"), max_length=50, blank=True, null=True
-    )
+    language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
     # global unique identifier for the feed
     guid = models.CharField(_("Global Unique Identifier"), max_length=32, unique=True)
 
     # etag attribute from Feedparser's Feed object
-    etag = models.CharField(
-        _("Etag"), max_length=50, blank=True, null=True
-    )
+    etag = models.CharField(_("Etag"), max_length=50, blank=True, null=True)
     # modified attribute from Feedparser's Feed object
-    last_modified = models.DateTimeField(
-        _("Last modified"), null=True, blank=True
-    )
+    last_modified = models.DateTimeField(_("Last modified"), null=True, blank=True)
     # datetime when the feed was checked by last time
-    last_checked = models.DateTimeField(
-        _("Last checked"), null=True, blank=True
-    )
+    last_checked = models.DateTimeField(_("Last checked"), null=True, blank=True)
     # in order to retrieve it or not
     is_active = models.BooleanField(
-        _("Is active"), default=True,
-        help_text=_("If disabled, this feed will not be further updated.")
+        _("Is active"), default=True, help_text=_("If disabled, this feed will not be further updated.")
     )
 
     objects = FeedManager()
@@ -104,14 +96,14 @@ class Feed(models.Model):
     class Meta:
         verbose_name = _("Feed")
         verbose_name_plural = _("Feeds")
-        ordering = ('title', )
+        ordering = ("title",)
         indexes = [
-            models.Index(fields=['title']),
-            models.Index(fields=['guid']),
-            models.Index(fields=['etag']),
-            models.Index(fields=['-last_modified']),
-            models.Index(fields=['-last_checked']),
-            models.Index(fields=['is_active']),
+            models.Index(fields=["title"]),
+            models.Index(fields=["guid"]),
+            models.Index(fields=["etag"]),
+            models.Index(fields=["-last_modified"]),
+            models.Index(fields=["-last_checked"]),
+            models.Index(fields=["is_active"]),
         ]
 
     def should_update(self):
@@ -123,7 +115,7 @@ class Feed(models.Model):
             return None
 
         try:
-            document = feedparser.parse(self.url, agent=PLANET_CONFIG['USER_AGENT'])
+            document = feedparser.parse(self.url, agent=PLANET_CONFIG["USER_AGENT"])
         except Exception:
             # TO-DO !!!!
             pass
@@ -147,7 +139,7 @@ class Feed(models.Model):
 
     def get_absolute_url(self):
         kwargs = dict(feed_id=self.id, slug=self.get_slug())
-        return reverse('planet:feed-detail', kwargs=kwargs)
+        return reverse("planet:feed-detail", kwargs=kwargs)
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
@@ -157,10 +149,10 @@ class PostAuthorData(models.Model):
     """
     This is the intermediate model that holds post authors information
     """
+
     post = models.ForeignKey("planet.Post", on_delete=models.CASCADE)
     author = models.ForeignKey("planet.Author", on_delete=models.CASCADE)
-    # True if this author is a contributor. False to tell he is the original
-    # author of ths post
+    # True if this author is a contributor. False to tell he is the original author of this post
     is_contributor = models.BooleanField(_("Is Contributor?"), default=False)
     date_created = models.DateField(_("Date created"), auto_now_add=True)
 
@@ -169,7 +161,7 @@ class PostAuthorData(models.Model):
         verbose_name_plural = _("Post Author Data")
         ordering = ("author", "post", "is_contributor")
         indexes = [
-            models.Index(fields=['author', 'post', 'is_contributor']),
+            models.Index(fields=["author", "post", "is_contributor"]),
         ]
 
     def __str__(self):
@@ -181,6 +173,7 @@ class Post(models.Model):
     """
     A feed contains a collection of posts. This model stores them.
     """
+
     feed = models.ForeignKey("planet.Feed", on_delete=models.CASCADE)
     title = models.CharField(_("Title"), max_length=255)
     authors = models.ManyToManyField("planet.Author", through=PostAuthorData)
@@ -198,23 +191,23 @@ class Post(models.Model):
     class Meta:
         verbose_name = _("Post")
         verbose_name_plural = _("Posts")
-        ordering = ['-date_published']
-        unique_together = [['feed', 'guid']]
+        ordering = ["-date_published"]
+        unique_together = [["feed", "guid"]]
         indexes = [
-            models.Index(fields=['title']),
-            models.Index(fields=['guid']),
-            models.Index(fields=['language']),
-            models.Index(fields=['-date_modified']),
-            models.Index(fields=['-date_created']),
-            models.Index(fields=['-date_published']),
+            models.Index(fields=["title"]),
+            models.Index(fields=["guid"]),
+            models.Index(fields=["language"]),
+            models.Index(fields=["-date_modified"]),
+            models.Index(fields=["-date_created"]),
+            models.Index(fields=["-date_published"]),
         ]
 
     def __str__(self):
-        return "{} [{}]".format(self.title, self.feed.title)
+        return f"{self.title} [{self.feed.title}]"
 
     def get_absolute_url(self):
         kwargs = dict(post_id=self.id, slug=self.get_slug())
-        return reverse('planet:post-detail', kwargs=kwargs)
+        return reverse("planet:post-detail", kwargs=kwargs)
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
@@ -224,6 +217,7 @@ class Author(models.Model):
     """
     An author is everyone who wrote or has contributed to write a post.
     """
+
     name = models.CharField(_("Name"), max_length=255, null=True, blank=True)
     email = models.EmailField(_("Author email"), blank=True, db_index=True)
     profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
@@ -233,10 +227,10 @@ class Author(models.Model):
     class Meta:
         verbose_name = _("Author")
         verbose_name_plural = _("Authors")
-        ordering = ('name', 'email')
+        ordering = ("name", "email")
         indexes = [
-            models.Index(fields=['name']),
-            models.Index(fields=['name', 'email']),
+            models.Index(fields=["name"]),
+            models.Index(fields=["name", "email"]),
         ]
 
     def __str__(self):
@@ -244,7 +238,7 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         kwargs = dict(author_id=self.id, slug=self.get_slug())
-        return reverse('planet:author-detail', kwargs=kwargs)
+        return reverse("planet:author-detail", kwargs=kwargs)
 
     def get_slug(self):
         return slugify(self.name) or "no-title"
