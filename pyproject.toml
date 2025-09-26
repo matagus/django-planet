@@ -7,6 +7,7 @@ name = "django-planet"
 dynamic = ["version"]
 description = "A django planet and feeds (RSS and ATOM) aggregator application for Django."
 readme = "README.md"
+requires-python = ">=3.9,<4"
 license = "BSD-3-clause"
 authors = [
     { name = "Matias Agustin Mendez", email = "matagus@gmail.com" },
@@ -31,6 +32,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries",
@@ -39,7 +41,7 @@ classifiers = [
 dependencies = [
     "Django>=4.0",
     "django-pagination-py3>=2.1.0",
-    "feedparser>=6.0",
+    "feedparser>=6.0.11",
 ]
 
 [project.urls]
@@ -115,11 +117,11 @@ python = ["3.10", "3.11", "3.12"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["5.1"]
-python = ["3.11", "3.12"]
+python = ["3.11", "3.12", "3.13"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["5.2"]
-python = ["3.11", "3.12"]
+python = ["3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.test]
 dependencies = ["coverage[toml]", "django~={matrix:django}.0", "factory_boy"]
