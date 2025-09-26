@@ -13,7 +13,7 @@ jobs:
       max-parallel: 2
       fail-fast: true
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
         django-version: ["4.0", "4.1", "4.2", "5.0", "5.1", "5.2"]
         os: [ubuntu-latest]
         exclude:
@@ -33,6 +33,14 @@ jobs:
             python-version: "3.9"
           - django-version: "5.2"
             python-version: "3.10"
+          - django-version: "4.0"
+            python-version: "3.13"
+          - django-version: "4.1"
+            python-version: "3.13"
+          - django-version: "4.2"
+            python-version: "3.13"
+          - django-version: "5.0"
+            python-version: "3.13"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
