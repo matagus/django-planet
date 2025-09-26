@@ -10,8 +10,7 @@
 
 import feedparser
 
-from datetime import datetime
-from time import mktime, struct_time
+from time import struct_time
 
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -21,6 +20,7 @@ from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
 from planet.settings import PLANET_CONFIG
+from planet.utils import to_datetime
 
 
 class Blog(models.Model):
@@ -124,7 +124,8 @@ class Feed(models.Model):
         self.last_modified = document.get("updated_parsed", timezone.now())
 
         if isinstance(self.last_modified, struct_time):
-            self.last_modified = datetime.fromtimestamp(mktime(self.last_modified))
+            # Convert to timezone-aware datetime
+            self.last_modified = to_datetime(self.last_modified)
 
         self.last_checked = timezone.now()
         self.save()

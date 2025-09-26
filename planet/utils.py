@@ -1,7 +1,8 @@
 import hashlib
 
-from datetime import datetime
 from time import mktime
+
+from django.utils import timezone
 
 import feedparser
 
@@ -24,7 +25,9 @@ def parse_feed(url, etag=None, modified=None):
 
 def to_datetime(time_struct):
     try:
-        return datetime.fromtimestamp(mktime(time_struct))
+        # Create a timezone-aware datetime from the timestamp
+        timestamp = mktime(time_struct)
+        return timezone.datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
     except TypeError:
         return None
 
