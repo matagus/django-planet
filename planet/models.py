@@ -1,11 +1,11 @@
 """
-    django-planet models
+django-planet models
 
-    Heavily based on Feedjack's [1] models by Gustavo Picón. Changes and
-    addings inspired by Mark Pilgrim's Feedparser [2].
+Heavily based on Feedjack's [1] models by Gustavo Picón. Changes and
+addings inspired by Mark Pilgrim's Feedparser [2].
 
-    [1] http://www.feedjack.org/
-    [2] http://www.feedparser.org/
+[1] http://www.feedjack.org/
+[2] http://www.feedparser.org/
 """
 
 import feedparser
