@@ -48,3 +48,6 @@ project/statics/*
 
 # AI Agents
 WARP.md
+
+# pyenv
+.python-version
