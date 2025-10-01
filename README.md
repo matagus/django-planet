@@ -13,6 +13,25 @@ Django-planet makes it easy to create a planet-style feed aggregator. Collect po
 
 ![Post List](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/post-list.png)
 
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+- [📦 Installation & Configuration](#-installation--configuration)
+- [📖 Usage](#-usage)
+  - [Adding Feeds](#adding-feeds)
+  - [Updating Feeds](#updating-feeds)
+  - [Built-in Views](#built-in-views)
+  - [Templates](#templates)
+  - [Using Template Tags](#using-template-tags)
+  - [Admin Interface](#admin-interface)
+  - [Management Commands](#management-commands)
+- [📸 Screenshots](#-screenshots)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🙏 Acknowledgements](#-acknowledgements)
+- [💬 Support](#-support)
+
 ## ✨ Features
 
 - **RSS and Atom feed parsing** - Supports both RSS and Atom feed formats via feedparser
