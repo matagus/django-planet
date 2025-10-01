@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-]+","pipeline":["stopWordFilter"]},"docs":[{"location":"","title":"Getting started with django-planet","text":"<p>A django planet and feeds (RSS and ATOM) aggregator application for Django.</p>"},{"location":"#installation","title":"Installation","text":"<p>Install using pip:</p> <pre><code>pip install planet\n</code></pre>"}]}
