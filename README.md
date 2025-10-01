@@ -185,14 +185,99 @@ planet/templates/planet/
 
 ### Using Template Tags
 
-Django-planet includes custom template tags:
+Django-planet includes custom template tags for common operations. Load them in your templates:
 
 ```django
 {% load planet_tags %}
-
-{# Use planet tags in your templates #}
-{# Add your custom template tags here #}
 ```
+
+#### Available Template Tags
+
+##### Filters
+
+**`clean_html`** - Cleans HTML content by removing inline styles, style tags, and script tags
+
+```django
+{{ post.content|clean_html }}
+```
+
+This filter:
+- Removes inline `style` attributes
+- Removes `<style>` and `<script>` tags
+- Replaces multiple consecutive `<br/>` tags (3+) with just two
+- Returns safe HTML that won't be escaped
+
+##### Simple Tags
+
+**`get_first_paragraph`** - Extracts the first paragraph or sentence from post content
+
+```django
+{% get_first_paragraph post.content as excerpt %}
+{{ excerpt }}
+```
+
+This tag:
+- Strips all HTML tags
+- Normalizes whitespace
+- Returns the first sentence longer than 80 characters
+- Falls back to the first 80 characters if no long sentence is found
+- Useful for creating post excerpts or previews
+
+**`get_authors_for_blog`** - Returns all authors who have written posts for a specific blog
+
+```django
+{% get_authors_for_blog blog as authors %}
+{% for author in authors %}
+  <a href="{{ author.get_absolute_url }}">{{ author.name }}</a>
+{% endfor %}
+```
+
+**`blogs_for_author`** - Returns all blogs that an author has contributed to
+
+```django
+{% blogs_for_author author as blogs %}
+{% for blog in blogs %}
+  <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+{% endfor %}
+```
+
+##### Inclusion Tags
+
+Inclusion tags render complete HTML blocks with their own templates.
+
+**`authors_for_feed`** - Renders a list of all authors who have posts in a feed
+
+```django
+{% authors_for_feed feed %}
+```
+
+Uses template: `planet/authors/blocks/list_for_feed.html`
+
+**`feeds_for_author`** - Renders a list of all feeds an author has contributed to
+
+```django
+{% feeds_for_author author %}
+```
+
+Uses template: `planet/feeds/blocks/list_for_author.html`
+
+**`recent_posts`** - Renders a list of the most recent posts across all blogs
+
+```django
+{% recent_posts %}
+```
+
+Uses template: `planet/posts/blocks/list.html`  
+Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` setting (default: 10)
+
+**`recent_blogs`** - Renders a list of the most recently added blogs
+
+```django
+{% recent_blogs %}
+```
+
+Uses template: `planet/blogs/blocks/list.html`  
+Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` setting (default: 10)
 
 ### Admin Interface
 
