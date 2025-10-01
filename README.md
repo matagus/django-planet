@@ -267,7 +267,7 @@ Uses template: `planet/feeds/blocks/list_for_author.html`
 {% recent_posts %}
 ```
 
-Uses template: `planet/posts/blocks/list.html`  
+Uses template: `planet/posts/blocks/list.html`
 Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` setting (default: 10)
 
 **`recent_blogs`** - Renders a list of the most recently added blogs
@@ -276,7 +276,7 @@ Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` setting (default: 10)
 {% recent_blogs %}
 ```
 
-Uses template: `planet/blogs/blocks/list.html`  
+Uses template: `planet/blogs/blocks/list.html`
 Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` setting (default: 10)
 
 ### Admin Interface
@@ -323,9 +323,13 @@ Demo source code is available in the `project/` directory.
 
 ## 🧪 Testing
 
+You can run tests either with Hatch (recommended for testing multiple Python/Django versions) or directly.
+
+### With Hatch (recommended)
+
 Django-planet uses [Hatch](https://hatch.pypa.io/) for testing across multiple Python and Django versions.
 
-### Run all tests
+#### Run all tests
 
 Test across all Python/Django version combinations:
 
@@ -333,7 +337,7 @@ Test across all Python/Django version combinations:
 hatch run test:test
 ```
 
-### Run tests for specific versions
+#### Run tests for specific versions
 
 ```bash
 # Python 3.12 + Django 5.0
@@ -343,7 +347,7 @@ hatch run test.py3.12-5.0:test
 hatch run test.py3.11-5.1:test
 ```
 
-### Run with coverage
+#### Run with coverage
 
 ```bash
 hatch run test:cov
@@ -354,7 +358,7 @@ This will:
 2. Generate a coverage report
 3. Output results to the terminal
 
-### View test matrix
+#### View test matrix
 
 See all available Python/Django test combinations:
 
@@ -362,17 +366,70 @@ See all available Python/Django test combinations:
 hatch env show test
 ```
 
+
+### Without Hatch
+
+If you prefer to run tests directly without Hatch:
+
+1. Install test dependencies:
+   ```bash
+   pip install coverage factory_boy
+   ```
+
+2. Run tests using Django's test runner:
+   ```bash
+   python -m django test --settings tests.settings
+   ```
+
+3. Run tests with coverage:
+   ```bash
+   coverage run -m django test --settings tests.settings
+   coverage report
+   ```
+
+4. Generate coverage JSON:
+   ```bash
+   coverage json
+   ```
+
 ## 🤝 Contributing
 
 Contributions are welcome! ❤️
 
-### Quick guide
+### Development Setup
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Make your changes
-4. Run tests (`hatch run test:test`)
-5. Commit your changes (`git commit -m 'A new feature'`)
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/django-planet.git
+   cd django-planet
+   ```
+
+3. Install development dependencies:
+   ```bash
+   pip install -e .
+   pip install pre-commit
+   ```
+
+4. Set up pre-commit hooks:
+   ```bash
+   pre-commit install
+   ```
+
+   This will automatically run code quality checks (ruff, black, codespell, etc.) before each commit.
+
+5. (Optional) Run pre-commit on all files manually:
+   ```bash
+   pre-commit run --all-files
+   ```
+
+### Quick Contribution Guide
+
+1. Create a feature branch (`git checkout -b feature/new-feature`)
+2. Make your changes
+3. Run tests (see above)
+4. Pre-commit hooks will run automatically when you commit
+5. Commit your changes (`git commit -m 'Add new feature'`)
 6. Push to the branch (`git push origin feature/new-feature`)
 7. Open a Pull Request
 
