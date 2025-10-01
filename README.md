@@ -13,6 +13,25 @@ Django-planet makes it easy to create a planet-style feed aggregator. Collect po
 
 ![Post List](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/post-list.png)
 
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+- [📦 Installation & Configuration](#-installation--configuration)
+- [📖 Usage](#-usage)
+  - [Adding Feeds](#adding-feeds)
+  - [Updating Feeds](#updating-feeds)
+  - [Built-in Views](#built-in-views)
+  - [Templates](#templates)
+  - [Using Template Tags](#using-template-tags)
+  - [Admin Interface](#admin-interface)
+  - [Management Commands](#management-commands)
+- [📸 Screenshots](#-screenshots)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🙏 Acknowledgements](#-acknowledgements)
+- [💬 Support](#-support)
+
 ## ✨ Features
 
 - **RSS and Atom feed parsing** - Supports both RSS and Atom feed formats via feedparser
@@ -185,14 +204,99 @@ planet/templates/planet/
 
 ### Using Template Tags
 
-Django-planet includes custom template tags:
+Django-planet includes custom template tags for common operations. Load them in your templates:
 
 ```django
 {% load planet_tags %}
-
-{# Use planet tags in your templates #}
-{# Add your custom template tags here #}
 ```
+
+#### Available Template Tags
+
+##### Filters
+
+**`clean_html`** - Cleans HTML content by removing inline styles, style tags, and script tags
+
+```django
+{{ post.content|clean_html }}
+```
+
+This filter:
+- Removes inline `style` attributes
+- Removes `<style>` and `<script>` tags
+- Replaces multiple consecutive `<br/>` tags (3+) with just two
+- Returns safe HTML that won't be escaped
+
+##### Simple Tags
+
+**`get_first_paragraph`** - Extracts the first paragraph or sentence from post content
+
+```django
+{% get_first_paragraph post.content as excerpt %}
+{{ excerpt }}
+```
+
+This tag:
+- Strips all HTML tags
+- Normalizes whitespace
+- Returns the first sentence longer than 80 characters
+- Falls back to the first 80 characters if no long sentence is found
+- Useful for creating post excerpts or previews
+
+**`get_authors_for_blog`** - Returns all authors who have written posts for a specific blog
+
+```django
+{% get_authors_for_blog blog as authors %}
+{% for author in authors %}
+  <a href="{{ author.get_absolute_url }}">{{ author.name }}</a>
+{% endfor %}
+```
+
+**`blogs_for_author`** - Returns all blogs that an author has contributed to
+
+```django
+{% blogs_for_author author as blogs %}
+{% for blog in blogs %}
+  <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+{% endfor %}
+```
+
+##### Inclusion Tags
+
+Inclusion tags render complete HTML blocks with their own templates.
+
+**`authors_for_feed`** - Renders a list of all authors who have posts in a feed
+
+```django
+{% authors_for_feed feed %}
+```
+
+Uses template: `planet/authors/blocks/list_for_feed.html`
+
+**`feeds_for_author`** - Renders a list of all feeds an author has contributed to
+
+```django
+{% feeds_for_author author %}
+```
+
+Uses template: `planet/feeds/blocks/list_for_author.html`
+
+**`recent_posts`** - Renders a list of the most recent posts across all blogs
+
+```django
+{% recent_posts %}
+```
+
+Uses template: `planet/posts/blocks/list.html`
+Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` setting (default: 10)
+
+**`recent_blogs`** - Renders a list of the most recently added blogs
+
+```django
+{% recent_blogs %}
+```
+
+Uses template: `planet/blogs/blocks/list.html`
+Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` setting (default: 10)
 
 ### Admin Interface
 
@@ -238,9 +342,13 @@ Demo source code is available in the `project/` directory.
 
 ## 🧪 Testing
 
+You can run tests either with Hatch (recommended for testing multiple Python/Django versions) or directly.
+
+### With Hatch (recommended)
+
 Django-planet uses [Hatch](https://hatch.pypa.io/) for testing across multiple Python and Django versions.
 
-### Run all tests
+#### Run all tests
 
 Test across all Python/Django version combinations:
 
@@ -248,7 +356,7 @@ Test across all Python/Django version combinations:
 hatch run test:test
 ```
 
-### Run tests for specific versions
+#### Run tests for specific versions
 
 ```bash
 # Python 3.12 + Django 5.0
@@ -258,7 +366,7 @@ hatch run test.py3.12-5.0:test
 hatch run test.py3.11-5.1:test
 ```
 
-### Run with coverage
+#### Run with coverage
 
 ```bash
 hatch run test:cov
@@ -269,7 +377,7 @@ This will:
 2. Generate a coverage report
 3. Output results to the terminal
 
-### View test matrix
+#### View test matrix
 
 See all available Python/Django test combinations:
 
@@ -277,17 +385,70 @@ See all available Python/Django test combinations:
 hatch env show test
 ```
 
+
+### Without Hatch
+
+If you prefer to run tests directly without Hatch:
+
+1. Install test dependencies:
+   ```bash
+   pip install coverage factory_boy
+   ```
+
+2. Run tests using Django's test runner:
+   ```bash
+   python -m django test --settings tests.settings
+   ```
+
+3. Run tests with coverage:
+   ```bash
+   coverage run -m django test --settings tests.settings
+   coverage report
+   ```
+
+4. Generate coverage JSON:
+   ```bash
+   coverage json
+   ```
+
 ## 🤝 Contributing
 
 Contributions are welcome! ❤️
 
-### Quick guide
+### Development Setup
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Make your changes
-4. Run tests (`hatch run test:test`)
-5. Commit your changes (`git commit -m 'A new feature'`)
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/django-planet.git
+   cd django-planet
+   ```
+
+3. Install development dependencies:
+   ```bash
+   pip install -e .
+   pip install pre-commit
+   ```
+
+4. Set up pre-commit hooks:
+   ```bash
+   pre-commit install
+   ```
+
+   This will automatically run code quality checks (ruff, black, codespell, etc.) before each commit.
+
+5. (Optional) Run pre-commit on all files manually:
+   ```bash
+   pre-commit run --all-files
+   ```
+
+### Quick Contribution Guide
+
+1. Create a feature branch (`git checkout -b feature/new-feature`)
+2. Make your changes
+3. Run tests (see above)
+4. Pre-commit hooks will run automatically when you commit
+5. Commit your changes (`git commit -m 'Add new feature'`)
 6. Push to the branch (`git push origin feature/new-feature`)
 7. Open a Pull Request
 
