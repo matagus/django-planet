@@ -44,6 +44,7 @@ dependencies = [
     "Django>=4.0",
     "django-pagination-py3>=2.1.0",
     "feedparser>=6.0.11",
+    "readability-lxml>=0.8.1",
 ]
 
 [project.urls]
@@ -140,6 +141,7 @@ cov = ["test-cov", "cov-report"]
 
 [tool.ruff]
 line-length = 120
+select = ["PLC0415"]
 
 [tool.black]
 line-length = 120

@@ -13,6 +13,7 @@ class PostAuthorDataAdmin(admin.ModelAdmin):
 class FeedAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "blog", "language", "etag", "last_modified", "last_checked", "is_active")
     list_filter = ("language",)
+    list_select_related = ("blog",)
     search_fields = ["title", "url", "blog__title"]
 
 
@@ -26,6 +27,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "feed", "guid", "date_published", "date_created")
     list_filter = ("feed", "language")
+    list_select_related = ("feed", "feed__blog")
     search_fields = ["title", "feed__blog__title"]
 
 
