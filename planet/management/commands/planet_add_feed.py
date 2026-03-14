@@ -1,6 +1,7 @@
 from django.core.management.base import CommandError, LabelCommand
 
-from planet.models import Author, PostAuthorData, Blog, Feed, Post
+from planet.management.commands._helpers import create_authors_for_post
+from planet.models import Blog, Feed, Post
 from planet.utils import parse_feed
 
 
@@ -27,15 +28,4 @@ class Command(LabelCommand):
 
             for entry in feed_data.entries:
                 post = Post.objects.create_from(entry, feed)
-
-                # Some feeds doesn't have authors information
-                for author_dict in entry.get("authors", []):
-                    # FIXME: move this logic to a custom Author's create method, do validations there!
-                    try:
-                        name = author_dict["name"].strip()
-                    except Exception:
-                        continue
-
-                    if name:
-                        author, created = Author.objects.get_or_create(name=name)
-                        PostAuthorData.objects.create(post=post, author=author)
+                create_authors_for_post(post, entry.get("authors", []))

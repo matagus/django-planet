@@ -8,19 +8,12 @@ addings inspired by Mark Pilgrim's Feedparser [2].
 [2] http://www.feedparser.org/
 """
 
-import feedparser
-
-from time import struct_time
-
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
-from planet.settings import PLANET_CONFIG
-from planet.utils import to_datetime
 
 
 class Blog(models.Model):
@@ -105,35 +98,6 @@ class Feed(models.Model):
             models.Index(fields=["-last_checked"]),
             models.Index(fields=["is_active"]),
         ]
-
-    def should_update(self):
-        # TO-DO: evaluate logic using etag, last_checked, last_modified and is_active!
-        return True
-
-    def retrieve_and_update(self):
-        if not self.should_update():
-            return None
-
-        try:
-            document = feedparser.parse(self.url, agent=PLANET_CONFIG["USER_AGENT"])
-        except Exception:
-            # TO-DO !!!!
-            pass
-
-        self.etag = document.get("etag")
-        self.last_modified = document.get("updated_parsed", timezone.now())
-
-        if isinstance(self.last_modified, struct_time):
-            # Convert to timezone-aware datetime
-            self.last_modified = to_datetime(self.last_modified)
-
-        self.last_checked = timezone.now()
-        self.save()
-
-        # try to create new posts!!!
-        pass
-
-        return self
 
     def __str__(self):
         return f"{self.title} ({self.url})"
