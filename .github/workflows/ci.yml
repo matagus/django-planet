@@ -60,7 +60,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade hatch
+          python -m pip install --upgrade hatch "virtualenv<20.25"
       - name: Run tests for Python ${{ matrix.python-version }} and Django ${{ matrix.django-version }} on ${{ matrix.os }} with coverage report
         run: |
           hatch run test.py${{ matrix.python-version }}-${{ matrix.django-version }}:cov
