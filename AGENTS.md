@@ -32,7 +32,30 @@ hatch run default:mypy planet project tests
 # Docs
 hatch run docs:serve
 hatch run docs:build
+
+# Updating or generating translation files:
+# (NOTE: you need to run this from inside the planet/ directory)
+cd planet/ && hatch run django-admin makemessages -l es --settings=tests.settings
 ```
+
+## After Any Change
+
+After making **any** change to the codebase, always do these three things in order:
+
+1. **Run pre-commit hooks** (formatting, linting, etc.):
+   ```bash
+   pre-commit run -a
+   ```
+
+2. **Run the full test suite**:
+   ```bash
+   hatch run test:test
+   ```
+
+3. **Regenerate translation files**:
+   ```bash
+   cd planet/ && hatch run django-admin makemessages -l es --settings=tests.settings
+   ```
 
 ## Architecture
 
