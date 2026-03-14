@@ -1,9 +1,7 @@
 import logging
 
-from django.utils import timezone
 from django.core.management.base import BaseCommand
 
-from planet.management.commands._helpers import create_authors_for_post
 from planet.models import Feed, Post
 from planet.utils import parse_feed
 
@@ -14,7 +12,7 @@ class Command(BaseCommand):
     help = "Update all active feeds"
 
     def handle(self, *args, **options):
-        for feed in Feed.objects.filter(is_active=True).iterator():
+        for feed in Feed.objects.active().iterator():
             try:
                 feed_data = parse_feed(feed.url, etag=feed.etag, modified=feed.last_modified)
             except Exception as exc:
@@ -23,8 +21,7 @@ class Command(BaseCommand):
 
             if getattr(feed_data, "status", None) == 304:
                 logger.info("Feed %s not modified (304), skipping.", feed.url)
-                feed.last_checked = timezone.now()
-                feed.save(update_fields=["last_checked"])
+                feed.mark_checked()
                 continue
 
             if feed_data.bozo and not feed_data.entries:
@@ -35,9 +32,6 @@ class Command(BaseCommand):
                 try:
                     Post.objects.get_by_url(entry.link)
                 except Post.DoesNotExist:
-                    post = Post.objects.create_from(entry, feed)
-                    create_authors_for_post(post, entry.get("authors", []))
+                    Post.objects.create_with_authors(entry, feed)
 
-            feed.last_checked = timezone.now()
-            feed.etag = feed_data.get("etag")
-            feed.save(update_fields=["last_checked", "etag"])
+            feed.mark_checked(feed_data)

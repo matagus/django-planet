@@ -11,6 +11,7 @@ addings inspired by Mark Pilgrim's Feedparser [2].
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
@@ -108,6 +109,14 @@ class Feed(models.Model):
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
+
+    def mark_checked(self, feed_data=None):
+        self.last_checked = timezone.now()
+        update_fields = ["last_checked"]
+        if feed_data is not None:
+            self.etag = feed_data.get("etag")
+            update_fields.append("etag")
+        self.save(update_fields=update_fields)
 
 
 class PostAuthorData(models.Model):

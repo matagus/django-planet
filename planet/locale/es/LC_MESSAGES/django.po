@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-14 07:23+0000\n"
+"POT-Creation-Date: 2026-03-14 07:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,149 +17,149 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:8 models.py:158 templates/base.html:33 templates/base.html:41
+#: forms.py:8 models.py:167 templates/base.html:33 templates/base.html:41
 #: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:16
 msgid "Posts"
 msgstr "Posts"
 
-#: forms.py:9 models.py:33 templates/base.html:34 templates/base.html:42
+#: forms.py:9 models.py:34 templates/base.html:34 templates/base.html:42
 #: templates/planet/blogs/detail.html:15 templates/planet/blogs/list.html:7
 #: templates/planet/blogs/list.html:13 templates/planet/blogs/list.html:19
 #: templates/planet/feeds/detail.html:15 templates/planet/posts/detail.html:17
 msgid "Blogs"
 msgstr "Blogs"
 
-#: forms.py:10 models.py:194 templates/base.html:36 templates/base.html:43
+#: forms.py:10 models.py:203 templates/base.html:36 templates/base.html:43
 #: templates/planet/authors/blocks/list.html:5
 #: templates/planet/authors/detail.html:15 templates/planet/authors/list.html:7
 #: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
 msgid "Authors"
 msgstr "Autores"
 
-#: forms.py:11 models.py:91 templates/base.html:35
+#: forms.py:11 models.py:92 templates/base.html:35
 #: templates/planet/feeds/blocks/list_for_author.html:4
 #: templates/planet/feeds/detail.html:21 templates/planet/feeds/list.html:4
 #: templates/planet/feeds/list.html:13 templates/planet/feeds/list.html:17
 msgid "Feeds"
 msgstr "Feeds"
 
-#: models.py:25
+#: models.py:26
 msgid "title"
 msgstr "título"
 
-#: models.py:26 models.py:64 models.py:145
+#: models.py:27 models.py:65 models.py:154
 msgid "Url"
 msgstr "Url"
 
-#: models.py:27 models.py:122
+#: models.py:28 models.py:131
 msgid "Date created"
 msgstr "Fecha de creación"
 
-#: models.py:32 templates/planet/blogs/detail.html:4
+#: models.py:33 templates/planet/blogs/detail.html:4
 #: templates/planet/blogs/detail.html:7 templates/planet/blogs/detail.html:8
 #: templates/planet/blogs/detail.html:23 templates/planet/feeds/detail.html:40
 msgid "Blog"
 msgstr "Blog"
 
-#: models.py:66 models.py:143
+#: models.py:67 models.py:152
 msgid "Title"
 msgstr "Título"
 
-#: models.py:68
+#: models.py:69
 msgid "Subtitle"
 msgstr "Subtítulo"
 
-#: models.py:70
+#: models.py:71
 msgid "Rights"
 msgstr ""
 
-#: models.py:72 models.py:148
+#: models.py:73 models.py:157
 msgid "Language"
 msgstr ""
 
-#: models.py:74
+#: models.py:75
 msgid "Global Unique Identifier"
 msgstr ""
 
-#: models.py:77
+#: models.py:78
 msgid "Etag"
 msgstr ""
 
-#: models.py:79
+#: models.py:80
 msgid "Last modified"
 msgstr ""
 
-#: models.py:81
+#: models.py:82
 msgid "Last checked"
 msgstr ""
 
-#: models.py:84
+#: models.py:85
 msgid "Is active"
 msgstr ""
 
-#: models.py:84
+#: models.py:85
 msgid "If disabled, this feed will not be further updated."
 msgstr ""
 
-#: models.py:90 templates/planet/feeds/detail.html:4
+#: models.py:91 templates/planet/feeds/detail.html:4
 #: templates/planet/feeds/detail.html:7 templates/planet/feeds/detail.html:8
 #: templates/planet/feeds/detail.html:30 templates/planet/feeds/list.html:28
 msgid "Feed"
 msgstr ""
 
-#: models.py:121
+#: models.py:130
 msgid "Is Contributor?"
 msgstr ""
 
-#: models.py:125 models.py:126
+#: models.py:134 models.py:135
 msgid "Post Author Data"
 msgstr ""
 
-#: models.py:146
+#: models.py:155
 msgid "Guid"
 msgstr ""
 
-#: models.py:147
+#: models.py:156
 msgid "Content"
 msgstr ""
 
-#: models.py:149
+#: models.py:158
 msgid "Comments URL"
 msgstr ""
 
-#: models.py:150
+#: models.py:159
 #, fuzzy
 #| msgid "Published at"
 msgid "Date Published"
 msgstr "Publicado el"
 
-#: models.py:151
+#: models.py:160
 msgid "Date Modified"
 msgstr ""
 
-#: models.py:152
+#: models.py:161
 #, fuzzy
 #| msgid "Date created"
 msgid "Date Created"
 msgstr "Fecha de creación"
 
-#: models.py:157
+#: models.py:166
 msgid "Post"
 msgstr ""
 
-#: models.py:186
+#: models.py:195
 msgid "Name"
 msgstr "Nombre"
 
-#: models.py:187
+#: models.py:196
 msgid "Author email"
 msgstr ""
 
-#: models.py:188
+#: models.py:197
 msgid "Profile URL"
 msgstr ""
 
-#: models.py:193 templates/planet/blogs/detail.html:31
+#: models.py:202 templates/planet/blogs/detail.html:31
 msgid "Author"
 msgstr "Author"
 

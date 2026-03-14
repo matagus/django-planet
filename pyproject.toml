@@ -141,6 +141,7 @@ cov = ["test-cov", "cov-report"]
 
 [tool.ruff]
 line-length = 120
+select = ["PLC0415"]
 
 [tool.black]
 line-length = 120

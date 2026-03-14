@@ -1,10 +1,18 @@
+import logging
+
+from django.apps import apps
 from django.db import models
 from django.utils import timezone
 
 from planet.utils import md5_hash, normalize_language, to_datetime
 
+logger = logging.getLogger(__name__)
+
 
 class FeedQuerySet(models.QuerySet):
+
+    def active(self):
+        return self.filter(is_active=True)
 
     def search(self, query):
         return self.filter(title__icontains=query)
@@ -16,6 +24,9 @@ class FeedQuerySet(models.QuerySet):
 class FeedManager(models.Manager):
     def get_queryset(self):
         return FeedQuerySet(self.model, using=self._db)
+
+    def active(self):
+        return self.get_queryset().active()
 
     def search(self, query):
         return self.get_queryset().search(query)
@@ -54,7 +65,21 @@ class BlogQuerySet(models.QuerySet):
         return self.filter(title__icontains=query)
 
 
-BlogManager = BlogQuerySet.as_manager
+class BlogManager(models.Manager):
+    def get_queryset(self):
+        return BlogQuerySet(self.model, using=self._db)
+
+    def for_author(self, author):
+        return self.get_queryset().for_author(author)
+
+    def search(self, query):
+        return self.get_queryset().search(query)
+
+    def get_or_create_from_feed(self, feed_data):
+        return self.get_or_create(
+            url=feed_data.feed.link,
+            defaults={"title": feed_data.feed.title},
+        )
 
 
 class AuthorQuerySet(models.QuerySet):
@@ -83,6 +108,9 @@ class PostQuerySet(models.QuerySet):
     def search(self, query):
         return self.filter(title__icontains=query)
 
+    def with_relations(self):
+        return self.select_related("feed", "feed__blog").prefetch_related("authors")
+
 
 class PostManager(models.Manager):
     def get_queryset(self):
@@ -99,6 +127,9 @@ class PostManager(models.Manager):
 
     def search(self, query):
         return self.get_queryset().search(query)
+
+    def with_relations(self):
+        return self.get_queryset().with_relations()
 
     def get_by_url(self, url):
         guid = md5_hash(url)
@@ -130,4 +161,24 @@ class PostManager(models.Manager):
         post.feed = feed
         post.save()
 
+        return post
+
+    def create_authors_for_post(self, post, authors_data):
+        Author = apps.get_model("planet", "Author")
+        PostAuthorData = apps.get_model("planet", "PostAuthorData")
+
+        for author_dict in authors_data:
+            try:
+                name = author_dict["name"].strip()
+            except KeyError:
+                logger.debug("Author entry missing 'name' key, skipping: %s", author_dict)
+                continue
+
+            if name:
+                author, _ = Author.objects.get_or_create(name=name)
+                PostAuthorData.objects.create(post=post, author=author)
+
+    def create_with_authors(self, entry_data, feed):
+        post = self.create_from(entry_data, feed)
+        self.create_authors_for_post(post, entry_data.get("authors", []))
         return post
