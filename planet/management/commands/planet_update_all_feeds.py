@@ -1,6 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from planet.models import Feed, Post
 from planet.utils import parse_feed
@@ -28,10 +29,11 @@ class Command(BaseCommand):
                 logger.warning("Feed %s returned bozo error: %s", feed.url, feed_data.bozo_exception)
                 continue
 
-            for entry in feed_data.entries:
-                try:
-                    Post.objects.get_by_url(entry.link)
-                except Post.DoesNotExist:
-                    Post.objects.create_with_authors(entry, feed)
+            with transaction.atomic():
+                for entry in feed_data.entries:
+                    try:
+                        Post.objects.get_by_url(entry.link)
+                    except Post.DoesNotExist:
+                        Post.objects.create_with_authors(entry, feed)
 
-            feed.mark_checked(feed_data)
+                feed.mark_checked(feed_data)

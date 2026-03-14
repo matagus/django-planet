@@ -1,4 +1,5 @@
 from django.core.management.base import CommandError, LabelCommand
+from django.db import transaction
 
 from planet.models import Blog, Feed, Post
 from planet.utils import parse_feed
@@ -22,8 +23,8 @@ class Command(LabelCommand):
             feed = Feed.objects.get_by_url(feed_url)
             self.stdout.write(f"Feed for url={feed.url} already exists!")
         except Feed.DoesNotExist:
-            feed = Feed.objects.create_from(feed_data, blog=blog)
+            with transaction.atomic():
+                feed = Feed.objects.create_from(feed_data, blog=blog)
+                for entry in feed_data.entries:
+                    Post.objects.create_with_authors(entry, feed)
             self.stdout.write(f"Feed for url={feed.url} was successfully created!")
-
-            for entry in feed_data.entries:
-                Post.objects.create_with_authors(entry, feed)

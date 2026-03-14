@@ -1,7 +1,7 @@
 import logging
 
 from django.apps import apps
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 
 from planet.utils import md5_hash, normalize_language, to_datetime
@@ -167,17 +167,26 @@ class PostManager(models.Manager):
         Author = apps.get_model("planet", "Author")
         PostAuthorData = apps.get_model("planet", "PostAuthorData")
 
+        names = []
         for author_dict in authors_data:
             try:
                 name = author_dict["name"].strip()
             except KeyError:
                 logger.debug("Author entry missing 'name' key, skipping: %s", author_dict)
                 continue
-
             if name:
-                author, _ = Author.objects.get_or_create(name=name)
-                PostAuthorData.objects.create(post=post, author=author)
+                names.append(name)
 
+        names = list(dict.fromkeys(names))  # deduplicate, preserve order
+
+        if not names:
+            return
+
+        Author.objects.bulk_create([Author(name=name) for name in names], ignore_conflicts=True)
+        authors = Author.objects.filter(name__in=names)
+        PostAuthorData.objects.bulk_create([PostAuthorData(post=post, author=author) for author in authors])
+
+    @transaction.atomic
     def create_with_authors(self, entry_data, feed):
         post = self.create_from(entry_data, feed)
         self.create_authors_for_post(post, entry_data.get("authors", []))
