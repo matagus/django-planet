@@ -24,6 +24,7 @@ classifiers = [
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
     "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
@@ -123,6 +124,10 @@ python = ["3.11", "3.12", "3.13", "3.14"]
 [[tool.hatch.envs.test.matrix]]
 django = ["5.2"]
 python = ["3.11", "3.12", "3.13", "3.14"]
+
+[[tool.hatch.envs.test.matrix]]
+django = ["6.0"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.hatch.envs.test]
 dependencies = ["coverage[toml]", "django~={matrix:django}.0", "factory_boy", "virtualenv<20.25"]
