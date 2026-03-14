@@ -13,46 +13,59 @@ jobs:
       max-parallel: 2
       fail-fast: true
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-        django-version: ["4.0", "4.1", "4.2", "5.0", "5.1", "5.2"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        django-version: ["4.0", "4.1", "4.2", "5.0", "5.1", "5.2", "6.0"]
         os: [ubuntu-latest]
         exclude:
+          # Django 4.0: only 3.9, 3.10
           - django-version: "4.0"
             python-version: "3.11"
           - django-version: "4.0"
             python-version: "3.12"
+          - django-version: "4.0"
+            python-version: "3.13"
+          - django-version: "4.0"
+            python-version: "3.14"
+          # Django 4.1: only 3.9, 3.10, 3.11
           - django-version: "4.1"
             python-version: "3.12"
+          - django-version: "4.1"
+            python-version: "3.13"
+          - django-version: "4.1"
+            python-version: "3.14"
+          # Django 4.2: only 3.9, 3.10, 3.11, 3.12
+          - django-version: "4.2"
+            python-version: "3.13"
+          - django-version: "4.2"
+            python-version: "3.14"
+          # Django 5.0: only 3.10, 3.11, 3.12
           - django-version: "5.0"
             python-version: "3.9"
+          - django-version: "5.0"
+            python-version: "3.13"
+          - django-version: "5.0"
+            python-version: "3.14"
+          # Django 5.1: only 3.10, 3.11, 3.12
           - django-version: "5.1"
             python-version: "3.9"
           - django-version: "5.1"
-            python-version: "3.10"
+            python-version: "3.13"
+          - django-version: "5.1"
+            python-version: "3.14"
+          # Django 5.2: only 3.10, 3.11, 3.12
           - django-version: "5.2"
             python-version: "3.9"
           - django-version: "5.2"
-            python-version: "3.10"
+            python-version: "3.13"
+          - django-version: "5.2"
+            python-version: "3.14"
+          # Django 6.0: only 3.12, 3.13, 3.14
           - django-version: "6.0"
             python-version: "3.9"
-          - django-version: "4.0"
-            python-version: "3.13"
-          - django-version: "4.1"
-            python-version: "3.13"
-          - django-version: "4.2"
-            python-version: "3.13"
-          - django-version: "5.0"
-            python-version: "3.13"
-          - django-version: "4.0"
-            python-version: "3.14"
-          - django-version: "4.1"
-            python-version: "3.14"
-          - django-version: "4.2"
-            python-version: "3.14"
-          - django-version: "5.0"
-            python-version: "3.14"
-          - django-version: "5.1"
-            python-version: "3.14"
+          - django-version: "6.0"
+            python-version: "3.10"
+          - django-version: "6.0"
+            python-version: "3.11"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
