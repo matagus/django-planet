@@ -44,12 +44,18 @@ class Command(BaseCommand):
             with transaction.atomic():
                 entries = post_filter.filter_entries(feed_data.entries, feed)
                 for entry in entries:
+                    entry_url = entry.get("link") or ""
+                    if not entry_url:
+                        logger.debug("Skipping entry with no URL in feed %s: title=%r", feed.url, entry.get("title"))
+                        continue
+
                     try:
-                        Post.objects.get_by_url(entry.link)
+                        Post.objects.get_by_url(entry_url)
                     except Post.DoesNotExist:
-                        Post.objects.create_with_authors(entry, feed)
-                        logger.debug("New post: %r (feed=%s)", entry.get("title"), feed.url)
-                        new_posts += 1
+                        post = Post.objects.create_with_authors(entry, feed)
+                        if post is not None:
+                            logger.debug("New post: %r (feed=%s)", entry.get("title"), feed.url)
+                            new_posts += 1
 
                 feed.mark_checked(feed_data)
 

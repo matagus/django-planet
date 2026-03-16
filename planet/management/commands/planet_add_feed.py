@@ -37,7 +37,8 @@ class Command(LabelCommand):
                 entries = post_filter.filter_entries(feed_data.entries, feed)
                 post_count = 0
                 for entry in entries:
-                    Post.objects.create_with_authors(entry, feed)
-                    post_count += 1
+                    post = Post.objects.create_with_authors(entry, feed)
+                    if post is not None:
+                        post_count += 1
             logger.info("Feed %s created with %d posts.", feed.url, post_count)
             self.stdout.write(f"Feed for url={feed.url} was successfully created!")
