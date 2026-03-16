@@ -323,6 +323,58 @@ All admin interfaces include search and filtering capabilities.
 - Updates feed metadata (etag, last_checked)
 - Creates new Post and Author entries as needed
 
+## 🔍 Post Filtering
+
+By default, all feed entries are saved. You can configure a **post filter backend** to accept only relevant posts before they are stored.
+
+### Configuration
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "planet.backends.accept_all.AcceptAllBackend",  # default
+    "TOPIC_KEYWORDS": [],
+}
+```
+
+### Built-in Backends
+
+**`planet.backends.accept_all.AcceptAllBackend`** *(default)*
+Accepts every entry unchanged. No configuration required.
+
+**`planet.backends.keyword.KeywordFilterBackend`**
+Accepts entries whose title or summary contains at least one of the configured keywords (case-insensitive). Rejected entries are logged at `INFO` level.
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "planet.backends.keyword.KeywordFilterBackend",
+    "TOPIC_KEYWORDS": ["python", "django", "open source"],
+}
+```
+
+When `TOPIC_KEYWORDS` is empty the backend accepts all entries (fail-open).
+
+### Writing a Custom Backend
+
+Subclass `BasePostFilterBackend` and implement `filter_entries`:
+
+```python
+from planet.backends.base import BasePostFilterBackend
+
+class MyBackend(BasePostFilterBackend):
+    def filter_entries(self, entries, feed):
+        # entries: list of feedparser entry objects
+        # feed: planet.models.Feed instance
+        return [e for e in entries if passes_my_check(e)]
+```
+
+Then point to it in your settings:
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "myapp.backends.MyBackend",
+}
+```
+
 ## 📸 Screenshots
 
 ### Post List

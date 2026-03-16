@@ -3,6 +3,7 @@ import logging
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from planet.backends import get_post_filter_backend
 from planet.models import Feed, Post
 from planet.utils import parse_feed
 
@@ -13,6 +14,7 @@ class Command(BaseCommand):
     help = "Update all active feeds"
 
     def handle(self, *args, **options):
+        post_filter = get_post_filter_backend()
         for feed in Feed.objects.active().iterator():
             try:
                 feed_data = parse_feed(feed.url, etag=feed.etag, modified=feed.last_modified)
@@ -30,7 +32,8 @@ class Command(BaseCommand):
                 continue
 
             with transaction.atomic():
-                for entry in feed_data.entries:
+                entries = post_filter.filter_entries(feed_data.entries, feed)
+                for entry in entries:
                     try:
                         Post.objects.get_by_url(entry.link)
                     except Post.DoesNotExist:
