@@ -375,6 +375,32 @@ PLANET = {
 }
 ```
 
+## 📋 Logging
+
+django-planet uses Python's standard `logging` module. All loggers use names under the `planet.*` namespace (e.g. `planet.utils`, `planet.management.commands.planet_update_all_feeds`).
+
+Following Python library best practices, **no handlers are attached by default** — the host project controls all logging output. Add a `LOGGING` configuration in your Django settings to see log output:
+
+```python
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "planet": {
+            "handlers": ["console"],
+            "level": "INFO",  # Use "DEBUG" for more verbosity
+        },
+    },
+}
+```
+
+At `INFO` level you'll see feed add/update summaries and 304 skips. At `DEBUG` level you'll also see individual fetch details, per-entry creation, and `to_datetime()` edge cases.
+
 ## 📸 Screenshots
 
 ### Post List

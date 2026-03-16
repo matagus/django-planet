@@ -1,4 +1,5 @@
 import hashlib
+import logging
 
 from time import mktime
 
@@ -7,6 +8,8 @@ from django.utils import timezone
 import feedparser
 
 from planet.settings import PLANET_CONFIG
+
+logger = logging.getLogger(__name__)
 
 
 def parse_feed(url, etag=None, modified=None):
@@ -20,7 +23,11 @@ def parse_feed(url, etag=None, modified=None):
     else:
         kwargs["etag"] = etag
 
-    return feedparser.parse(url, **kwargs)
+    logger.debug("Fetching feed: %s (etag=%s)", url, etag)
+    result = feedparser.parse(url, **kwargs)
+    entry_count = len(result.entries) if hasattr(result, "entries") else 0
+    logger.debug("Parsed feed %s: status=%s, entries=%d", url, getattr(result, "status", None), entry_count)
+    return result
 
 
 def to_datetime(time_struct):
@@ -29,6 +36,7 @@ def to_datetime(time_struct):
         timestamp = mktime(time_struct)
         return timezone.datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
     except TypeError:
+        logger.debug("to_datetime() got invalid time_struct, returning None: %s", time_struct)
         return None
 
 
