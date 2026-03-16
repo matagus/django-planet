@@ -195,7 +195,13 @@ class PostManager(models.Manager):
         if not names:
             return
 
-        Author.objects.bulk_create([Author(name=name) for name in names], ignore_conflicts=True)
+        # Get existing authors and create only the ones that don't exist
+        existing_authors = set(Author.objects.filter(name__in=names).values_list("name", flat=True))
+        new_names = [name for name in names if name not in existing_authors]
+
+        if new_names:
+            Author.objects.bulk_create([Author(name=name) for name in new_names])
+
         authors = Author.objects.filter(name__in=names)
         PostAuthorData.objects.bulk_create([PostAuthorData(post=post, author=author) for author in authors])
 
