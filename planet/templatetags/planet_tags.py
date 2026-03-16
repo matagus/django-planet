@@ -61,3 +61,10 @@ def recent_posts():
 def recent_blogs():
     blog_list = Blog.objects.order_by("-date_created")[: PLANET_CONFIG["RECENT_BLOGS_LIMIT"]]
     return {"blog_list": blog_list}
+
+
+@register.simple_tag
+def post_titles(posts, limit=5):
+    """Return a comma-separated string of post titles."""
+    titles = list(posts.values_list("title", flat=True)[:limit])
+    return ", ".join(titles)

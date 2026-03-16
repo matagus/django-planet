@@ -7,7 +7,7 @@ from planet.forms import SearchForm
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().with_relations()
     return render(request, "planet/posts/list.html", {"posts": posts})
 
 

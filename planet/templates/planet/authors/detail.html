@@ -4,10 +4,16 @@
 {% block head_title %}{{ author.name }} :: {{ site.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{{ author.name }} :: {{ site.name }}" />
-    <meta name="description" content="Posts about Django written by {{ author.name }}" />
+    {% post_titles posts 5 as recent_titles %}
+    {% with post_count=posts.count %}
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="//{{ site.domain }}{{ author.get_absolute_url }}"/>
+    <meta name="description" content="{{ author.name }} is a Django blogger with more than {{ post_count }} posts. Most recent posts: {{ recent_titles }}" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://{{ site.domain }}{{ author.get_absolute_url }}" />
+    <meta property="og:title" content="{{ author.name }} :: {{ site.name }}" />
+    <meta property="og:description" content="{{ author.name }} is a Django blogger with more than {{ post_count }} posts. Most recent posts: {{ recent_titles }}" />
+    <link rel="canonical" href="https://{{ site.domain }}{{ author.get_absolute_url }}"/>
+    {% endwith %}
 {% endblock %}
 
 {% block breadcrumb_section %}

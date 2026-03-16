@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-14 07:37+0000\n"
+"POT-Creation-Date: 2026-03-16 09:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: forms.py:8 models.py:167 templates/base.html:33 templates/base.html:41
-#: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:16
+#: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:20
 msgid "Posts"
 msgstr "Posts"
 
 #: forms.py:9 models.py:34 templates/base.html:34 templates/base.html:42
-#: templates/planet/blogs/detail.html:15 templates/planet/blogs/list.html:7
+#: templates/planet/blogs/detail.html:22 templates/planet/blogs/list.html:7
 #: templates/planet/blogs/list.html:13 templates/planet/blogs/list.html:19
 #: templates/planet/feeds/detail.html:15 templates/planet/posts/detail.html:17
 msgid "Blogs"
@@ -31,7 +31,7 @@ msgstr "Blogs"
 
 #: forms.py:10 models.py:203 templates/base.html:36 templates/base.html:43
 #: templates/planet/authors/blocks/list.html:5
-#: templates/planet/authors/detail.html:15 templates/planet/authors/list.html:7
+#: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
 #: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
 msgid "Authors"
 msgstr "Autores"
@@ -56,8 +56,8 @@ msgid "Date created"
 msgstr "Fecha de creación"
 
 #: models.py:33 templates/planet/blogs/detail.html:4
-#: templates/planet/blogs/detail.html:7 templates/planet/blogs/detail.html:8
-#: templates/planet/blogs/detail.html:23 templates/planet/feeds/detail.html:40
+#: templates/planet/blogs/detail.html:14 templates/planet/blogs/detail.html:30
+#: templates/planet/feeds/detail.html:40
 msgid "Blog"
 msgstr "Blog"
 
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Profile URL"
 msgstr ""
 
-#: models.py:202 templates/planet/blogs/detail.html:31
+#: models.py:202 templates/planet/blogs/detail.html:38
 msgid "Author"
 msgstr "Author"
 
@@ -179,15 +179,15 @@ msgstr "Página Principal"
 msgid "Authors for this feed"
 msgstr "Autores de este feed"
 
-#: templates/planet/authors/detail.html:29
+#: templates/planet/authors/detail.html:35
 msgid "Blog Info"
 msgstr "Información sobre este blog"
 
-#: templates/planet/authors/detail.html:35
+#: templates/planet/authors/detail.html:41
 msgid "Blog website"
 msgstr "Web"
 
-#: templates/planet/authors/detail.html:36
+#: templates/planet/authors/detail.html:42
 msgid "Link"
 msgstr "Enlace"
 
@@ -220,17 +220,17 @@ msgstr ""
 msgid "Recently Added Blogs"
 msgstr ""
 
-#: templates/planet/blogs/detail.html:27 templates/planet/blogs/list.html:30
+#: templates/planet/blogs/detail.html:34 templates/planet/blogs/list.html:30
 #: templates/planet/feeds/detail.html:48 templates/planet/feeds/list.html:32
 msgid "web"
 msgstr "sitio web"
 
-#: templates/planet/blogs/detail.html:28 templates/planet/blogs/list.html:30
+#: templates/planet/blogs/detail.html:35 templates/planet/blogs/list.html:30
 #: templates/planet/feeds/detail.html:49 templates/planet/feeds/list.html:33
 msgid "Go to the original blog"
 msgstr "Visitar el blog original"
 
-#: templates/planet/blogs/detail.html:35
+#: templates/planet/blogs/detail.html:41
 msgid "See author profile and his/her blog posts"
 msgstr "Ver el perfil del author y sus posts"
 
@@ -344,18 +344,18 @@ msgstr "post original"
 msgid "Django Blogs Aggregator"
 msgstr ""
 
-#: templates/planet/posts/list.html:10
+#: templates/planet/posts/list.html:11 templates/planet/posts/list.html:15
 #, python-format
 msgid ""
-"%(site_name)s is a planet website aggregating the best Django blogs and "
-"content available around the web"
+"%(site_name)s is a planet website aggregating the best Django blogs. Recent "
+"posts: %(titles)s"
 msgstr ""
 
-#: templates/planet/posts/list.html:11
+#: templates/planet/posts/list.html:14
 #, python-format
 msgid "%(site_name)s: Django-related news &amp; blogs aggregator"
 msgstr ""
 
-#: templates/planet/posts/list.html:22
+#: templates/planet/posts/list.html:26
 msgid "What's new in Django community blogs?"
 msgstr ""
