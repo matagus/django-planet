@@ -1,12 +1,12 @@
 from django.conf import settings
 
+from planet.__about__ import version
+
 try:
     PROJECT_PLANET = settings.PLANET
 except AttributeError:
     PROJECT_PLANET = {}
 
-
-version = "1.0.0"
 
 # These are the defaults
 PLANET_CONFIG = {
