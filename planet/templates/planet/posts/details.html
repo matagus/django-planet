@@ -14,6 +14,6 @@
     <p class="card-text">
       {{ post.content|safe|striptags|truncatechars_html:500 }}
     </p>
-    <a target="_blank" href="{{ post.url }}" class="btn btn-success" title="{% trans 'Read ' %} {{ post.title|safe }}">Read More</a>
+    <a target="_blank" href="{{ post.url }}" class="btn btn-success" title="{% trans 'Read ' %} {{ post.title|safe }}">{% trans "Read More" %}</a>
   </div>
 </div>

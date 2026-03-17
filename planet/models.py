@@ -153,7 +153,7 @@ class PostAuthorData(models.Model):
         ]
 
     def __str__(self):
-        author_type = self.is_contributor and "Contributor" or "Author"
+        author_type = _("Contributor") if self.is_contributor else _("Author")
         return f"{self.author.name} ({author_type} - {self.post.title})"
 
 

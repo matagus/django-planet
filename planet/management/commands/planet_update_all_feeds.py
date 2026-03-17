@@ -2,6 +2,7 @@ import logging
 import time
 
 from django.core.management.base import BaseCommand
+from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
 from planet.backends import get_post_filter_backend
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Update all active feeds"
+    help = _("Update all active feeds")
 
     def handle(self, *args, **options):
         post_filter = get_post_filter_backend()

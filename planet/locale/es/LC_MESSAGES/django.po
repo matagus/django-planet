@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 17:56+0000\n"
+"POT-Creation-Date: 2026-03-16 19:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,54 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:18
+msgid "A feed with this URL already exists."
+msgstr ""
+
+#: admin.py:30
+#, fuzzy
+#| msgid "Author"
+msgid "Author Name"
+msgstr "Author"
+
+#: admin.py:44 models.py:98 templates/planet/feeds/detail.html:4
+#: templates/planet/feeds/detail.html:7 templates/planet/feeds/detail.html:8
+#: templates/planet/feeds/detail.html:30 templates/planet/feeds/list.html:28
+msgid "Feed"
+msgstr ""
+
+#: admin.py:59
+#, fuzzy
+#| msgid "Feeds"
+msgid "Feed Status"
+msgstr "Feeds"
+
+#: admin.py:60 admin.py:103 forms.py:10 models.py:218 templates/base.html:36
+#: templates/base.html:43 templates/planet/authors/blocks/list.html:5
+#: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
+#: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
+msgid "Authors"
+msgstr "Autores"
+
+#: admin.py:92
+#, fuzzy
+#| msgid "Authors"
+msgid "No authors"
+msgstr "Autores"
+
+#: admin.py:113 admin.py:132 forms.py:11 models.py:99 templates/base.html:35
+#: templates/planet/feeds/blocks/list_for_author.html:4
+#: templates/planet/feeds/detail.html:21 templates/planet/feeds/list.html:4
+#: templates/planet/feeds/list.html:13 templates/planet/feeds/list.html:17
+msgid "Feeds"
+msgstr "Feeds"
+
+#: admin.py:121
+#, fuzzy
+#| msgid "Feeds"
+msgid "No feeds"
+msgstr "Feeds"
 
 #: forms.py:8 models.py:182 templates/base.html:33 templates/base.html:41
 #: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:20
@@ -29,19 +77,25 @@ msgstr "Posts"
 msgid "Blogs"
 msgstr "Blogs"
 
-#: forms.py:10 models.py:218 templates/base.html:36 templates/base.html:43
-#: templates/planet/authors/blocks/list.html:5
-#: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
-#: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
-msgid "Authors"
-msgstr "Autores"
+#: management/commands/planet_add_feed.py:18
+msgid "Add a new feed to the database"
+msgstr ""
 
-#: forms.py:11 models.py:99 templates/base.html:35
-#: templates/planet/feeds/blocks/list_for_author.html:4
-#: templates/planet/feeds/detail.html:21 templates/planet/feeds/list.html:4
-#: templates/planet/feeds/list.html:13 templates/planet/feeds/list.html:17
-msgid "Feeds"
-msgstr "Feeds"
+#: management/commands/planet_fetch_post_content.py:16
+msgid "Fetch and archive original content for posts where it is missing"
+msgstr ""
+
+#: management/commands/planet_fetch_post_content.py:19
+msgid "Only process posts from this feed ID"
+msgstr ""
+
+#: management/commands/planet_fetch_post_content.py:20
+msgid "Maximum number of posts to process"
+msgstr ""
+
+#: management/commands/planet_update_all_feeds.py:17
+msgid "Update all active feeds"
+msgstr ""
 
 #: models.py:27
 msgid "title"
@@ -101,12 +155,6 @@ msgstr ""
 msgid "If disabled, this feed will not be further updated."
 msgstr ""
 
-#: models.py:98 templates/planet/feeds/detail.html:4
-#: templates/planet/feeds/detail.html:7 templates/planet/feeds/detail.html:8
-#: templates/planet/feeds/detail.html:30 templates/planet/feeds/list.html:28
-msgid "Feed"
-msgstr ""
-
 #: models.py:144
 msgid "Is Contributor?"
 msgstr ""
@@ -114,6 +162,14 @@ msgstr ""
 #: models.py:148 models.py:149
 msgid "Post Author Data"
 msgstr ""
+
+#: models.py:156
+msgid "Contributor"
+msgstr ""
+
+#: models.py:156 models.py:217 templates/planet/blogs/detail.html:38
+msgid "Author"
+msgstr "Author"
 
 #: models.py:169
 msgid "Guid"
@@ -164,10 +220,6 @@ msgstr ""
 #: models.py:212
 msgid "Profile URL"
 msgstr ""
-
-#: models.py:217 templates/planet/blogs/detail.html:38
-msgid "Author"
-msgstr "Author"
 
 #: templates/base.html:39 templates/base.html:45
 msgid "Search"
@@ -322,6 +374,12 @@ msgstr "[Versión Archivada de este post]"
 
 #: templates/planet/posts/details.html:17
 msgid "Read "
+msgstr "Leer más"
+
+#: templates/planet/posts/details.html:17
+#, fuzzy
+#| msgid "Read "
+msgid "Read More"
 msgstr "Leer más"
 
 #: templates/planet/posts/full_details.html:8

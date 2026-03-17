@@ -2,6 +2,8 @@ import logging
 import time
 
 from django.core.management.base import CommandError, LabelCommand
+from django.utils.translation import gettext as _t
+from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
 from planet.backends import get_post_filter_backend
@@ -13,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(LabelCommand):
-    help = "Add a new feed to the database"
+    help = _("Add a new feed to the database")
     label = "url"
 
     def handle_label(self, label, **options):
@@ -23,7 +25,7 @@ class Command(LabelCommand):
         try:
             feed_data = parse_feed(feed_url)
         except Exception as e:
-            raise CommandError(f"Error retrieving feed {feed_url}: {e}")
+            raise CommandError(_t("Error retrieving feed %(url)s: %(error)s") % {"url": feed_url, "error": e})
 
         blog, created = Blog.objects.get_or_create_from_feed(feed_data)
         logger.info("Blog %r (created=%s)", blog, created)
@@ -31,7 +33,7 @@ class Command(LabelCommand):
         try:
             feed = Feed.objects.get_by_url(feed_url)
             logger.warning("Feed already exists: %s", feed_url)
-            self.stdout.write(f"Feed for url={feed.url} already exists!")
+            self.stdout.write(_t("Feed for url=%(url)s already exists!") % {"url": feed.url})
         except Feed.DoesNotExist:
             created_posts = []
             with transaction.atomic():
@@ -51,4 +53,4 @@ class Command(LabelCommand):
                         time.sleep(delay)
 
             logger.info("Feed %s created with %d posts.", feed.url, len(created_posts))
-            self.stdout.write(f"Feed for url={feed.url} was successfully created!")
+            self.stdout.write(_t("Feed for url=%(url)s was successfully created!") % {"url": feed.url})

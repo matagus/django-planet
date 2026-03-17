@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from planet.models import Blog, Feed, Post, Author, PostAuthorData
 
@@ -14,7 +15,7 @@ class AddFeedByURLForm(forms.ModelForm):
     def clean_url(self):
         url = self.cleaned_data["url"]
         if Feed.objects.filter(url=url).exists():
-            raise forms.ValidationError("A feed with this URL already exists.")
+            raise forms.ValidationError(_("A feed with this URL already exists."))
         return url
 
 
@@ -26,7 +27,7 @@ class PostAuthorDataAdmin(admin.ModelAdmin):
     def get_author_name(self, obj):
         return obj.author.name
 
-    get_author_name.short_description = "Author Name"
+    get_author_name.short_description = _("Author Name")
 
 
 class FeedInlineReadOnly(admin.TabularInline):
@@ -40,7 +41,7 @@ class FeedInlineReadOnly(admin.TabularInline):
         url = reverse("admin:planet_feed_change", args=[obj.id])
         return format_html('<a href="{}">{}</a>', url, obj.title)
 
-    feed_link.short_description = "Feed"
+    feed_link.short_description = _("Feed")
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -55,8 +56,8 @@ class FeedAdmin(admin.ModelAdmin):
     readonly_fields = ("authors_list",)
     fieldsets = (
         (None, {"fields": ("title", "url", "blog", "language")}),
-        ("Feed Status", {"fields": ("etag", "last_modified", "last_checked", "is_active")}),
-        ("Authors", {"fields": ("authors_list",)}),
+        (_("Feed Status"), {"fields": ("etag", "last_modified", "last_checked", "is_active")}),
+        (_("Authors"), {"fields": ("authors_list",)}),
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -88,7 +89,7 @@ class FeedAdmin(admin.ModelAdmin):
             return "-"
         authors = Author.objects.filter(postauthordata__post__feed=obj).distinct().order_by("name")
         if not authors.exists():
-            return "No authors"
+            return _("No authors")
         links = [
             format_html(
                 '<a href="{}">{}</a>',
@@ -99,7 +100,7 @@ class FeedAdmin(admin.ModelAdmin):
         ]
         return format_html("<br>".join(f"{link}" for link in links))
 
-    authors_list.short_description = "Authors"
+    authors_list.short_description = _("Authors")
 
 
 @admin.register(Author)
@@ -109,7 +110,7 @@ class AuthorAdmin(admin.ModelAdmin):
     readonly_fields = ("feeds_list",)
     fieldsets = (
         (None, {"fields": ("name", "email", "profile_url")}),
-        ("Feeds", {"fields": ("feeds_list",)}),
+        (_("Feeds"), {"fields": ("feeds_list",)}),
     )
 
     def feeds_list(self, obj):
@@ -117,7 +118,7 @@ class AuthorAdmin(admin.ModelAdmin):
             return "-"
         feeds = Feed.objects.filter(post__postauthordata__author=obj).distinct().order_by("title")
         if not feeds.exists():
-            return "No feeds"
+            return _("No feeds")
         links = [
             format_html(
                 '<a href="{}">{}</a>',
@@ -128,7 +129,7 @@ class AuthorAdmin(admin.ModelAdmin):
         ]
         return format_html("<br>".join(f"{link}" for link in links))
 
-    feeds_list.short_description = "Feeds"
+    feeds_list.short_description = _("Feeds")
 
 
 @admin.register(Post)
