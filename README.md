@@ -97,8 +97,24 @@ PLANET = {
     "USER_AGENT": "MyPlanet/1.0",  # Customize the User-Agent for feed requests
     "RECENT_POSTS_LIMIT": 10,  # Number of recent posts to show
     "RECENT_BLOGS_LIMIT": 10,  # Number of recent blogs to show
+    "FETCH_ORIGINAL_CONTENT": False,  # Fetch and archive full post content from the original URL
+    "FETCH_CONTENT_DELAY": 0,  # Seconds to wait between content fetches (int or float)
 }
 ```
+
+#### Original Content Archiving
+
+When `FETCH_ORIGINAL_CONTENT` is `True`, django-planet will fetch the full HTML of each post's original URL using `readability-lxml` to extract the article body. The result is stored in `Post.original_content` and shown on the post detail page instead of the feed summary.
+
+```python
+PLANET = {
+    "FETCH_ORIGINAL_CONTENT": True,
+    "FETCH_CONTENT_DELAY": 1,  # 1 second between fetches to be polite to servers
+}
+```
+
+- If fetching fails for a post, a WARNING is logged and `original_content` remains `None` (the feed summary is shown as fallback).
+- Use the `planet_fetch_post_content` management command to backfill existing posts.
 
 4. Run migrations:
 
@@ -322,6 +338,90 @@ All admin interfaces include search and filtering capabilities.
 - Fetches new posts from each feed
 - Updates feed metadata (etag, last_checked)
 - Creates new Post and Author entries as needed
+
+**`planet_fetch_post_content`**
+- Backfills `original_content` for posts where it is missing
+- Optional `--feed <id>` argument to limit to a specific feed
+- Optional `--limit <n>` argument to cap the number of posts processed
+- Respects `FETCH_CONTENT_DELAY` between requests
+
+## 🔍 Post Filtering
+
+By default, all feed entries are saved. You can configure a **post filter backend** to accept only relevant posts before they are stored.
+
+### Configuration
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "planet.backends.accept_all.AcceptAllBackend",  # default
+    "TOPIC_KEYWORDS": [],
+}
+```
+
+### Built-in Backends
+
+**`planet.backends.accept_all.AcceptAllBackend`** *(default)*
+Accepts every entry unchanged. No configuration required.
+
+**`planet.backends.keyword.KeywordFilterBackend`**
+Accepts entries whose title or summary contains at least one of the configured keywords (case-insensitive). Rejected entries are logged at `INFO` level.
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "planet.backends.keyword.KeywordFilterBackend",
+    "TOPIC_KEYWORDS": ["python", "django", "open source"],
+}
+```
+
+When `TOPIC_KEYWORDS` is empty the backend accepts all entries (fail-open).
+
+### Writing a Custom Backend
+
+Subclass `BasePostFilterBackend` and implement `filter_entries`:
+
+```python
+from planet.backends.base import BasePostFilterBackend
+
+class MyBackend(BasePostFilterBackend):
+    def filter_entries(self, entries, feed):
+        # entries: list of feedparser entry objects
+        # feed: planet.models.Feed instance
+        return [e for e in entries if passes_my_check(e)]
+```
+
+Then point to it in your settings:
+
+```python
+PLANET = {
+    "POST_FILTER_BACKEND": "myapp.backends.MyBackend",
+}
+```
+
+## 📋 Logging
+
+django-planet uses Python's standard `logging` module. All loggers use names under the `planet.*` namespace (e.g. `planet.utils`, `planet.management.commands.planet_update_all_feeds`).
+
+Following Python library best practices, **no handlers are attached by default** — the host project controls all logging output. Add a `LOGGING` configuration in your Django settings to see log output:
+
+```python
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "planet": {
+            "handlers": ["console"],
+            "level": "INFO",  # Use "DEBUG" for more verbosity
+        },
+    },
+}
+```
+
+At `INFO` level you'll see feed add/update summaries and 304 skips. At `DEBUG` level you'll also see individual fetch details, per-entry creation, and `to_datetime()` edge cases.
 
 ## 📸 Screenshots
 

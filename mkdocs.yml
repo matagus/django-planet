@@ -1,10 +1,24 @@
 site_name: django-planet
-site_url: https://github.com/matagus/django-planet
+site_url: https://django-planet.readthedocs.io/
+site_description: "A reusable Django app for building RSS/Atom feed aggregator websites."
 repo_url: https://github.com/matagus/django-planet
+repo_name: matagus/django-planet
+
 theme:
-  name: "material"
+  name: material
   palette:
-    primary: green
+    - scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.instant.prefetch
@@ -12,11 +26,33 @@ theme:
     - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.top
     - toc.follow
-    - tables
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: installation.md
+    - Usage: usage.md
+  - Reference:
+    - Configuration: configuration.md
+    - Models & Managers: models.md
+    - Templates & Tags: templates.md
+    - Admin Interface: admin.md
+  - About:
+    - Demo & Screenshots: demo.md
+    - Contributing: contributing.md
+
 markdown_extensions:
   - toc:
       permalink: true
+  - admonition
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -24,3 +60,16 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - def_list
+  - tables
+  - md_in_html
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/matagus/django-planet
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/django-planet/

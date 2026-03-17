@@ -1,12 +1,17 @@
 import hashlib
+import logging
+import urllib.request
 
 from time import mktime
 
 from django.utils import timezone
 
 import feedparser
+from readability import Document
 
 from planet.settings import PLANET_CONFIG
+
+logger = logging.getLogger(__name__)
 
 
 def parse_feed(url, etag=None, modified=None):
@@ -20,7 +25,11 @@ def parse_feed(url, etag=None, modified=None):
     else:
         kwargs["etag"] = etag
 
-    return feedparser.parse(url, **kwargs)
+    logger.debug("Fetching feed: %s (etag=%s)", url, etag)
+    result = feedparser.parse(url, **kwargs)
+    entry_count = len(result.entries) if hasattr(result, "entries") else 0
+    logger.debug("Parsed feed %s: status=%s, entries=%d", url, getattr(result, "status", None), entry_count)
+    return result
 
 
 def to_datetime(time_struct):
@@ -29,11 +38,25 @@ def to_datetime(time_struct):
         timestamp = mktime(time_struct)
         return timezone.datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
     except TypeError:
+        logger.debug("to_datetime() got invalid time_struct, returning None: %s", time_struct)
         return None
 
 
 def md5_hash(value):
     return hashlib.md5(value.encode("utf-8")).hexdigest()
+
+
+def fetch_post_content(url):
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": PLANET_CONFIG["USER_AGENT"]})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            raw = resp.read()
+            charset = resp.headers.get_content_charset() or "utf-8"
+        html = raw.decode(charset, errors="replace")
+        return Document(html).summary()
+    except Exception as exc:
+        logger.warning("Failed to fetch original content for %s: %s", url, exc)
+        return None
 
 
 def normalize_language(value):

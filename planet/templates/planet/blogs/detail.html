@@ -4,10 +4,17 @@
 {% block head_title %}{% trans "Blog" %}: {{ blog.title }} :: {{ site.name }}{% endblock %}
 
 {% block extra_head %}
-    <meta name="title" content="{% trans 'Blog' %}: {{ blog.title }} :: {{ site.name }}" />
-    <meta name="description" content="{% trans 'Blog' %} {{ blog.title }}" />
+    {% get_authors_for_blog blog as blog_authors %}
+    {% post_titles posts 5 as recent_titles %}
+    {% with post_count=posts.count %}
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="//{{ site.domain }}{{ blog.get_absolute_url }}"/>
+    <meta name="description" content="{{ blog.title }} is a blog{% if blog_authors %} by {% for a in blog_authors %}{{ a.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %} with more than {{ post_count }} posts about Django. Most recent posts: {{ recent_titles }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://{{ site.domain }}{{ blog.get_absolute_url }}" />
+    <meta property="og:title" content="{% trans 'Blog' %}: {{ blog.title }} :: {{ site.name }}" />
+    <meta property="og:description" content="{{ blog.title }} is a blog{% if blog_authors %} by {% for a in blog_authors %}{{ a.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %} with more than {{ post_count }} posts about Django. Most recent posts: {{ recent_titles }}" />
+    <link rel="canonical" href="https://{{ site.domain }}{{ blog.get_absolute_url }}"/>
+    {% endwith %}
 {% endblock %}
 
 {% block breadcrumb_section %}
@@ -30,7 +37,6 @@
             <tr>
               <th>{% trans 'Author' %}</th>
               <td>
-                {% get_authors_for_blog blog as blog_authors %}
                 {% for author in blog_authors %}
                   <a class="text-success text-decoration-none" href="{{ author.get_absolute_url }}" title="{% trans 'See author profile and his/her blog posts' %}">{{ author.name }}</a>
                 {% endfor %}

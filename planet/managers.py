@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urlparse
 
 from django.apps import apps
 from django.db import models, transaction
@@ -14,6 +15,9 @@ class FeedQuerySet(models.QuerySet):
     def active(self):
         return self.filter(is_active=True)
 
+    def published(self):
+        return self.filter(last_checked__isnull=False)
+
     def search(self, query):
         return self.filter(title__icontains=query)
 
@@ -28,6 +32,9 @@ class FeedManager(models.Manager):
     def active(self):
         return self.get_queryset().active()
 
+    def published(self):
+        return self.get_queryset().published()
+
     def search(self, query):
         return self.get_queryset().search(query)
 
@@ -39,10 +46,14 @@ class FeedManager(models.Manager):
         guid = md5_hash(url)
         return self.model.objects.get(guid=guid)
 
+    def create_stub(self, url, blog):
+        placeholder_title = urlparse(url).netloc or url
+        return self.create(url=url, title=placeholder_title, guid=md5_hash(url), blog=blog)
+
     def create_from(self, feed_data, blog):
         feed = self.model()
         feed.url = feed_data.href
-        feed.title = feed_data.feed.get("title", "--")
+        feed.title = feed_data.feed.get("title") or urlparse(feed_data.href).netloc
         feed.subtitle = feed_data.feed.get("subtitle")
         feed.rights = feed_data.feed.get("rights") or feed_data.feed.get("license")
         feed.guid = md5_hash(feed_data.feed.get("id") or feed.url)
@@ -61,6 +72,9 @@ class BlogQuerySet(models.QuerySet):
     def for_author(self, author):
         return self.filter(feed__post__authors=author).distinct()
 
+    def published(self):
+        return self.filter(feed__last_checked__isnull=False).distinct()
+
     def search(self, query):
         return self.filter(title__icontains=query)
 
@@ -72,13 +86,22 @@ class BlogManager(models.Manager):
     def for_author(self, author):
         return self.get_queryset().for_author(author)
 
+    def published(self):
+        return self.get_queryset().published()
+
     def search(self, query):
         return self.get_queryset().search(query)
 
+    def get_or_create_stub(self, url):
+        placeholder_title = urlparse(url).netloc or url
+        return self.get_or_create(url=url, defaults={"title": placeholder_title})
+
     def get_or_create_from_feed(self, feed_data):
+        url = feed_data.feed.get("link") or feed_data.href
+        title = feed_data.feed.get("title") or urlparse(url).netloc
         return self.get_or_create(
-            url=feed_data.feed.link,
-            defaults={"title": feed_data.feed.title},
+            url=url,
+            defaults={"title": title},
         )
 
 
@@ -136,9 +159,19 @@ class PostManager(models.Manager):
         return self.model.objects.get(guid=guid)
 
     def create_from(self, entry_data, feed):
+        # Extract URL and title with fallbacks
+        post_url = entry_data.get("link") or ""
+        if not post_url:
+            logger.warning(
+                "Skipping entry with no URL in feed %s: title=%r",
+                feed.url,
+                entry_data.get("title") or "",
+            )
+            return None
+
         post = self.model()
-        post.title = entry_data.title
-        post.url = entry_data.link
+        post.title = entry_data.get("title") or ""
+        post.url = post_url
         post.guid = md5_hash(post.url)
 
         try:
@@ -182,12 +215,29 @@ class PostManager(models.Manager):
         if not names:
             return
 
-        Author.objects.bulk_create([Author(name=name) for name in names], ignore_conflicts=True)
+        # Get existing authors and create only the ones that don't exist
+        existing_authors = set(Author.objects.filter(name__in=names).values_list("name", flat=True))
+        new_names = [name for name in names if name not in existing_authors]
+
+        if new_names:
+            Author.objects.bulk_create([Author(name=name) for name in new_names])
+
         authors = Author.objects.filter(name__in=names)
         PostAuthorData.objects.bulk_create([PostAuthorData(post=post, author=author) for author in authors])
 
     @transaction.atomic
     def create_with_authors(self, entry_data, feed):
         post = self.create_from(entry_data, feed)
-        self.create_authors_for_post(post, entry_data.get("authors", []))
+        if post is None:
+            return None
+
+        # Try to get authors from the entry. Feedparser may populate either
+        # 'authors' (structured) or 'author' (simple string).
+        authors_data = entry_data.get("authors") or []
+        if not authors_data:
+            simple_author = entry_data.get("author", "").strip()
+            if simple_author:
+                authors_data = [{"name": simple_author}]
+
+        self.create_authors_for_post(post, authors_data)
         return post

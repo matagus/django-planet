@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
+from planet.utils import normalize_language
 
 
 class Blog(models.Model):
@@ -52,6 +53,12 @@ class Blog(models.Model):
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
+
+    def update_metadata(self, feed_data):
+        new_title = feed_data.feed.get("title", "")
+        if new_title:
+            self.title = new_title
+            self.save(update_fields=["title"])
 
 
 class Feed(models.Model):
@@ -118,6 +125,13 @@ class Feed(models.Model):
             update_fields.append("etag")
         self.save(update_fields=update_fields)
 
+    def update_metadata(self, feed_data):
+        self.title = feed_data.feed.get("title", "")
+        self.subtitle = feed_data.feed.get("subtitle")
+        self.rights = feed_data.feed.get("rights") or feed_data.feed.get("license")
+        self.language = normalize_language(feed_data.feed.get("language"))
+        self.save(update_fields=["title", "subtitle", "rights", "language"])
+
 
 class PostAuthorData(models.Model):
     """
@@ -139,7 +153,7 @@ class PostAuthorData(models.Model):
         ]
 
     def __str__(self):
-        author_type = self.is_contributor and "Contributor" or "Author"
+        author_type = _("Contributor") if self.is_contributor else _("Author")
         return f"{self.author.name} ({author_type} - {self.post.title})"
 
 
@@ -154,6 +168,7 @@ class Post(models.Model):
     url = models.URLField(_("Url"), max_length=1000)
     guid = models.CharField(_("Guid"), max_length=32, unique=True)
     content = models.TextField(_("Content"))
+    original_content = models.TextField(_("Original Content"), null=True, blank=True)
     language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
     comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
     date_published = models.DateTimeField(_("Date Published"))

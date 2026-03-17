@@ -153,3 +153,19 @@ SITE_ID = 1
 PLANET = {
     "USER_AGENT": "matagus/django-planet Example/1.0",
 }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "planet": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+    },
+}

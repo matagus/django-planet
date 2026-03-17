@@ -2,7 +2,7 @@ Django==6.0.3
 django-environ==0.12.0
 django-extensions==4.1
 django-pagination-py3==1.2.0
-django-planet @ git+https://github.com/matagus/django-planet
+django-planet==1.0.0
 feedparser==6.0.12
 gunicorn==23.0.0
 ipython==8.10.0

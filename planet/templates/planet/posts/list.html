@@ -6,10 +6,14 @@
 {% endblock %}
 
 {% block extra_head %}
+    {% post_titles posts 10 as recent_titles %}
     <meta name="robots" content="index, follow" />
-    <meta name="description" content="{% blocktrans with site_name=site.name %}{{ site_name }} is a planet website aggregating the best Django blogs and content available around the web{% endblocktrans %}" />
-    <meta name="title" content="{% blocktrans with site_name=site.name %}{{ site_name }}: Django-related news &amp; blogs aggregator{% endblocktrans %}" />
-    <link rel="canonical" href="//{{ site.domain }}{% url 'planet:post-list' %}"/>
+    <meta name="description" content="{% blocktrans with site_name=site.name titles=recent_titles %}{{ site_name }} is a planet website aggregating the best Django blogs. Recent posts: {{ titles }}{% endblocktrans %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://{{ site.domain }}{% url 'planet:post-list' %}" />
+    <meta property="og:title" content="{% blocktrans with site_name=site.name %}{{ site_name }}: Django-related news &amp; blogs aggregator{% endblocktrans %}" />
+    <meta property="og:description" content="{% blocktrans with site_name=site.name titles=recent_titles %}{{ site_name }} is a planet website aggregating the best Django blogs. Recent posts: {{ titles }}{% endblocktrans %}" />
+    <link rel="canonical" href="https://{{ site.domain }}{% url 'planet:post-list' %}"/>
 {% endblock %}
 
 {% block breadcrumb_section %}
