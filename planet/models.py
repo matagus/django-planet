@@ -168,6 +168,7 @@ class Post(models.Model):
     url = models.URLField(_("Url"), max_length=1000)
     guid = models.CharField(_("Guid"), max_length=32, unique=True)
     content = models.TextField(_("Content"))
+    original_content = models.TextField(_("Original Content"), null=True, blank=True)
     language = models.CharField(_("Language"), max_length=50, blank=True, null=True)
     comments_url = models.URLField(_("Comments URL"), blank=True, null=True)
     date_published = models.DateTimeField(_("Date Published"))

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 15:44+0000\n"
+"POT-Creation-Date: 2026-03-16 17:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:8 models.py:181 templates/base.html:33 templates/base.html:41
+#: forms.py:8 models.py:182 templates/base.html:33 templates/base.html:41
 #: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:20
 msgid "Posts"
 msgstr "Posts"
@@ -29,7 +29,7 @@ msgstr "Posts"
 msgid "Blogs"
 msgstr "Blogs"
 
-#: forms.py:10 models.py:217 templates/base.html:36 templates/base.html:43
+#: forms.py:10 models.py:218 templates/base.html:36 templates/base.html:43
 #: templates/planet/authors/blocks/list.html:5
 #: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
 #: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
@@ -73,7 +73,7 @@ msgstr "Subtítulo"
 msgid "Rights"
 msgstr ""
 
-#: models.py:80 models.py:171
+#: models.py:80 models.py:172
 msgid "Language"
 msgstr ""
 
@@ -123,43 +123,49 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: models.py:172
+#: models.py:171
+#, fuzzy
+#| msgid "original entry"
+msgid "Original Content"
+msgstr "post original"
+
+#: models.py:173
 msgid "Comments URL"
 msgstr ""
 
-#: models.py:173
+#: models.py:174
 #, fuzzy
 #| msgid "Published at"
 msgid "Date Published"
 msgstr "Publicado el"
 
-#: models.py:174
+#: models.py:175
 msgid "Date Modified"
 msgstr ""
 
-#: models.py:175
+#: models.py:176
 #, fuzzy
 #| msgid "Date created"
 msgid "Date Created"
 msgstr "Fecha de creación"
 
-#: models.py:180
+#: models.py:181
 msgid "Post"
 msgstr ""
 
-#: models.py:209
+#: models.py:210
 msgid "Name"
 msgstr "Nombre"
 
-#: models.py:210
+#: models.py:211
 msgid "Author email"
 msgstr ""
 
-#: models.py:211
+#: models.py:212
 msgid "Profile URL"
 msgstr ""
 
-#: models.py:216 templates/planet/blogs/detail.html:38
+#: models.py:217 templates/planet/blogs/detail.html:38
 msgid "Author"
 msgstr "Author"
 

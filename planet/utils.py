@@ -1,11 +1,13 @@
 import hashlib
 import logging
+import urllib.request
 
 from time import mktime
 
 from django.utils import timezone
 
 import feedparser
+from readability import Document
 
 from planet.settings import PLANET_CONFIG
 
@@ -42,6 +44,19 @@ def to_datetime(time_struct):
 
 def md5_hash(value):
     return hashlib.md5(value.encode("utf-8")).hexdigest()
+
+
+def fetch_post_content(url):
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": PLANET_CONFIG["USER_AGENT"]})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            raw = resp.read()
+            charset = resp.headers.get_content_charset() or "utf-8"
+        html = raw.decode(charset, errors="replace")
+        return Document(html).summary()
+    except Exception as exc:
+        logger.warning("Failed to fetch original content for %s: %s", url, exc)
+        return None
 
 
 def normalize_language(value):

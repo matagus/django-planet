@@ -30,7 +30,7 @@
             {% include "planet/posts/full_details.html" %}
         </div>
         <div class="row">
-            <p>{{ post.content|safe }}</p>
+            <p>{{ post.original_content|default:post.content|clean_html }}</p>
         </div>
     </div>
 {% endblock %}

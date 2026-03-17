@@ -97,8 +97,24 @@ PLANET = {
     "USER_AGENT": "MyPlanet/1.0",  # Customize the User-Agent for feed requests
     "RECENT_POSTS_LIMIT": 10,  # Number of recent posts to show
     "RECENT_BLOGS_LIMIT": 10,  # Number of recent blogs to show
+    "FETCH_ORIGINAL_CONTENT": False,  # Fetch and archive full post content from the original URL
+    "FETCH_CONTENT_DELAY": 0,  # Seconds to wait between content fetches (int or float)
 }
 ```
+
+#### Original Content Archiving
+
+When `FETCH_ORIGINAL_CONTENT` is `True`, django-planet will fetch the full HTML of each post's original URL using `readability-lxml` to extract the article body. The result is stored in `Post.original_content` and shown on the post detail page instead of the feed summary.
+
+```python
+PLANET = {
+    "FETCH_ORIGINAL_CONTENT": True,
+    "FETCH_CONTENT_DELAY": 1,  # 1 second between fetches to be polite to servers
+}
+```
+
+- If fetching fails for a post, a WARNING is logged and `original_content` remains `None` (the feed summary is shown as fallback).
+- Use the `planet_fetch_post_content` management command to backfill existing posts.
 
 4. Run migrations:
 
@@ -322,6 +338,12 @@ All admin interfaces include search and filtering capabilities.
 - Fetches new posts from each feed
 - Updates feed metadata (etag, last_checked)
 - Creates new Post and Author entries as needed
+
+**`planet_fetch_post_content`**
+- Backfills `original_content` for posts where it is missing
+- Optional `--feed <id>` argument to limit to a specific feed
+- Optional `--limit <n>` argument to cap the number of posts processed
+- Respects `FETCH_CONTENT_DELAY` between requests
 
 ## 🔍 Post Filtering
 
