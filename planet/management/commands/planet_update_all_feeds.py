@@ -42,6 +42,10 @@ class Command(BaseCommand):
 
             new_posts = 0
             with transaction.atomic():
+                if feed.last_checked is None:
+                    feed.update_metadata(feed_data)
+                    feed.blog.update_metadata(feed_data)
+
                 entries = post_filter.filter_entries(feed_data.entries, feed)
                 for entry in entries:
                     entry_url = entry.get("link") or ""

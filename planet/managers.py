@@ -15,6 +15,9 @@ class FeedQuerySet(models.QuerySet):
     def active(self):
         return self.filter(is_active=True)
 
+    def published(self):
+        return self.filter(last_checked__isnull=False)
+
     def search(self, query):
         return self.filter(title__icontains=query)
 
@@ -29,6 +32,9 @@ class FeedManager(models.Manager):
     def active(self):
         return self.get_queryset().active()
 
+    def published(self):
+        return self.get_queryset().published()
+
     def search(self, query):
         return self.get_queryset().search(query)
 
@@ -39,6 +45,10 @@ class FeedManager(models.Manager):
         # Feed urls may be too long to index for some SQL databases. That's why we use a hash.
         guid = md5_hash(url)
         return self.model.objects.get(guid=guid)
+
+    def create_stub(self, url, blog):
+        placeholder_title = urlparse(url).netloc or url
+        return self.create(url=url, title=placeholder_title, guid=md5_hash(url), blog=blog)
 
     def create_from(self, feed_data, blog):
         feed = self.model()
@@ -62,6 +72,9 @@ class BlogQuerySet(models.QuerySet):
     def for_author(self, author):
         return self.filter(feed__post__authors=author).distinct()
 
+    def published(self):
+        return self.filter(feed__last_checked__isnull=False).distinct()
+
     def search(self, query):
         return self.filter(title__icontains=query)
 
@@ -73,8 +86,15 @@ class BlogManager(models.Manager):
     def for_author(self, author):
         return self.get_queryset().for_author(author)
 
+    def published(self):
+        return self.get_queryset().published()
+
     def search(self, query):
         return self.get_queryset().search(query)
+
+    def get_or_create_stub(self, url):
+        placeholder_title = urlparse(url).netloc or url
+        return self.get_or_create(url=url, defaults={"title": placeholder_title})
 
     def get_or_create_from_feed(self, feed_data):
         url = feed_data.feed.get("link") or feed_data.href

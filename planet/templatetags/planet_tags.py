@@ -59,7 +59,7 @@ def recent_posts():
 
 @register.inclusion_tag("planet/blogs/blocks/list.html")
 def recent_blogs():
-    blog_list = Blog.objects.order_by("-date_created")[: PLANET_CONFIG["RECENT_BLOGS_LIMIT"]]
+    blog_list = Blog.objects.published().order_by("-date_created")[: PLANET_CONFIG["RECENT_BLOGS_LIMIT"]]
     return {"blog_list": blog_list}
 
 

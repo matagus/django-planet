@@ -13,7 +13,7 @@ def index(request):
 
 def blog_list(request, query=None):
     if query is None:
-        blogs_list = Blog.objects.all()
+        blogs_list = Blog.objects.published()
     else:
         blogs_list = Blog.objects.search(query)
 
@@ -33,7 +33,7 @@ def blog_detail(request, blog_id, slug=None):
 
 def feed_list(request, query=None):
     if query is None:
-        feed_list = Feed.objects.all().select_related("blog")
+        feed_list = Feed.objects.published().select_related("blog")
     else:
         feed_list = Feed.objects.search(query)
 

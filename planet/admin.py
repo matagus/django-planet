@@ -1,8 +1,21 @@
+from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
 from planet.models import Blog, Feed, Post, Author, PostAuthorData
+
+
+class AddFeedByURLForm(forms.ModelForm):
+    class Meta:
+        model = Feed
+        fields = ["url"]
+
+    def clean_url(self):
+        url = self.cleaned_data["url"]
+        if Feed.objects.filter(url=url).exists():
+            raise forms.ValidationError("A feed with this URL already exists.")
+        return url
 
 
 @admin.register(PostAuthorData)
@@ -45,6 +58,30 @@ class FeedAdmin(admin.ModelAdmin):
         ("Feed Status", {"fields": ("etag", "last_modified", "last_checked", "is_active")}),
         ("Authors", {"fields": ("authors_list",)}),
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        if obj is None:
+            return AddFeedByURLForm
+        return super().get_form(request, obj, **kwargs)
+
+    def get_fieldsets(self, request, obj=None):
+        if obj is None:
+            return [(None, {"fields": ["url"]})]
+        return super().get_fieldsets(request, obj)
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj is None:
+            return []
+        return super().get_readonly_fields(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            url = form.cleaned_data["url"]
+            blog, _ = Blog.objects.get_or_create_stub(url)
+            feed = Feed.objects.create_stub(url, blog)
+            obj.pk = feed.pk
+            return
+        super().save_model(request, obj, form, change)
 
     def authors_list(self, obj):
         if not obj.pk:

@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
+from planet.utils import normalize_language
 
 
 class Blog(models.Model):
@@ -52,6 +53,12 @@ class Blog(models.Model):
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
+
+    def update_metadata(self, feed_data):
+        new_title = feed_data.feed.get("title", "")
+        if new_title:
+            self.title = new_title
+            self.save(update_fields=["title"])
 
 
 class Feed(models.Model):
@@ -117,6 +124,13 @@ class Feed(models.Model):
             self.etag = feed_data.get("etag")
             update_fields.append("etag")
         self.save(update_fields=update_fields)
+
+    def update_metadata(self, feed_data):
+        self.title = feed_data.feed.get("title", "")
+        self.subtitle = feed_data.feed.get("subtitle")
+        self.rights = feed_data.feed.get("rights") or feed_data.feed.get("license")
+        self.language = normalize_language(feed_data.feed.get("language"))
+        self.save(update_fields=["title", "subtitle", "rights", "language"])
 
 
 class PostAuthorData(models.Model):

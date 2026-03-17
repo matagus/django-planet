@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from .factories import AuthorFactory, BlogFactory, FeedFactory, PostFactory
 from planet.models import Blog, Feed, Post, Author
+from planet.utils import md5_hash
 
 
 class ManagersTestCase(TestCase):
@@ -284,3 +285,39 @@ class FeedparserDataExtractionTestCase(TestCase):
         for author_name in authors_to_create:
             author = Author.objects.get(name=author_name)
             self.assertEqual(author.post_set.count(), 1)
+
+
+class StubCreationTestCase(TestCase):
+
+    def test_blog_get_or_create_stub_uses_hostname_as_title(self):
+        blog, created = Blog.objects.get_or_create_stub("https://example.com/feed.xml")
+        self.assertTrue(created)
+        self.assertEqual(blog.title, "example.com")
+        self.assertEqual(blog.url, "https://example.com/feed.xml")
+
+    def test_blog_get_or_create_stub_is_idempotent(self):
+        Blog.objects.get_or_create_stub("https://example.com/feed.xml")
+        _, created = Blog.objects.get_or_create_stub("https://example.com/feed.xml")
+        self.assertFalse(created)
+        self.assertEqual(Blog.objects.count(), 1)
+
+    def test_feed_create_stub_uses_hostname_as_title(self):
+        blog, _ = Blog.objects.get_or_create_stub("https://example.com/feed.xml")
+        feed = Feed.objects.create_stub("https://example.com/feed.xml", blog)
+        self.assertEqual(feed.title, "example.com")
+        self.assertEqual(feed.url, "https://example.com/feed.xml")
+        self.assertEqual(feed.blog, blog)
+        self.assertIsNone(feed.last_checked)
+
+    def test_feed_create_stub_guid_is_md5_of_url(self):
+        url = "https://example.com/feed.xml"
+        blog, _ = Blog.objects.get_or_create_stub(url)
+        feed = Feed.objects.create_stub(url, blog)
+        self.assertEqual(feed.guid, md5_hash(url))
+
+    def test_feed_get_by_url_works_after_create_stub(self):
+        url = "https://example.com/feed.xml"
+        blog, _ = Blog.objects.get_or_create_stub(url)
+        Feed.objects.create_stub(url, blog)
+        feed = Feed.objects.get_by_url(url)
+        self.assertEqual(feed.url, url)
