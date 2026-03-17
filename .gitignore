@@ -34,8 +34,9 @@ settings_local.py
 ##PyCharm
 .idea
 
-# Sphinx
+# Sphinx / mkdocs / readthedocs
 docs/_build
+site/
 
 # thumbnails, etc
 screenshots/.DS_Store
