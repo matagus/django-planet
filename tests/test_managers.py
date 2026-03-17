@@ -240,3 +240,47 @@ class FeedparserDataExtractionTestCase(TestCase):
         self.assertEqual(Post.objects.count(), 0)
         # Author should not have been created if the post was not created
         self.assertEqual(Author.objects.count(), 0)
+
+    def test_author_deduplication_multiple_posts_same_author(self):
+        """Multiple posts with the same author should create only one Author record."""
+        feed = FeedFactory.create()
+
+        # Create 5 posts with the same author name
+        for i in range(5):
+            entry_data = self._make_entry_data(
+                link=f"https://example.com/post{i}",
+                title=f"Post {i}",
+                authors=[],
+                author="Jane Smith",
+            )
+            Post.objects.create_with_authors(entry_data, feed)
+
+        # Should have only 1 Author record, not 5
+        self.assertEqual(Author.objects.count(), 1)
+        jane = Author.objects.get(name="Jane Smith")
+
+        # All 5 posts should be linked to this one author
+        self.assertEqual(jane.post_set.count(), 5)
+
+    def test_author_deduplication_same_feed_different_authors(self):
+        """Multiple posts with different authors should create separate Author records."""
+        feed = FeedFactory.create()
+
+        authors_to_create = ["Alice", "Bob", "Charlie"]
+
+        for i, author_name in enumerate(authors_to_create):
+            entry_data = self._make_entry_data(
+                link=f"https://example.com/post{i}",
+                title=f"Post by {author_name}",
+                authors=[],
+                author=author_name,
+            )
+            Post.objects.create_with_authors(entry_data, feed)
+
+        # Should have 3 separate Author records
+        self.assertEqual(Author.objects.count(), 3)
+
+        # Each author should be linked to exactly one post
+        for author_name in authors_to_create:
+            author = Author.objects.get(name=author_name)
+            self.assertEqual(author.post_set.count(), 1)
