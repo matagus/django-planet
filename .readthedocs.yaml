@@ -12,7 +12,7 @@ build:
 
 mkdocs:
   configuration: mkdocs.yml
-  fail_on_warning: false
+  fail_on_warning: true
 
 # Optional but recommended, declare the Python requirements required
 # to build your documentation
