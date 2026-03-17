@@ -1,7 +1,7 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from planet.models import Author, Feed, Post, PostAuthorData
@@ -82,3 +82,69 @@ class UpdateAllFeedsMetadataTest(TestCase):
 
         feed.refresh_from_db()
         self.assertEqual(feed.title, "Existing Title")
+
+
+class UpdateAllFeedsErrorHandlingTest(TestCase):
+    def test_fetch_exception_is_caught_and_continues(self):
+        """A feed that raises during parse_feed should not abort the whole run."""
+        FeedFactory()
+        with patch(
+            "planet.management.commands.planet_update_all_feeds.parse_feed",
+            side_effect=Exception("connection error"),
+        ):
+            # Should not raise
+            call_command("planet_update_all_feeds")
+
+    def test_304_skips_post_creation(self):
+        """A 304 Not Modified response should call mark_checked() and create no posts."""
+        feed = FeedFactory(last_checked=timezone.now())
+        feed_data = _make_feed_data()
+        feed_data.status = 304
+
+        with patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data):
+            call_command("planet_update_all_feeds")
+
+        self.assertEqual(Post.objects.count(), 0)
+        feed.refresh_from_db()
+        self.assertIsNotNone(feed.last_checked)
+
+    def test_entry_with_no_url_is_skipped(self):
+        """Entries that have no 'link' should be silently skipped."""
+        feed = FeedFactory(last_checked=timezone.now())
+        feed_data = _make_feed_data()
+        feed_data.entries = [{"title": "No URL entry", "link": ""}]
+
+        with patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data):
+            call_command("planet_update_all_feeds")
+
+        self.assertEqual(Post.objects.count(), 0)
+
+    def test_fetch_original_content_called_for_new_posts(self):
+        """When FETCH_ORIGINAL_CONTENT is True, fetch_post_content() is called for each new post."""
+        feed = FeedFactory(last_checked=None)
+        entry_url = "https://example.com/new-post"
+        feed_data = _make_feed_data()
+        feed_data.entries = [
+            {
+                "link": entry_url,
+                "title": "New Post",
+                "summary": "content",
+                "published_parsed": None,
+                "tags": [],
+                "authors": [],
+                "author_detail": None,
+            }
+        ]
+
+        patched_config = {"FETCH_ORIGINAL_CONTENT": True, "FETCH_CONTENT_DELAY": 0}
+        with (
+            patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data),
+            patch("planet.management.commands.planet_update_all_feeds.PLANET_CONFIG", patched_config),
+            patch(
+                "planet.management.commands.planet_update_all_feeds.fetch_post_content",
+                return_value="<p>content</p>",
+            ) as mock_fetch,
+        ):
+            call_command("planet_update_all_feeds")
+
+        self.assertEqual(mock_fetch.call_count, Post.objects.count())

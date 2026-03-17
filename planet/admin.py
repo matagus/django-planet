@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.urls import reverse
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from planet.models import Blog, Feed, Post, Author, PostAuthorData
@@ -98,7 +98,7 @@ class FeedAdmin(admin.ModelAdmin):
             )
             for author in authors
         ]
-        return format_html("<br>".join(f"{link}" for link in links))
+        return mark_safe("<br>".join(str(link) for link in links))
 
     authors_list.short_description = _("Authors")
 
@@ -127,7 +127,7 @@ class AuthorAdmin(admin.ModelAdmin):
             )
             for feed in feeds
         ]
-        return format_html("<br>".join(f"{link}" for link in links))
+        return mark_safe("<br>".join(str(link) for link in links))
 
     feeds_list.short_description = _("Feeds")
 
