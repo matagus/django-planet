@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Count
 from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -47,10 +48,30 @@ class FeedInlineReadOnly(admin.TabularInline):
         return False
 
 
+class HasPostsFilter(admin.SimpleListFilter):
+    title = _("has posts")
+    parameter_name = "has_posts"
+
+    def lookups(self, request, model_admin):
+        return (("yes", _("Yes")), ("no", _("No")))
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.annotate(_post_count=Count("post")).filter(_post_count__gt=0)
+        if self.value() == "no":
+            return queryset.annotate(_post_count=Count("post")).filter(_post_count=0)
+
+
 @admin.register(Feed)
 class FeedAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "blog", "language", "etag", "last_modified", "last_checked", "is_active")
-    list_filter = ("language",)
+    list_filter = (
+        "is_active",
+        "language",
+        "last_checked",
+        "last_modified",
+        HasPostsFilter,
+    )
     list_select_related = ("blog",)
     search_fields = ["title", "url", "blog__title"]
     readonly_fields = ("authors_list",)
@@ -144,4 +165,8 @@ class PostAdmin(admin.ModelAdmin):
 class BlogAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "date_created")
     search_fields = ["title", "url"]
+    list_filter = (
+        ("feed__language", admin.RelatedOnlyFieldListFilter),
+        ("feed__is_active", admin.RelatedOnlyFieldListFilter),
+    )
     inlines = [FeedInlineReadOnly]
