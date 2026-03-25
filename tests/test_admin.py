@@ -91,6 +91,54 @@ class AuthorAdminFeedsListTest(TestCase):
         self.assertIn(b"No feeds", response.content)
 
 
+class HasPostsFilterTest(TestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
+        self.client.force_login(self.superuser)
+        self.list_url = reverse("admin:planet_feed_changelist")
+
+    def test_filter_yes_returns_feeds_with_posts(self):
+        feed_with_post = FeedFactory()
+        PostFactory(feed=feed_with_post)
+        FeedFactory()  # feed without posts
+        response = self.client.get(self.list_url, {"has_posts": "yes"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, feed_with_post.title)
+        self.assertEqual(response.context["cl"].queryset.count(), 1)
+
+    def test_filter_no_returns_feeds_without_posts(self):
+        feed_without_post = FeedFactory()
+        feed_with_post = FeedFactory()
+        PostFactory(feed=feed_with_post)
+        response = self.client.get(self.list_url, {"has_posts": "no"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, feed_without_post.title)
+        self.assertEqual(response.context["cl"].queryset.count(), 1)
+
+
+class FeedInlineReadOnlyTest(TestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
+        self.client.force_login(self.superuser)
+
+    def test_feed_link_renders_in_blog_change_page(self):
+        feed = FeedFactory()
+        change_url = reverse("admin:planet_blog_change", args=[feed.blog.pk])
+        response = self.client.get(change_url)
+        self.assertEqual(response.status_code, 200)
+        feed_url = reverse("admin:planet_feed_change", args=[feed.pk])
+        self.assertContains(response, feed_url)
+        self.assertContains(response, feed.title)
+
+    def test_inline_has_no_add_form(self):
+        feed = FeedFactory()
+        change_url = reverse("admin:planet_blog_change", args=[feed.blog.pk])
+        response = self.client.get(change_url)
+        self.assertEqual(response.status_code, 200)
+        # has_add_permission returns False, so no empty add row should appear
+        self.assertNotContains(response, 'id="planet_feed-empty"')
+
+
 class PostAuthorDataAdminTest(TestCase):
     def setUp(self):
         self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")

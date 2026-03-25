@@ -20,6 +20,10 @@
             </td>
         </tr>
         <tr>
+            <th>{% trans 'published date' %}</th>
+            <td>{{ post.date_published|date:"Y-m-d" }}</td>
+        </tr>
+        <tr>
             <th>{% trans 'original entry' %}</th>
             <td><a class="text-success text-decoration-none" href="{{ post.url }}">{{ post.title|safe }}</a>
         </tr>
