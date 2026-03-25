@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 15:04+0000\n"
+"POT-Creation-Date: 2026-03-20 15:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -415,6 +415,12 @@ msgid "See all posts for this blog"
 msgstr "Ver todos los posts de este author"
 
 #: templates/planet/posts/full_details.html:23
+#, fuzzy
+#| msgid "published by"
+msgid "published date"
+msgstr "publicado por"
+
+#: templates/planet/posts/full_details.html:27
 msgid "original entry"
 msgstr "post original"
 
