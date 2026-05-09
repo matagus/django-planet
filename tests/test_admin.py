@@ -139,6 +139,26 @@ class FeedInlineReadOnlyTest(TestCase):
         self.assertNotContains(response, 'id="planet_feed-empty"')
 
 
+class BlogAdminChangelistTest(TestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
+        self.client.force_login(self.superuser)
+        self.list_url = reverse("admin:planet_blog_changelist")
+
+    def test_changelist_loads(self):
+        FeedFactory(language="en", is_active=True)
+        FeedFactory(language="es", is_active=False)
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_changelist_filter_by_language(self):
+        feed_en = FeedFactory(language="en")
+        FeedFactory(language="es")
+        response = self.client.get(self.list_url, {"feed__language": "en"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, feed_en.blog.title)
+
+
 class PostAuthorDataAdminTest(TestCase):
     def setUp(self):
         self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")

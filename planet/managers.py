@@ -56,7 +56,7 @@ class FeedManager(models.Manager):
         feed.title = feed_data.feed.get("title") or urlparse(feed_data.href).netloc
         feed.subtitle = feed_data.feed.get("subtitle")
         feed.rights = feed_data.feed.get("rights") or feed_data.feed.get("license")
-        feed.guid = md5_hash(feed_data.feed.get("id") or feed.url)
+        feed.guid = md5_hash(feed.url)
         feed.language = normalize_language(feed_data.feed.get("language"))
         feed.etag = feed_data.get("etag") or None
         feed.last_modified = to_datetime(feed_data.get("updated_parsed"))
@@ -173,6 +173,10 @@ class PostManager(models.Manager):
         post.title = entry_data.get("title") or ""
         post.url = post_url
         post.guid = md5_hash(post.url)
+
+        if self.model.objects.filter(guid=post.guid).exists():
+            logger.debug("Skipping post %r: URL already exists in another feed", post.url)
+            return None
 
         try:
             post.content = entry_data.summary

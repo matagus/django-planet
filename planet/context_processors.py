@@ -6,7 +6,7 @@ from planet.settings import PLANET_CONFIG
 
 
 def context(request):
-    if request.method == "GET" and request.GET.get("search"):
+    if request.method == "GET" and request.GET.get("q"):
         search_form = SearchForm(request.GET)
     else:
         search_form = SearchForm()

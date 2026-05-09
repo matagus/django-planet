@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 15:22+0000\n"
+"POT-Creation-Date: 2026-05-09 18:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgid "Feed Status"
 msgstr "Feeds"
 
 #: admin.py:81 admin.py:124 forms.py:9 models.py:218 templates/base.html:36
-#: templates/base.html:43 templates/planet/authors/blocks/list.html:5
+#: templates/planet/authors/blocks/list.html:5
 #: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
 #: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
 msgid "Authors"
@@ -79,12 +79,12 @@ msgstr "Feeds"
 msgid "No feeds"
 msgstr "Feeds"
 
-#: forms.py:7 models.py:182 templates/base.html:33 templates/base.html:41
+#: forms.py:7 models.py:182 templates/base.html:33
 #: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:20
 msgid "Posts"
 msgstr "Posts"
 
-#: forms.py:8 models.py:35 templates/base.html:34 templates/base.html:42
+#: forms.py:8 models.py:35 templates/base.html:34
 #: templates/planet/blogs/detail.html:22 templates/planet/blogs/list.html:7
 #: templates/planet/blogs/list.html:13 templates/planet/blogs/list.html:19
 #: templates/planet/feeds/detail.html:15 templates/planet/posts/detail.html:17

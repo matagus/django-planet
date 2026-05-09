@@ -4,8 +4,35 @@ from urllib.parse import urlparse
 from django.test import TestCase
 
 from .factories import AuthorFactory, BlogFactory, FeedFactory, PostFactory
+from .mocks import _make_entry_data, _make_feed_data
 from planet.models import Blog, Feed, Post, Author
 from planet.utils import md5_hash
+
+
+class FeedGuidConsistencyTestCase(TestCase):
+    """Regression tests: get_by_url() must find feeds created via create_from()."""
+
+    def test_create_from_guid_uses_url_not_feed_id(self):
+        """FeedManager.create_from() guid must equal md5(url), ignoring feed['id']."""
+        blog = BlogFactory.create()
+        url = "https://fly.io/django-beats/feed.xml"
+        feed_data = _make_feed_data(href=url, link=url, feed_id="urn:something:different")
+
+        feed = Feed.objects.create_from(feed_data, blog)
+
+        self.assertEqual(feed.guid, md5_hash(url))
+        self.assertNotEqual(feed.guid, md5_hash("urn:something:different"))
+
+    def test_get_by_url_finds_feed_created_by_create_from(self):
+        """Feed.objects.get_by_url(url) must find a feed created by create_from() even when feed['id'] differs."""
+        blog = BlogFactory.create()
+        url = "https://fly.io/django-beats/feed.xml"
+        feed_data = _make_feed_data(href=url, link=url, feed_id="urn:something:different")
+
+        created = Feed.objects.create_from(feed_data, blog)
+        found = Feed.objects.get_by_url(url)
+
+        self.assertEqual(found.pk, created.pk)
 
 
 class ManagersTestCase(TestCase):
@@ -48,59 +75,9 @@ class FeedparserDataExtractionTestCase(TestCase):
     These tests verify fixes for missing titles, URLs, and author names.
     """
 
-    def _make_feed_data(self, href="https://example.com/feed.xml", title="", link=""):
-        """Create a mock feedparser feed_data object."""
-        feed_data = MagicMock()
-        feed_data.href = href
-        feed_data.feed = {
-            "title": title,
-            "link": link,
-            "subtitle": "",
-            "id": "feed-id",
-            "language": "en",
-        }
-        feed_data.entries = []
-        feed_data.get = lambda key, default=None: {
-            "etag": None,
-            "updated_parsed": None,
-        }.get(key, default)
-        return feed_data
-
-    def _make_entry_data(self, link="", title="", authors=None, author=""):
-        """Create a mock feedparser entry_data object."""
-        if authors is None:
-            authors = []
-
-        class MockEntryData(dict):
-            """A dict-like object that mimics feedparser entry data."""
-
-            def get(self, key, default=""):
-                data = {
-                    "link": link,
-                    "title": title,
-                    "authors": authors,
-                    "author": author,
-                }
-                return data.get(key, default)
-
-            # Make published_parsed and summary_detail raise AttributeError
-            @property
-            def published_parsed(self):
-                raise AttributeError("published_parsed")
-
-            @property
-            def summary_detail(self):
-                raise AttributeError("summary_detail")
-
-            @property
-            def summary(self):
-                return "Test summary"
-
-        return MockEntryData()
-
     def test_blog_get_or_create_missing_link_fallback_to_href(self):
         """BlogManager.get_or_create_from_feed() should fall back to feed_data.href when feed.link is missing."""
-        feed_data = self._make_feed_data(
+        feed_data = _make_feed_data(
             href="https://example.com/feed.xml",
             title="My Blog",
             link="",  # Missing link
@@ -114,7 +91,7 @@ class FeedparserDataExtractionTestCase(TestCase):
 
     def test_blog_get_or_create_missing_title_fallback_to_domain(self):
         """BlogManager.get_or_create_from_feed() should fall back to URL domain when feed.title is missing."""
-        feed_data = self._make_feed_data(
+        feed_data = _make_feed_data(
             href="https://foo.example.com/path/to/feed.xml",
             title="",  # Missing title
             link="https://foo.example.com",
@@ -128,7 +105,7 @@ class FeedparserDataExtractionTestCase(TestCase):
 
     def test_blog_get_or_create_both_missing_uses_domain_from_href(self):
         """BlogManager.get_or_create_from_feed() should extract domain from href when both link and title are missing."""
-        feed_data = self._make_feed_data(
+        feed_data = _make_feed_data(
             href="https://blog.test.org/rss",
             title="",
             link="",
@@ -143,7 +120,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_feed_create_from_missing_title_fallback_to_domain(self):
         """FeedManager.create_from() should fall back to URL domain when feed.title is missing."""
         blog = BlogFactory.create()
-        feed_data = self._make_feed_data(
+        feed_data = _make_feed_data(
             href="https://example.org/feed",
             title="",  # Missing title
         )
@@ -156,7 +133,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_feed_create_from_preserves_title_when_present(self):
         """FeedManager.create_from() should preserve title when present."""
         blog = BlogFactory.create()
-        feed_data = self._make_feed_data(
+        feed_data = _make_feed_data(
             href="https://example.org/feed",
             title="My Feed Title",
         )
@@ -168,7 +145,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_post_create_from_missing_link_returns_none(self):
         """PostManager.create_from() should return None and not create post when entry.link is missing."""
         feed = FeedFactory.create()
-        entry_data = self._make_entry_data(
+        entry_data = _make_entry_data(
             link="",  # Missing link
             title="Entry Title",
         )
@@ -181,7 +158,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_post_create_from_missing_title_sets_empty_string(self):
         """PostManager.create_from() should set post.title to empty string when entry.title is missing."""
         feed = FeedFactory.create()
-        entry_data = self._make_entry_data(
+        entry_data = _make_entry_data(
             link="https://example.com/post1",
             title="",  # Missing title
         )
@@ -195,7 +172,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_post_create_with_authors_fallback_to_entry_author_string(self):
         """PostManager.create_with_authors() should create author from entry.author string when entry.authors is empty."""
         feed = FeedFactory.create()
-        entry_data = self._make_entry_data(
+        entry_data = _make_entry_data(
             link="https://example.com/post1",
             title="Post Title",
             authors=[],  # Empty authors list
@@ -213,7 +190,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_post_create_with_authors_ignores_empty_author_string(self):
         """PostManager.create_with_authors() should ignore entry.author if it's empty or whitespace."""
         feed = FeedFactory.create()
-        entry_data = self._make_entry_data(
+        entry_data = _make_entry_data(
             link="https://example.com/post1",
             title="Post Title",
             authors=[],
@@ -228,7 +205,7 @@ class FeedparserDataExtractionTestCase(TestCase):
     def test_post_create_with_authors_returns_none_for_missing_url(self):
         """PostManager.create_with_authors() should return None when entry has no URL."""
         feed = FeedFactory.create()
-        entry_data = self._make_entry_data(
+        entry_data = _make_entry_data(
             link="",  # Missing link
             title="Post Title",
             authors=[],
@@ -248,7 +225,7 @@ class FeedparserDataExtractionTestCase(TestCase):
 
         # Create 5 posts with the same author name
         for i in range(5):
-            entry_data = self._make_entry_data(
+            entry_data = _make_entry_data(
                 link=f"https://example.com/post{i}",
                 title=f"Post {i}",
                 authors=[],
@@ -270,7 +247,7 @@ class FeedparserDataExtractionTestCase(TestCase):
         authors_to_create = ["Alice", "Bob", "Charlie"]
 
         for i, author_name in enumerate(authors_to_create):
-            entry_data = self._make_entry_data(
+            entry_data = _make_entry_data(
                 link=f"https://example.com/post{i}",
                 title=f"Post by {author_name}",
                 authors=[],
@@ -321,3 +298,32 @@ class StubCreationTestCase(TestCase):
         Feed.objects.create_stub(url, blog)
         feed = Feed.objects.get_by_url(url)
         self.assertEqual(feed.url, url)
+
+
+class PostDuplicateSkipTestCase(TestCase):
+
+    def test_create_from_skips_post_when_url_exists_in_another_feed(self):
+        """PostManager.create_from() returns None when a post with the same URL already exists in a different feed."""
+        url = "https://example.com/some-post"
+        feed1 = FeedFactory()
+        PostFactory(feed=feed1, url=url, guid=md5_hash(url))
+
+        feed2 = FeedFactory()
+        entry_data = _make_entry_data(link=url, title="Some Post")
+
+        result = Post.objects.create_from(entry_data, feed2)
+
+        self.assertIsNone(result)
+
+    def test_create_from_does_not_save_on_duplicate(self):
+        """PostManager.create_from() does not create a new Post row when the URL is a duplicate."""
+        url = "https://example.com/some-post"
+        feed1 = FeedFactory()
+        PostFactory(feed=feed1, url=url, guid=md5_hash(url))
+
+        feed2 = FeedFactory()
+        entry_data = _make_entry_data(link=url, title="Some Post")
+
+        Post.objects.create_from(entry_data, feed2)
+
+        self.assertEqual(Post.objects.count(), 1)
