@@ -146,5 +146,17 @@ class SearchViewTest(TestCase):
         response = self.client.get("/search/?search=go&q=feed&w=feeds")
         self.assertEqual(response.status_code, 200)
 
+    def test_navbar_form_preserves_query_and_selection_after_search(self):
+        response = self.client.get("/search/?q=Adam&w=authors")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'value="Adam"')
+        self.assertContains(response, '<option value="authors" selected>')
+
+    def test_navbar_form_is_empty_on_non_search_page(self):
+        response = self.client.get("/posts/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="q" value=""')
+        self.assertNotContains(response, "selected>")
+
     def tearDown(self):
         self.feed.delete()

@@ -66,12 +66,15 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "planet.context_processors.context",
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "example_project.wsgi.application"
+
+SITE_ID = 1
 
 
 # Database

@@ -36,11 +36,11 @@
                             <li class="nav-item"><a href="{% url 'planet:author-list' %}" class="nav-link text-success">{% trans "Authors" %}</a></li>
                         </ul>
                         <form class="d-flex mt-2 mt-md-0" role="search" method="GET" action="{% url 'planet:search' %}">
-                            <input name="q" class="form-control me-2" type="search" placeholder="{% trans 'Search' %}" aria-label="{% trans 'Search' %}">
+                            <input name="q" value="{{ search_form.q.value|default_if_none:'' }}" class="form-control me-2" type="search" placeholder="{% trans 'Search' %}" aria-label="{% trans 'Search' %}">
                             <select name="w" class="form-select me-2" aria-label="{% trans 'Search for...' %}">
-                                <option selected value="posts">{% trans 'Posts' %}</option>
-                                <option value="blogs">{% trans 'Blogs' %}</option>
-                                <option value="authors">{% trans 'Authors' %}</option>
+                                {% for value, label in search_form.w.field.choices %}
+                                    <option value="{{ value }}"{% if value == search_form.w.value %} selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
                             </select>
                             <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>
                         </form>
