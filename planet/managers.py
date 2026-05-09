@@ -174,6 +174,10 @@ class PostManager(models.Manager):
         post.url = post_url
         post.guid = md5_hash(post.url)
 
+        if self.model.objects.filter(guid=post.guid).exists():
+            logger.debug("Skipping post %r: URL already exists in another feed", post.url)
+            return None
+
         try:
             post.content = entry_data.summary
         except AttributeError:

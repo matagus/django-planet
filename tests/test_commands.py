@@ -5,7 +5,9 @@ from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from planet.models import Author, Feed, Post, PostAuthorData
+from planet.utils import md5_hash
 from tests.factories import FeedFactory, PostFactory
+from tests.mocks import _make_feed_data
 
 
 class CreateAuthorsForPostTest(TestCase):
@@ -42,22 +44,6 @@ class FeedModelDeadCodeRemovedTest(TestCase):
 
     def test_no_retrieve_and_update_method(self):
         self.assertFalse(hasattr(Feed, "retrieve_and_update"))
-
-
-def _make_feed_data(title="Real Feed Title", link="https://example.com"):
-    feed_data = MagicMock()
-    feed_data.href = "https://example.com/feed.xml"
-    feed_data.status = 200
-    feed_data.bozo = False
-    feed_data.entries = []
-    feed_data.feed = {
-        "title": title,
-        "link": link,
-        "subtitle": "A subtitle",
-        "language": "en",
-    }
-    feed_data.get = lambda key, default=None: {"etag": None, "updated_parsed": None}.get(key, default)
-    return feed_data
 
 
 class UpdateAllFeedsMetadataTest(TestCase):
@@ -165,3 +151,20 @@ class UpdateAllFeedsErrorHandlingTest(TestCase):
             call_command("planet_update_all_feeds")
 
         self.assertEqual(mock_fetch.call_count, Post.objects.count())
+
+
+class AddFeedCommandTestCase(TestCase):
+
+    def test_add_feed_skips_entries_whose_url_already_exists(self):
+        """planet_add_feed skips entries whose URL already exists in another feed, without raising."""
+        existing_url = "https://example.com/already-imported"
+        existing_feed = FeedFactory()
+        PostFactory(feed=existing_feed, url=existing_url, guid=md5_hash(existing_url))
+
+        feed_data = _make_feed_data()
+        feed_data.entries = [{"link": existing_url, "title": "Duplicate Post", "authors": []}]
+
+        with patch("planet.management.commands.planet_add_feed.parse_feed", return_value=feed_data):
+            call_command("planet_add_feed", "https://example.com/feed.xml")
+
+        self.assertEqual(Post.objects.count(), 1)
