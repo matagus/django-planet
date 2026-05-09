@@ -166,7 +166,7 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ("title", "url", "date_created")
     search_fields = ["title", "url"]
     list_filter = (
-        ("feed__language", admin.RelatedOnlyFieldListFilter),
-        ("feed__is_active", admin.RelatedOnlyFieldListFilter),
+        "feed__language",
+        "feed__is_active",
     )
     inlines = [FeedInlineReadOnly]
