@@ -119,6 +119,23 @@ class UpdateAllFeedsErrorHandlingTest(TestCase):
 
         self.assertEqual(Post.objects.count(), 0)
 
+    def test_add_feed_already_exists_logs_warning_no_exception(self):
+        """planet_add_feed should report 'already exists' (no IntegrityError) when re-run on an existing feed."""
+        url = "https://fly.io/django-beats/feed.xml"
+        feed_data = _make_feed_data()
+        feed_data.href = url
+        feed_data.feed["id"] = "urn:something:different"
+
+        with patch("planet.management.commands.planet_add_feed.parse_feed", return_value=feed_data):
+            call_command("planet_add_feed", url)
+            initial_count = Feed.objects.count()
+            self.assertEqual(initial_count, 1)
+
+            # Second invocation must not raise IntegrityError and must not duplicate.
+            call_command("planet_add_feed", url)
+
+        self.assertEqual(Feed.objects.count(), initial_count)
+
     def test_fetch_original_content_called_for_new_posts(self):
         """When FETCH_ORIGINAL_CONTENT is True, fetch_post_content() is called for each new post."""
         feed = FeedFactory(last_checked=None)

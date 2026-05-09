@@ -8,6 +8,48 @@ from planet.models import Blog, Feed, Post, Author
 from planet.utils import md5_hash
 
 
+class FeedGuidConsistencyTestCase(TestCase):
+    """Regression tests: get_by_url() must find feeds created via create_from()."""
+
+    def _make_feed_data(self, href, feed_id):
+        feed_data = MagicMock()
+        feed_data.href = href
+        feed_data.feed = {
+            "title": "A Feed",
+            "link": href,
+            "subtitle": "",
+            "id": feed_id,
+            "language": "en",
+        }
+        feed_data.get = lambda key, default=None: {
+            "etag": None,
+            "updated_parsed": None,
+        }.get(key, default)
+        return feed_data
+
+    def test_create_from_guid_uses_url_not_feed_id(self):
+        """FeedManager.create_from() guid must equal md5(url), ignoring feed['id']."""
+        blog = BlogFactory.create()
+        url = "https://fly.io/django-beats/feed.xml"
+        feed_data = self._make_feed_data(href=url, feed_id="urn:something:different")
+
+        feed = Feed.objects.create_from(feed_data, blog)
+
+        self.assertEqual(feed.guid, md5_hash(url))
+        self.assertNotEqual(feed.guid, md5_hash("urn:something:different"))
+
+    def test_get_by_url_finds_feed_created_by_create_from(self):
+        """Feed.objects.get_by_url(url) must find a feed created by create_from() even when feed['id'] differs."""
+        blog = BlogFactory.create()
+        url = "https://fly.io/django-beats/feed.xml"
+        feed_data = self._make_feed_data(href=url, feed_id="urn:something:different")
+
+        created = Feed.objects.create_from(feed_data, blog)
+        found = Feed.objects.get_by_url(url)
+
+        self.assertEqual(found.pk, created.pk)
+
+
 class ManagersTestCase(TestCase):
 
     def setUp(self):
