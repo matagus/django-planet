@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from django.apps import apps
 from django.db import models, transaction
 from django.utils import timezone
+from readability import Document
 
 from planet.utils import md5_hash, normalize_language, to_datetime
 
@@ -179,9 +180,11 @@ class PostManager(models.Manager):
             return None
 
         try:
-            post.content = entry_data.summary
+            raw_content = entry_data.summary
         except AttributeError:
-            pass
+            raw_content = ""
+        if raw_content:
+            post.content = Document(raw_content).summary(html_partial=True)
 
         try:
             language = entry_data.summary_detail.language

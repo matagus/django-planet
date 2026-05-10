@@ -1,23 +1,12 @@
 import re
 
 from django import template
-from django.template.defaultfilters import stringfilter
 from django.utils.html import strip_tags
-from django.utils.safestring import mark_safe
-from readability import Document
 
 from planet.models import Author, Blog, Feed, Post
 from planet.settings import PLANET_CONFIG
 
 register = template.Library()
-
-
-@register.filter
-@stringfilter
-def clean_html(html):
-    if not html:
-        return ""
-    return mark_safe(Document(html).summary(html_partial=True))
 
 
 @register.simple_tag
