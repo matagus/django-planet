@@ -53,7 +53,7 @@ def fetch_post_content(url):
             raw = resp.read()
             charset = resp.headers.get_content_charset() or "utf-8"
         html = raw.decode(charset, errors="replace")
-        return Document(html).summary()
+        return Document(html).summary(html_partial=True)
     except Exception as exc:
         logger.warning("Failed to fetch original content for %s: %s", url, exc)
         return None
