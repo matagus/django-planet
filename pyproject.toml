@@ -48,10 +48,11 @@ dependencies = [
 ]
 
 [project.urls]
+Demo = "https://django-planet.matagus.dev/"
 Homepage = "https://github.com/matagus/django-planet"
-Issues = "https://.github.com/matagus/django-planet/issues"
+Issues = "https://github.com/matagus/django-planet/issues"
 Repository = "https://github.com/matagus/django-planet"
-Changelog = "https://githib.com/matagus/django-planet/releases"
+Changelog = "https://github.com/matagus/django-planet/releases"
 Pypi = "https://pypi.org/project/django-planet"
 
 [tool.hatch.version]

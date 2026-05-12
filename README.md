@@ -6,31 +6,16 @@
 ![CI badge](https://github.com/matagus/django-planet/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/matagus/django-planet/graph/badge.svg?token=r3MXJJNLfo)](https://codecov.io/gh/matagus/django-planet)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Docs](https://img.shields.io/badge/docs-readthedocs-blue)](https://django-planet.readthedocs.io/)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://django-planet.matagus.dev/)
 
 **A reusable Django app for building RSS/Atom feed aggregator websites (aka "Planet" sites).**
 
 Django-planet makes it easy to create a planet-style feed aggregator. Collect posts from multiple blogs and websites, store them in your database, and display them with built-in views and templates—or build your own custom front-end.
 
+**Live Demo**: [A planet for Django-related feeds](https://django-planet.matagus.dev/)
+
 ![Post List](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/post-list.png)
-
-## 📑 Table of Contents
-
-- [✨ Features](#-features)
-- [📦 Installation & Configuration](#-installation--configuration)
-- [📖 Usage](#-usage)
-  - [Adding Feeds](#adding-feeds)
-  - [Updating Feeds](#updating-feeds)
-  - [Built-in Views](#built-in-views)
-  - [Templates](#templates)
-  - [Using Template Tags](#using-template-tags)
-  - [Admin Interface](#admin-interface)
-  - [Management Commands](#management-commands)
-- [📸 Screenshots](#-screenshots)
-- [🧪 Testing](#-testing)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [🙏 Acknowledgements](#-acknowledgements)
-- [💬 Support](#-support)
 
 ## ✨ Features
 
@@ -44,516 +29,59 @@ Django-planet makes it easy to create a planet-style feed aggregator. Collect po
 - **Custom managers** - QuerySet methods for filtering by blog, feed, author
 - **Template tags** - Custom template tags for common operations
 - **Pagination support** - Uses django-pagination-py3 for easy pagination
+- **Post filtering** - Configurable filter backends to accept only relevant posts
+- **Content archiving** - Optionally fetch and store the full original content of posts
 
-## 📦 Installation & Configuration
-
-### Via pip
+## 📦 Quick Start
 
 ```bash
 pip install django-planet
 ```
 
-### From source
-
-```bash
-git clone https://github.com/matagus/django-planet.git
-cd django-planet
-pip install -e .
-```
-
-### Configure your Django project
-
-1. Add `planet` and `pagination` to your `INSTALLED_APPS` in `settings.py`:
-
 ```python
 INSTALLED_APPS = [
-    # Django apps
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-
-    # Third-party apps
+    # ...
     "planet",
-    "pagination",  # Required dependency
+    "pagination",
 ]
-```
 
-2. Add pagination middleware to `MIDDLEWARE` in `settings.py`:
-
-```python
 MIDDLEWARE = [
-    # ... other middleware
+    # ...
     "pagination.middleware.PaginationMiddleware",
 ]
 ```
-
-3. (Optional) Configure planet settings in `settings.py`:
-
-```python
-PLANET = {
-    "USER_AGENT": "MyPlanet/1.0",  # Customize the User-Agent for feed requests
-    "RECENT_POSTS_LIMIT": 10,  # Number of recent posts to show
-    "RECENT_BLOGS_LIMIT": 10,  # Number of recent blogs to show
-    "FETCH_ORIGINAL_CONTENT": False,  # Fetch and archive full post content from the original URL
-    "FETCH_CONTENT_DELAY": 0,  # Seconds to wait between content fetches (int or float)
-}
-```
-
-#### Original Content Archiving
-
-When `FETCH_ORIGINAL_CONTENT` is `True`, django-planet will fetch the full HTML of each post's original URL using `readability-lxml` to extract the article body. The result is stored in `Post.original_content` and shown on the post detail page instead of the feed summary.
-
-```python
-PLANET = {
-    "FETCH_ORIGINAL_CONTENT": True,
-    "FETCH_CONTENT_DELAY": 1,  # 1 second between fetches to be polite to servers
-}
-```
-
-- If fetching fails for a post, a WARNING is logged and `original_content` remains `None` (the feed summary is shown as fallback).
-- Use the `planet_fetch_post_content` management command to backfill existing posts.
-
-4. Run migrations:
 
 ```bash
 python manage.py migrate
 ```
 
-5. Include planet URLs in your project's `urls.py`:
+Then include the URLs in your `urls.py`:
 
 ```python
-from django.urls import path, include
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("planet.urls")),  # or path("planet/", include("planet.urls"))
-]
+path("", include("planet.urls")),
 ```
 
-## 📖 Usage
-
-### Adding Feeds
-
-You can add feeds using the management command:
-
-```bash
-python manage.py planet_add_feed https://example.com/feed.xml
-```
-
-This will:
-- Parse the feed and create a Blog entry if it doesn't exist
-- Create the Feed entry
-- Import all posts from the feed
-- Create Author entries and link them to posts
-
-### Updating Feeds
-
-Update all active feeds to fetch new posts:
-
-```bash
-python manage.py planet_update_all_feeds
-```
-
-This command:
-- Iterates through all feeds
-- Fetches new entries
-- Creates new Post and Author entries as needed
-- Updates feed metadata (last_checked, etag)
-
-**Set up periodic updates:**
-
-For production, schedule this command to run periodically:
-
-**Using cron:**
-```bash
-# Run every hour
-0 * * * * /path/to/venv/bin/python /path/to/project/manage.py planet_update_all_feeds
-```
-
-### Built-in Views
-
-Django-planet provides these URL patterns:
-
-- `/` - Post list (index)
-- `/posts/` - All posts
-- `/posts/<id>/<slug>/` - Post detail
-- `/blogs/` - All blogs
-- `/blogs/<id>/<slug>/` - Blog detail (shows all posts from that blog)
-- `/feeds/` - All feeds
-- `/feeds/<id>/<slug>/` - Feed detail (shows all posts from that feed)
-- `/authors/` - All authors
-- `/authors/<id>/<slug>/` - Author detail (shows all posts by that author)
-- `/search/` - Search form endpoint
-
-### Templates
-
-Planet includes a complete set of templates:
-
-```
-planet/templates/planet/
-├── base.html                    # Base template
-├── posts/
-│   ├── list.html               # Post list view
-│   ├── detail.html             # Post detail view
-│   └── blocks/
-│       └── list.html           # Reusable post list block
-├── blogs/
-│   ├── list.html               # Blog list view
-│   ├── detail.html             # Blog detail view
-│   └── blocks/
-│       └── list.html           # Reusable blog list block
-├── feeds/
-│   ├── list.html               # Feed list view
-│   ├── detail.html             # Feed detail view
-│   └── blocks/
-│       └── list_for_author.html
-└── authors/
-    ├── list.html               # Author list view
-    ├── detail.html             # Author detail view
-    └── blocks/
-        ├── list.html           # Reusable author list block
-        └── list_for_feed.html
-```
-
-### Using Template Tags
-
-Django-planet includes custom template tags for common operations. Load them in your templates:
-
-```django
-{% load planet_tags %}
-```
-
-#### Available Template Tags
-
-##### Filters
-
-**`clean_html`** - Cleans HTML content by removing inline styles, style tags, and script tags
-
-```django
-{{ post.content|clean_html }}
-```
-
-This filter:
-- Removes inline `style` attributes
-- Removes `<style>` and `<script>` tags
-- Replaces multiple consecutive `<br/>` tags (3+) with just two
-- Returns safe HTML that won't be escaped
-
-##### Simple Tags
-
-**`get_first_paragraph`** - Extracts the first paragraph or sentence from post content
-
-```django
-{% get_first_paragraph post.content as excerpt %}
-{{ excerpt }}
-```
-
-This tag:
-- Strips all HTML tags
-- Normalizes whitespace
-- Returns the first sentence longer than 80 characters
-- Falls back to the first 80 characters if no long sentence is found
-- Useful for creating post excerpts or previews
-
-**`get_authors_for_blog`** - Returns all authors who have written posts for a specific blog
-
-```django
-{% get_authors_for_blog blog as authors %}
-{% for author in authors %}
-  <a href="{{ author.get_absolute_url }}">{{ author.name }}</a>
-{% endfor %}
-```
-
-**`blogs_for_author`** - Returns all blogs that an author has contributed to
-
-```django
-{% blogs_for_author author as blogs %}
-{% for blog in blogs %}
-  <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
-{% endfor %}
-```
-
-##### Inclusion Tags
-
-Inclusion tags render complete HTML blocks with their own templates.
-
-**`authors_for_feed`** - Renders a list of all authors who have posts in a feed
-
-```django
-{% authors_for_feed feed %}
-```
-
-Uses template: `planet/authors/blocks/list_for_feed.html`
-
-**`feeds_for_author`** - Renders a list of all feeds an author has contributed to
-
-```django
-{% feeds_for_author author %}
-```
-
-Uses template: `planet/feeds/blocks/list_for_author.html`
-
-**`recent_posts`** - Renders a list of the most recent posts across all blogs
-
-```django
-{% recent_posts %}
-```
-
-Uses template: `planet/posts/blocks/list.html`
-Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` setting (default: 10)
-
-**`recent_blogs`** - Renders a list of the most recently added blogs
-
-```django
-{% recent_blogs %}
-```
-
-Uses template: `planet/blogs/blocks/list.html`
-Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` setting (default: 10)
-
-### Admin Interface
-
-All models are registered in Django admin with sensible defaults:
-
-- **BlogAdmin**
-- **FeedAdmin**
-- **PostAdmin**
-- **AuthorAdmin**
-
-All admin interfaces include search and filtering capabilities.
-
-### Management Commands
-
-**`planet_add_feed <feed_url>`**
-- Adds a new feed to the database
-- Creates Blog if it doesn't exist
-- Imports all existing posts from the feed
-- Creates Author entries for post authors
-
-**`planet_update_all_feeds`**
-- Updates all active feeds
-- Fetches new posts from each feed
-- Updates feed metadata (etag, last_checked)
-- Creates new Post and Author entries as needed
-
-**`planet_fetch_post_content`**
-- Backfills `original_content` for posts where it is missing
-- Optional `--feed <id>` argument to limit to a specific feed
-- Optional `--limit <n>` argument to cap the number of posts processed
-- Respects `FETCH_CONTENT_DELAY` between requests
-
-## 🔍 Post Filtering
-
-By default, all feed entries are saved. You can configure a **post filter backend** to accept only relevant posts before they are stored.
-
-### Configuration
-
-```python
-PLANET = {
-    "POST_FILTER_BACKEND": "planet.backends.accept_all.AcceptAllBackend",  # default
-    "TOPIC_KEYWORDS": [],
-}
-```
-
-### Built-in Backends
-
-**`planet.backends.accept_all.AcceptAllBackend`** *(default)*
-Accepts every entry unchanged. No configuration required.
-
-**`planet.backends.keyword.KeywordFilterBackend`**
-Accepts entries whose title or summary contains at least one of the configured keywords (case-insensitive). Rejected entries are logged at `INFO` level.
-
-```python
-PLANET = {
-    "POST_FILTER_BACKEND": "planet.backends.keyword.KeywordFilterBackend",
-    "TOPIC_KEYWORDS": ["python", "django", "open source"],
-}
-```
-
-When `TOPIC_KEYWORDS` is empty the backend accepts all entries (fail-open).
-
-### Writing a Custom Backend
-
-Subclass `BasePostFilterBackend` and implement `filter_entries`:
-
-```python
-from planet.backends.base import BasePostFilterBackend
-
-class MyBackend(BasePostFilterBackend):
-    def filter_entries(self, entries, feed):
-        # entries: list of feedparser entry objects
-        # feed: planet.models.Feed instance
-        return [e for e in entries if passes_my_check(e)]
-```
-
-Then point to it in your settings:
-
-```python
-PLANET = {
-    "POST_FILTER_BACKEND": "myapp.backends.MyBackend",
-}
-```
-
-## 📋 Logging
-
-django-planet uses Python's standard `logging` module. All loggers use names under the `planet.*` namespace (e.g. `planet.utils`, `planet.management.commands.planet_update_all_feeds`).
-
-Following Python library best practices, **no handlers are attached by default** — the host project controls all logging output. Add a `LOGGING` configuration in your Django settings to see log output:
-
-```python
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "planet": {
-            "handlers": ["console"],
-            "level": "INFO",  # Use "DEBUG" for more verbosity
-        },
-    },
-}
-```
-
-At `INFO` level you'll see feed add/update summaries and 304 skips. At `DEBUG` level you'll also see individual fetch details, per-entry creation, and `to_datetime()` edge cases.
-
-## 📸 Screenshots
-
-### Post List
-![Post List](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/post-list.png)
-
-### Blog View
-![Blog View](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/blog.png)
-
-### Full Post View
-![Full Post View](https://raw.githubusercontent.com/matagus/django-planet/main/screenshots/full-post.png)
-
-### Live Demo
-
-Check out the live demo: [django-planet.matagus.dev](https://django-planet.matagus.dev/)
-
-Demo source code is available in the `project/` directory.
+→ [Full installation & configuration guide](https://django-planet.readthedocs.io/en/latest/installation/)
+
+## 📖 Documentation
+
+- [Installation & Configuration](https://django-planet.readthedocs.io/en/latest/installation/) — Setup, settings reference, and URL configuration
+- [Usage](https://django-planet.readthedocs.io/en/latest/usage/) — Adding feeds, updating feeds, built-in views, and search
+- [Models](https://django-planet.readthedocs.io/en/latest/models/) — Data model and relationships
+- [Templates & Template Tags](https://django-planet.readthedocs.io/en/latest/templates/) — Built-in templates and custom tags
+- [Admin Interface](https://django-planet.readthedocs.io/en/latest/admin/) — Managing content via Django admin
+- [Configuration Reference](https://django-planet.readthedocs.io/en/latest/configuration/) — All settings, post filtering backends, and logging
+- [Contributing](https://django-planet.readthedocs.io/en/latest/contributing/) — Development setup and contribution guide
+- [Demo & Screenshots](https://django-planet.readthedocs.io/en/latest/demo/) — Live demo and example project
 
 ## 🧪 Testing
 
-You can run tests either with Hatch (recommended for testing multiple Python/Django versions) or directly.
-
-### With Hatch (recommended)
-
-Django-planet uses [Hatch](https://hatch.pypa.io/) for testing across multiple Python and Django versions.
-
-#### Run all tests
-
-Test across all Python/Django version combinations:
-
 ```bash
-hatch run test:test
+hatch run test:test   # full suite
+hatch run test:cov    # with coverage
 ```
 
-#### Run tests for specific versions
-
-```bash
-# Python 3.14 + Django 6.0
-hatch run test.py3.14-6.0:test
-
-# Python 3.14 + Django 5.2
-hatch run test.py3.14-5.2:test
-
-# Python 3.11 + Django 5.1
-hatch run test.py3.11-5.1:test
-```
-
-#### Run with coverage
-
-```bash
-hatch run test:cov
-```
-
-This will:
-1. Run tests with coverage tracking
-2. Generate a coverage report
-3. Output results to the terminal
-
-#### View test matrix
-
-See all available Python/Django test combinations:
-
-```bash
-hatch env show test
-```
-
-
-### Without Hatch
-
-If you prefer to run tests directly without Hatch:
-
-1. Install test dependencies:
-   ```bash
-   pip install coverage factory_boy
-   ```
-
-2. Run tests using Django's test runner:
-   ```bash
-   python -m django test --settings tests.settings
-   ```
-
-3. Run tests with coverage:
-   ```bash
-   coverage run -m django test --settings tests.settings
-   coverage report
-   ```
-
-4. Generate coverage JSON:
-   ```bash
-   coverage json
-   ```
-
-## 🤝 Contributing
-
-Contributions are welcome! ❤️
-
-### Development Setup
-
-1. Fork the repository
-2. Clone your fork:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/django-planet.git
-   cd django-planet
-   ```
-
-3. Install development dependencies:
-   ```bash
-   pip install -e .
-   pip install pre-commit
-   ```
-
-4. Set up pre-commit hooks:
-   ```bash
-   pre-commit install
-   ```
-
-   This will automatically run code quality checks (ruff, black, codespell, etc.) before each commit.
-
-5. (Optional) Run pre-commit on all files manually:
-   ```bash
-   pre-commit run --all-files
-   ```
-
-### Quick Contribution Guide
-
-1. Create a feature branch (`git checkout -b feature/new-feature`)
-2. Make your changes
-3. Run tests (see above)
-4. Pre-commit hooks will run automatically when you commit
-5. Commit your changes (`git commit -m 'Add new feature'`)
-6. Push to the branch (`git push origin feature/new-feature`)
-7. Open a Pull Request
+See the [contributing guide](https://django-planet.readthedocs.io/en/latest/contributing/) for the full test matrix and setup instructions.
 
 ## 📄 License
 
@@ -561,13 +89,9 @@ Contributions are welcome! ❤️
 
 ## 🙏 Acknowledgements
 
-Developed and built using:
-
 [![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch) [![linting - Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![code style - black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Inspired by:
-- [Feedjack](http://www.feedjack.org/) - Original Django feed aggregator
-- [Mark Pilgrim's Feedparser](https://feedparser.readthedocs.io/) - Universal feed parser library
+Inspired by [Feedjack](http://www.feedjack.org/) and [Mark Pilgrim's Feedparser](https://feedparser.readthedocs.io/).
 
 ## 💬 Support
 
