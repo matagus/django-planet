@@ -80,7 +80,7 @@ Standard list/detail views for blogs, feeds, posts, and authors, plus a search d
 
 ## Testing
 
-Tests use Django's test runner with factory_boy factories in `tests/factories.py`. Test settings use SQLite. The CI matrix covers Django 4.2–6.0 × Python 3.11–3.14 (see `pyproject.toml` for valid combinations).
+Tests use Django's test runner with factory_boy factories in `tests/factories.py`. Test settings use SQLite. The CI matrix covers Django 4.2–6.1 × Python 3.11–3.15 (see `pyproject.toml` for valid combinations).
 
 ## Code Style
 

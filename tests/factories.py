@@ -38,6 +38,7 @@ class AuthorFactory(DjangoModelFactory):
 class PostFactory(DjangoModelFactory):
     class Meta:
         model = Post
+        skip_postgeneration_save = True
 
     title = factory.Sequence(lambda n: f"Post Title #{n}")
     feed = factory.SubFactory(FeedFactory)
