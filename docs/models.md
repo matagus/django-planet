@@ -47,38 +47,57 @@ Junction table linking posts to authors, with an `is_contributor` flag to distin
 
 ## Custom Managers
 
-Each model has a custom manager with chainable QuerySet methods.
+Each model installs its manager with [`QuerySet.as_manager()`](https://docs.djangoproject.com/en/stable/topics/db/managers/#custom-managers-from-querysets),
+so every method below lives on the QuerySet in `planet/managers.py` and is
+available both on `Model.objects` and when chaining.
 
-### BlogManager
+### BlogQuerySet
 
 - `published()` — Blogs that have at least one checked feed
 - `for_author(author)` — Blogs with posts by the given author
 - `search(query)` — Filter by title (case-insensitive contains)
+- `get_or_create_stub(url)` — Get or create a blog using the URL host as its title
+- `get_or_create_from_feed(feed_data)` — Get or create the blog a parsed feed belongs to
 
-### FeedManager
+### FeedQuerySet
 
 - `active()` — Feeds where `is_active=True`
 - `published()` — Feeds that have been checked at least once
 - `for_author(author)` — Feeds with posts by the given author
 - `search(query)` — Filter by title (case-insensitive contains)
+- `get_by_url(url)` — Look a feed up by the hash of its URL
+- `create_stub(url, blog)` — Create a placeholder feed before it is parsed
+- `create_from(feed_data, blog)` — Create a feed from parsed feed data
 
-### PostManager
+### PostQuerySet
 
 - `for_blog(blog)` — Posts from any feed belonging to the given blog
 - `for_feed(feed)` — Posts from the given feed
 - `for_author(author)` — Posts by the given author
 - `search(query)` — Filter by title (case-insensitive contains)
 - `with_relations()` — Select/prefetch related Feed, Blog, and Authors
+- `get_by_url(url)` — Look a post up by the hash of its URL
+- `create_from(entry_data, feed)` — Create a post from a parsed entry, skipping duplicate URLs
+- `create_authors_for_post(post, authors_data)` — Link an author set to a post, creating missing authors
+- `create_with_authors(entry_data, feed)` — Create a post and its authors in one transaction
 
-### AuthorManager
+### AuthorQuerySet
 
 - `for_blog(blog)` — Authors who have posts in feeds belonging to the given blog
 - `search(query)` — Filter by name (case-insensitive contains)
 
-All QuerySet methods are chainable:
+All methods are chainable:
 
 ```python
 Post.objects.for_blog(blog).search("django").with_relations()
+```
+
+Creation helpers live on the same QuerySets, so they work through `Model.objects`
+and mid-chain alike:
+
+```python
+feed = Feed.objects.create_from(feed_data, blog)
+post = Post.objects.create_with_authors(entry, feed)
 ```
 
 For full field definitions and implementation details, see the [source code](https://github.com/matagus/django-planet/blob/main/planet/models.py).
