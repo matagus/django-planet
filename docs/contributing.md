@@ -44,7 +44,7 @@ docs/            # MkDocs documentation (this site)
 
 ### Models
 
-Five models: **Blog** -> **Feed** -> **Post** <-M2M-> **Author** (via **PostAuthorData** junction table). Each model has a custom manager in `planet/managers.py` with chainable QuerySet methods. See [Models & Managers](models.md) for details.
+Five models: **Blog** -> **Feed** -> **Post** <-M2M-> **Author** (via **PostAuthorData** junction table). Each model installs its manager in `planet/managers.py` with `QuerySet.as_manager()`, so all methods live on chainable QuerySets. See [Models & Managers](models.md) for details.
 
 ### Views
 

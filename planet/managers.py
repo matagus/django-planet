@@ -25,27 +25,10 @@ class FeedQuerySet(models.QuerySet):
     def for_author(self, author):
         return self.filter(post__authors=author).distinct()
 
-
-class FeedManager(models.Manager):
-    def get_queryset(self):
-        return FeedQuerySet(self.model, using=self._db)
-
-    def active(self):
-        return self.get_queryset().active()
-
-    def published(self):
-        return self.get_queryset().published()
-
-    def search(self, query):
-        return self.get_queryset().search(query)
-
-    def for_author(self, author):
-        return self.get_queryset().for_author(author)
-
     def get_by_url(self, url):
         # Feed urls may be too long to index for some SQL databases. That's why we use a hash.
         guid = md5_hash(url)
-        return self.model.objects.get(guid=guid)
+        return self.get(guid=guid)
 
     def create_stub(self, url, blog):
         placeholder_title = urlparse(url).netloc or url
@@ -79,20 +62,6 @@ class BlogQuerySet(models.QuerySet):
     def search(self, query):
         return self.filter(title__icontains=query)
 
-
-class BlogManager(models.Manager):
-    def get_queryset(self):
-        return BlogQuerySet(self.model, using=self._db)
-
-    def for_author(self, author):
-        return self.get_queryset().for_author(author)
-
-    def published(self):
-        return self.get_queryset().published()
-
-    def search(self, query):
-        return self.get_queryset().search(query)
-
     def get_or_create_stub(self, url):
         placeholder_title = urlparse(url).netloc or url
         return self.get_or_create(url=url, defaults={"title": placeholder_title})
@@ -115,9 +84,6 @@ class AuthorQuerySet(models.QuerySet):
         return self.filter(name__icontains=query)
 
 
-AuthorManager = AuthorQuerySet.as_manager
-
-
 class PostQuerySet(models.QuerySet):
 
     def for_blog(self, blog):
@@ -135,29 +101,9 @@ class PostQuerySet(models.QuerySet):
     def with_relations(self):
         return self.select_related("feed", "feed__blog").prefetch_related("authors")
 
-
-class PostManager(models.Manager):
-    def get_queryset(self):
-        return PostQuerySet(self.model, using=self._db)
-
-    def for_blog(self, blog):
-        return self.get_queryset().for_blog(blog)
-
-    def for_feed(self, feed):
-        return self.get_queryset().for_feed(feed)
-
-    def for_author(self, author):
-        return self.get_queryset().for_author(author)
-
-    def search(self, query):
-        return self.get_queryset().search(query)
-
-    def with_relations(self):
-        return self.get_queryset().with_relations()
-
     def get_by_url(self, url):
         guid = md5_hash(url)
-        return self.model.objects.get(guid=guid)
+        return self.get(guid=guid)
 
     def create_from(self, entry_data, feed):
         # Extract URL and title with fallbacks
@@ -175,7 +121,7 @@ class PostManager(models.Manager):
         post.url = post_url
         post.guid = md5_hash(post.url)
 
-        if self.model.objects.filter(guid=post.guid).exists():
+        if self.filter(guid=post.guid).exists():
             logger.debug("Skipping post %r: URL already exists in another feed", post.url)
             return None
 

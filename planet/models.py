@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from planet.managers import AuthorManager, BlogManager, FeedManager, PostManager
+from planet.managers import AuthorQuerySet, BlogQuerySet, FeedQuerySet, PostQuerySet
 from planet.utils import normalize_language
 
 
@@ -28,7 +28,7 @@ class Blog(models.Model):
     url = models.URLField(_("Url"), unique=True)
     date_created = models.DateTimeField(_("Date created"), auto_now_add=True)
 
-    objects = BlogManager()
+    objects = BlogQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Blog")
@@ -92,7 +92,7 @@ class Feed(models.Model):
         _("Is active"), default=True, help_text=_("If disabled, this feed will not be further updated.")
     )
 
-    objects = FeedManager()
+    objects = FeedQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Feed")
@@ -175,7 +175,7 @@ class Post(models.Model):
     date_modified = models.DateTimeField(_("Date Modified"), auto_now=True)
     date_created = models.DateTimeField(_("Date Created"), auto_now_add=True)
 
-    objects = PostManager()
+    objects = PostQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Post")
@@ -211,7 +211,7 @@ class Author(models.Model):
     email = models.EmailField(_("Author email"), blank=True, db_index=True)
     profile_url = models.URLField(_("Profile URL"), blank=True, null=True)
 
-    objects = AuthorManager()
+    objects = AuthorQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Author")
