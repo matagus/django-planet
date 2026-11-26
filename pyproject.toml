@@ -7,7 +7,7 @@ name = "django-planet"
 dynamic = ["version"]
 description = "A django planet and feeds (RSS and ATOM) aggregator application for Django."
 readme = "README.md"
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 license = "BSD-3-clause"
 authors = [
     { name = "Matias Agustin Mendez", email = "matagus@gmail.com" },
@@ -18,7 +18,6 @@ classifiers = [
     "Environment :: Console",
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
@@ -28,7 +27,6 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -39,7 +37,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
 ]
 dependencies = [
-    "Django>=4.1",
+    "Django>=4.2",
     "django-pagination-py3>=2.1.0",
     "feedparser>=6.0.11",
     "readability-lxml>=0.8.1",
@@ -76,7 +74,7 @@ docs = [
 
 [tool.hatch.envs.default]
 dependencies = [
-    "Django>=4.1", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug"
+    "Django>=4.2", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug"
 ]
 
 [tool.hatch.envs.docs]
@@ -89,7 +87,7 @@ serve = "mkdocs serve {args}"
 
 [tool.hatch.envs.project]
 dependencies = [
-    "Django>=4.1", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug", "django-environ",
+    "Django>=4.2", "ipython", "ipdb", "mypy", "typing-extensions", "django-extensions", "Werkzeug", "django-environ",
     "whitenoise",
 ]
 
@@ -102,24 +100,20 @@ createsuperuser = "python project/manage.py createsuperuser {args}"
 
 # Test environment
 [[tool.hatch.envs.test.matrix]]
-django = ["4.1"]
-python = ["3.10", "3.11"]
-
-[[tool.hatch.envs.test.matrix]]
 django = ["4.2"]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.11", "3.12"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["5.0"]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.11", "3.12"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["5.1"]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.11", "3.12"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["5.2"]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.11", "3.12"]
 
 [[tool.hatch.envs.test.matrix]]
 django = ["6.0"]
