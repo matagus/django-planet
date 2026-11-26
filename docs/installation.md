@@ -2,8 +2,38 @@
 
 ## Prerequisites
 
-- Python 3.11+
-- Django 4.2+
+- Python 3.11–3.15
+- Django 4.2–6.1
+
+Supported combinations follow Django's own Python support policy:
+
+| Django | Python |
+| ------ | ------ |
+| 4.2    | 3.11, 3.12 |
+| 5.0    | 3.11, 3.12 |
+| 5.1    | 3.11, 3.12 |
+| 5.2    | 3.11, 3.12 |
+| 6.0    | 3.12, 3.13, 3.14 |
+| 6.1    | 3.12, 3.13, 3.14, 3.15 |
+
+!!! note "Python 3.15 requires Django 6.1"
+
+    Django only supports Python 3.15 starting with **Django 6.1.3**. If you use
+    Python 3.15, make sure you install `Django>=6.1.3`.
+
+### Upgrading to Django 6.1
+
+django-planet itself requires no changes for Django 6.1, but keep these
+upstream changes in mind for your own project:
+
+- **Database versions**: Django 6.1 drops support for PostgreSQL 14,
+  MySQL < 8.4, and MariaDB < 10.11, and requires SQLite 3.37+.
+- **Cache keys**: cache keys for pages or template fragments that vary on
+  headers or arguments changed in Django 6.1. The first request after
+  upgrading will be a cache miss; no action is needed.
+
+See the [Django 6.1 release notes](https://docs.djangoproject.com/en/6.1/releases/6.1/)
+for the full list of backwards-incompatible changes.
 
 ## Install
 
