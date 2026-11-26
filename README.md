@@ -1,7 +1,7 @@
 # django-planet
 
-![Python Compatibility](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg)
-![Django Compatibility](https://img.shields.io/badge/django-4.2%20%7C%205.0%20%7C%205.1%20%7C%205.2%20%7C%206.0-092E20.svg)
+![Python Compatibility](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14%20%7C%203.15-blue.svg)
+![Django Compatibility](https://img.shields.io/badge/django-4.2%20%7C%205.0%20%7C%205.1%20%7C%205.2%20%7C%206.0%20%7C%206.1-092E20.svg)
 [![PyPi Version](https://img.shields.io/pypi/v/django-planet.svg)](https://pypi.python.org/pypi/django-planet)
 ![CI badge](https://github.com/matagus/django-planet/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/matagus/django-planet/graph/badge.svg?token=r3MXJJNLfo)](https://codecov.io/gh/matagus/django-planet)
