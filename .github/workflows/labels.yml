@@ -6,17 +6,27 @@ on:
       - main
     paths:
       - ".github/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   labels:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: actions/checkout@v7
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: 3.x
-      - name: Install labels
-        run: pip install labels
+          python-version: "3.x"
+      # Self-contained script: the `labels` PyPI package (hackebrot/labels) is
+      # unmaintained since 2020 and crashes on the `archived_at` field GitHub
+      # added to label objects in Aug 2026. See .github/sync_labels.py.
       - name: Sync config with Github
-        run: labels -u ${{ github.repository_owner }} -t ${{ secrets.GITHUB_TOKEN }} sync -f .github/labels.toml
+        run: python .github/sync_labels.py --config .github/labels.toml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
