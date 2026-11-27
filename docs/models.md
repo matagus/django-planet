@@ -84,6 +84,7 @@ available both on `Model.objects` and when chaining.
 ### AuthorQuerySet
 
 - `for_blog(blog)` — Authors who have posts in feeds belonging to the given blog
+- `for_feed(feed)` — Authors who have posts in the given feed
 - `search(query)` — Filter by name (case-insensitive contains)
 
 All methods are chainable:

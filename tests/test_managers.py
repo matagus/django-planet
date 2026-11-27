@@ -327,3 +327,26 @@ class PostDuplicateSkipTestCase(TestCase):
         Post.objects.create_from(entry_data, feed2)
 
         self.assertEqual(Post.objects.count(), 1)
+
+
+class AuthorForFeedTestCase(TestCase):
+    """Regression tests for Author.objects.for_feed(), used by {% authors_for_feed %}."""
+
+    def test_for_feed_returns_only_authors_of_that_feed(self):
+        author = AuthorFactory()
+        other_author = AuthorFactory()
+        feed = FeedFactory()
+        PostFactory(feed=feed, authors=[author])
+        PostFactory(authors=[other_author])  # post in a different feed
+
+        self.assertQuerySetEqual(Author.objects.for_feed(feed), [author])
+
+    def test_for_feed_deduplicates_authors_with_multiple_posts(self):
+        author = AuthorFactory()
+        feed = FeedFactory()
+        PostFactory.create_batch(size=3, feed=feed, authors=[author])
+
+        self.assertQuerySetEqual(Author.objects.for_feed(feed), [author])
+
+    def test_for_feed_without_posts_is_empty(self):
+        self.assertQuerySetEqual(Author.objects.for_feed(FeedFactory()), [])
