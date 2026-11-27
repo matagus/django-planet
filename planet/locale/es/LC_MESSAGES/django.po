@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-27 13:20+0000\n"
+"POT-Creation-Date: 2026-11-27 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Feed Status"
 msgstr "Feeds"
 
-#: admin.py:81 admin.py:124 forms.py:9 models.py:218 templates/base.html:36
+#: admin.py:81 admin.py:124 forms.py:9 models.py:227 templates/base.html:36
 #: templates/planet/authors/detail.html:21 templates/planet/authors/list.html:7
 #: templates/planet/authors/list.html:13 templates/planet/authors/list.html:19
 msgid "Authors"
@@ -90,23 +90,23 @@ msgstr "Posts"
 msgid "Blogs"
 msgstr "Blogs"
 
-#: management/commands/planet_add_feed.py:18
+#: management/commands/planet_add_feed.py:17
 msgid "Add a new feed to the database"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:16
+#: management/commands/planet_fetch_post_content.py:13
 msgid "Fetch and archive original content for posts where it is missing"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:19
+#: management/commands/planet_fetch_post_content.py:16
 msgid "Only process posts from this feed ID"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:20
+#: management/commands/planet_fetch_post_content.py:17
 msgid "Maximum number of posts to process"
 msgstr ""
 
-#: management/commands/planet_update_all_feeds.py:17
+#: management/commands/planet_update_all_feeds.py:16
 msgid "Update all active feeds"
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Contributor"
 msgstr ""
 
-#: models.py:156 models.py:217 templates/planet/blogs/detail.html:38
+#: models.py:156 models.py:226 templates/planet/blogs/detail.html:38
 msgid "Author"
 msgstr "Author"
 
@@ -222,15 +222,15 @@ msgstr "Fecha de creación"
 msgid "Post"
 msgstr ""
 
-#: models.py:210
+#: models.py:219
 msgid "Name"
 msgstr "Nombre"
 
-#: models.py:211
+#: models.py:220
 msgid "Author email"
 msgstr ""
 
-#: models.py:212
+#: models.py:221
 msgid "Profile URL"
 msgstr ""
 

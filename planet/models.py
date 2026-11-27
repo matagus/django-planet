@@ -15,7 +15,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from planet.managers import AuthorQuerySet, BlogQuerySet, FeedQuerySet, PostQuerySet
-from planet.utils import normalize_language
+from planet.utils import fetch_post_content, normalize_language
 
 
 class Blog(models.Model):
@@ -200,6 +200,15 @@ class Post(models.Model):
 
     def get_slug(self):
         return slugify(self.title) or "no-title"
+
+    def fetch_original_content(self):
+        """Fetch this post's original content from its URL and save it.
+
+        Returns the fetched content, or None if the fetch failed.
+        """
+        self.original_content = fetch_post_content(self.url)
+        self.save(update_fields=["original_content"])
+        return self.original_content
 
 
 class Author(models.Model):

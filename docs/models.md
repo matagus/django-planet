@@ -77,6 +77,7 @@ available both on `Model.objects` and when chaining.
 - `search(query)` — Filter by title (case-insensitive contains)
 - `with_relations()` — Select/prefetch related Feed, Blog, and Authors
 - `get_by_url(url)` — Look a post up by the hash of its URL
+- `fetch_original_content()` — Fetch and store original content for every post in the queryset, sleeping `FETCH_CONTENT_DELAY` between requests; returns the number processed
 - `create_from(entry_data, feed)` — Create a post from a parsed entry, skipping duplicate URLs
 - `create_authors_for_post(post, authors_data)` — Link an author set to a post, creating missing authors
 - `create_with_authors(entry_data, feed)` — Create a post and its authors in one transaction
@@ -100,5 +101,13 @@ and mid-chain alike:
 feed = Feed.objects.create_from(feed_data, blog)
 post = Post.objects.create_with_authors(entry, feed)
 ```
+
+## Model Methods
+
+Row-level helpers live on the models themselves, following Django's convention
+(model methods for one instance, manager methods for collections):
+
+- `Post.fetch_original_content()` — Fetch this post's original content from its URL, save it and return it (`None` on failure). The queryset method above loops over this.
+- `Feed.mark_checked(feed_data=None)` / `Blog.update_metadata(feed_data)` / `Feed.update_metadata(feed_data)` — Refresh timestamps and metadata after a fetch.
 
 For full field definitions and implementation details, see the [source code](https://github.com/matagus/django-planet/blob/main/planet/models.py).

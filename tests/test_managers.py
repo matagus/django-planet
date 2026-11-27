@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, PropertyMock
+from unittest.mock import MagicMock, PropertyMock, patch
 from urllib.parse import urlparse
 
 from django.test import TestCase
@@ -350,3 +350,57 @@ class AuthorForFeedTestCase(TestCase):
 
     def test_for_feed_without_posts_is_empty(self):
         self.assertQuerySetEqual(Author.objects.for_feed(FeedFactory()), [])
+
+
+class PostFetchOriginalContentTestCase(TestCase):
+    """Row-level fetch lives on the model; the queryset method loops over it."""
+
+    def test_model_method_fetches_and_saves_original_content(self):
+        post = PostFactory()
+
+        with patch("planet.models.fetch_post_content", return_value="<p>fetched</p>") as mock_fetch:
+            result = post.fetch_original_content()
+
+        mock_fetch.assert_called_once_with(post.url)
+        self.assertEqual(result, "<p>fetched</p>")
+        post.refresh_from_db()
+        self.assertEqual(post.original_content, "<p>fetched</p>")
+
+    def test_model_method_stores_none_when_fetch_fails(self):
+        post = PostFactory()
+
+        with patch("planet.models.fetch_post_content", return_value=None):
+            self.assertIsNone(post.fetch_original_content())
+
+        post.refresh_from_db()
+        self.assertIsNone(post.original_content)
+
+    def test_queryset_method_processes_every_post_and_returns_count(self):
+        feed = FeedWithPostsFactory(posts__size=2)
+
+        with patch("planet.models.fetch_post_content", return_value="x") as mock_fetch:
+            processed = Post.objects.for_feed(feed).fetch_original_content()
+
+        self.assertEqual(processed, 2)
+        self.assertEqual(mock_fetch.call_count, 2)
+        self.assertEqual(Post.objects.for_feed(feed).filter(original_content="x").count(), 2)
+
+    def test_queryset_method_sleeps_between_requests_when_delay_set(self):
+        FeedWithPostsFactory(posts__size=2)
+        config = {"FETCH_CONTENT_DELAY": 3}
+
+        with (
+            patch("planet.managers.PLANET_CONFIG", config),
+            patch("planet.models.fetch_post_content", return_value="x"),
+            patch("planet.managers.time.sleep") as mock_sleep,
+        ):
+            Post.objects.fetch_original_content()
+
+        mock_sleep.assert_called_with(3)
+        self.assertEqual(mock_sleep.call_count, 2)
+
+    def test_queryset_method_on_empty_queryset_is_a_noop(self):
+        with patch("planet.models.fetch_post_content") as mock_fetch:
+            self.assertEqual(Post.objects.none().fetch_original_content(), 0)
+
+        mock_fetch.assert_not_called()

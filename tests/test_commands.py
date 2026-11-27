@@ -143,14 +143,40 @@ class UpdateAllFeedsErrorHandlingTest(TestCase):
         with (
             patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data),
             patch("planet.management.commands.planet_update_all_feeds.PLANET_CONFIG", patched_config),
-            patch(
-                "planet.management.commands.planet_update_all_feeds.fetch_post_content",
-                return_value="<p>content</p>",
-            ) as mock_fetch,
+            patch("planet.managers.PLANET_CONFIG", patched_config),
+            patch("planet.models.fetch_post_content", return_value="<p>content</p>") as mock_fetch,
         ):
             call_command("planet_update_all_feeds")
 
         self.assertEqual(mock_fetch.call_count, Post.objects.count())
+        self.assertEqual(Post.objects.filter(original_content="<p>content</p>").count(), Post.objects.count())
+
+
+class FetchPostContentCommandTest(TestCase):
+    def test_backfills_only_posts_missing_original_content(self):
+        missing = PostFactory.create_batch(size=2)
+        already_fetched = PostFactory(original_content="<p>kept</p>")
+
+        with patch("planet.models.fetch_post_content", return_value="<p>new</p>") as mock_fetch:
+            call_command("planet_fetch_post_content")
+
+        self.assertEqual(mock_fetch.call_count, 2)
+        for post in missing:
+            post.refresh_from_db()
+            self.assertEqual(post.original_content, "<p>new</p>")
+        already_fetched.refresh_from_db()
+        self.assertEqual(already_fetched.original_content, "<p>kept</p>")
+
+    def test_feed_and_limit_options_narrow_the_queryset(self):
+        feed = FeedFactory()
+        PostFactory.create_batch(size=3, feed=feed)
+        PostFactory()  # another feed's post
+
+        with patch("planet.models.fetch_post_content", return_value="x") as mock_fetch:
+            call_command("planet_fetch_post_content", feed=feed.pk, limit=2)
+
+        self.assertEqual(mock_fetch.call_count, 2)
+        self.assertEqual(Post.objects.for_feed(feed).filter(original_content="x").count(), 2)
 
 
 class AddFeedCommandTestCase(TestCase):
