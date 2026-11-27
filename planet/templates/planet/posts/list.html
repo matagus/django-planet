@@ -25,13 +25,7 @@
 {% block content %}
     <h1 class="mb-4">{% trans "What's new in Django community blogs?" %}</h1>
     <div class="content pd-0">
-    {% autopaginate posts 10 %}
-    {% for post in posts %}
-        <div class="row post">
-            {% include "planet/posts/details.html" %}
-        </div>
-    {% endfor %}
-    {% paginate %}
+    {% include "planet/posts/blocks/post_list.html" with post_wrapper_class="row post" %}
     </div>
 {% endblock %}
 

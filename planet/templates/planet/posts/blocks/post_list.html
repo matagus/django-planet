@@ -1,0 +1,14 @@
+{% load i18n pagination_tags %}
+{# Shared paginated post list. #}
+{# Requires `posts` in context. Optional overrides: #}
+{#   container_class      wrapper element classes (default "container px-0") #}
+{#   post_wrapper_class   per-post element classes (default "post row") #}
+{% autopaginate posts 10 %}
+<div class="{{ container_class|default:'container px-0' }}">
+    {% for post in posts %}
+    <div class="{{ post_wrapper_class|default:'post row' }}">
+        {% include "planet/posts/details.html" %}
+    </div>
+    {% endfor %}
+    {% paginate %}
+</div>

@@ -45,15 +45,7 @@
         </table>
     </div>
 
-    <div class="container px-0">
-    {% autopaginate posts 10 %}
-    {% for post in posts %}
-        <div class="post row">
-            {% include "planet/posts/details.html" %}
-        </div>
-    {% endfor %}
-    {% paginate %}
-    </div>
+    {% include "planet/posts/blocks/post_list.html" %}
 {% endblock %}
 
 {% block right_column %}

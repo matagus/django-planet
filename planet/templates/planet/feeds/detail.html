@@ -59,15 +59,7 @@
         </div>
     </div>
 
-    <div class="content">
-    {% autopaginate posts 10 %}
-    {% for post in posts %}
-        <div class="post row">
-            {% include "planet/posts/details.html" %}
-        </div>
-    {% endfor %}
-    {% paginate %}
-    </div>
+    {% include "planet/posts/blocks/post_list.html" with container_class="content px-0" %}
 {% endblock %}
 
 {% block right_column %}
