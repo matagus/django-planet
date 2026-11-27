@@ -80,6 +80,9 @@ class AuthorQuerySet(models.QuerySet):
     def for_blog(self, blog):
         return self.filter(post__feed__blog=blog).distinct()
 
+    def for_feed(self, feed):
+        return self.filter(post__feed=feed).distinct()
+
     def search(self, query):
         return self.filter(name__icontains=query)
 
