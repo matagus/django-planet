@@ -3,13 +3,20 @@ from django.test import TestCase
 from django.urls import reverse
 
 from planet.models import Blog, Feed
-from tests.factories import FeedFactory, PostAuthorDataFactory, PostFactory, AuthorFactory
+from tests.factories import FeedFactory, FeedWithPostsFactory, PostAuthorDataFactory, PostFactory, AuthorFactory
 
 
-class FeedAdminAddViewTest(TestCase):
+class AdminTestCase(TestCase):
+    """Logs in a superuser once per test; use for any admin view test."""
+
     def setUp(self):
         self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
         self.client.force_login(self.superuser)
+
+
+class FeedAdminAddViewTest(AdminTestCase):
+    def setUp(self):
+        super().setUp()
         self.add_url = reverse("admin:planet_feed_add")
 
     def test_add_page_shows_only_url_field(self):
@@ -49,11 +56,7 @@ class FeedAdminAddViewTest(TestCase):
         self.assertIn(b'name="url"', response.content)
 
 
-class FeedAdminAuthorsListTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class FeedAdminAuthorsListTest(AdminTestCase):
     def test_authors_list_shows_author_links(self):
         author = AuthorFactory(name="Ada Lovelace")
         post = PostFactory(authors=[author])
@@ -70,11 +73,7 @@ class FeedAdminAuthorsListTest(TestCase):
         self.assertIn(b"No authors", response.content)
 
 
-class AuthorAdminFeedsListTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class AuthorAdminFeedsListTest(AdminTestCase):
     def test_feeds_list_shows_feed_links(self):
         author = AuthorFactory()
         post = PostFactory(authors=[author])
@@ -91,15 +90,13 @@ class AuthorAdminFeedsListTest(TestCase):
         self.assertIn(b"No feeds", response.content)
 
 
-class HasPostsFilterTest(TestCase):
+class HasPostsFilterTest(AdminTestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
+        super().setUp()
         self.list_url = reverse("admin:planet_feed_changelist")
 
     def test_filter_yes_returns_feeds_with_posts(self):
-        feed_with_post = FeedFactory()
-        PostFactory(feed=feed_with_post)
+        feed_with_post = FeedWithPostsFactory(posts__size=1)
         FeedFactory()  # feed without posts
         response = self.client.get(self.list_url, {"has_posts": "yes"})
         self.assertEqual(response.status_code, 200)
@@ -108,19 +105,14 @@ class HasPostsFilterTest(TestCase):
 
     def test_filter_no_returns_feeds_without_posts(self):
         feed_without_post = FeedFactory()
-        feed_with_post = FeedFactory()
-        PostFactory(feed=feed_with_post)
+        FeedWithPostsFactory(posts__size=1)
         response = self.client.get(self.list_url, {"has_posts": "no"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, feed_without_post.title)
         self.assertEqual(response.context["cl"].queryset.count(), 1)
 
 
-class FeedInlineReadOnlyTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class FeedInlineReadOnlyTest(AdminTestCase):
     def test_feed_link_renders_in_blog_change_page(self):
         feed = FeedFactory()
         change_url = reverse("admin:planet_blog_change", args=[feed.blog.pk])
@@ -139,10 +131,9 @@ class FeedInlineReadOnlyTest(TestCase):
         self.assertNotContains(response, 'id="planet_feed-empty"')
 
 
-class BlogAdminChangelistTest(TestCase):
+class BlogAdminChangelistTest(AdminTestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
+        super().setUp()
         self.list_url = reverse("admin:planet_blog_changelist")
 
     def test_changelist_loads(self):
@@ -159,11 +150,7 @@ class BlogAdminChangelistTest(TestCase):
         self.assertContains(response, feed_en.blog.title)
 
 
-class PostAuthorDataAdminTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class PostAuthorDataAdminTest(AdminTestCase):
     def test_list_displays_author_name(self):
         author = AuthorFactory(name="Grace Hopper")
         PostAuthorDataFactory(author=author)

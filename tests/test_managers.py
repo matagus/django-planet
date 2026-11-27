@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 
 from django.test import TestCase
 
-from .factories import AuthorFactory, BlogFactory, FeedFactory, PostFactory
+from .factories import AuthorFactory, BlogFactory, FeedFactory, FeedWithPostsFactory, PostFactory
 from .mocks import _make_entry_data, _make_feed_data
 from planet.models import Blog, Feed, Post, Author
 from planet.utils import md5_hash
@@ -41,11 +41,11 @@ class ManagersTestCase(TestCase):
         self.author1 = AuthorFactory.create()
         self.author2 = AuthorFactory.create()
 
-        self.another_feed = FeedFactory.create()
-        self.another_posts = PostFactory.create_batch(size=3, feed=self.another_feed, authors=[self.author1])
+        self.another_feed = FeedWithPostsFactory(posts__authors=[self.author1])
+        self.another_posts = list(self.another_feed.post_set.all())
 
-        self.my_feed = FeedFactory.create()
-        self.site_posts = PostFactory.create_batch(size=5, feed=self.my_feed, authors=[self.author2])
+        self.my_feed = FeedWithPostsFactory(posts__size=5, posts__authors=[self.author2])
+        self.site_posts = list(self.my_feed.post_set.all())
 
     def test_posts(self):
         self.assertEqual(Post.objects.count(), 8)
