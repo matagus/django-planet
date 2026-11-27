@@ -70,9 +70,15 @@ INSTALLED_APPS = [
 
     # Third-party apps
     "planet",
-    "pagination",  # Required dependency
+    "pagination",  # Required dependency; keep after planet
 ]
 ```
+
+!!! note "App order matters"
+
+    List `planet` before `pagination`: planet ships a Bootstrap-styled
+    `pagination/pagination.html` override, and Django's app-directories loader
+    resolves templates in `INSTALLED_APPS` order.
 
 !!! warning "django.contrib.sites required"
 

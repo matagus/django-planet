@@ -1,5 +1,6 @@
 {% load i18n %}
 {# Bootstrap-styled override of django-pagination-py3's pagination/pagination.html. #}
+{# Requires "planet" before "pagination" in INSTALLED_APPS (see docs/installation.md). #}
 {# Projects can override it by placing their own pagination/pagination.html earlier in the template search path. #}
 {% if is_paginated %}
 <nav aria-label="{% trans 'Page navigation' %}">

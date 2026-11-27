@@ -215,9 +215,10 @@ detail views; requires `blog` in the context.
 
 Planet ships a Bootstrap-styled `pagination/pagination.html` that overrides the
 plain default from `django-pagination-py3`, so `{% paginate %}` renders styled
-page links out of the box. To customize it, place your own
-`pagination/pagination.html` in your project's template directory (loaded before
-`APP_DIRS`).
+page links out of the box. This requires `planet` before `pagination` in
+`INSTALLED_APPS` (see [Installation](installation.md#1-add-to-installed_apps)).
+To customize it, place your own `pagination/pagination.html` in your project's
+template directory (loaded before `APP_DIRS`).
 
 ## Context Processor
 
