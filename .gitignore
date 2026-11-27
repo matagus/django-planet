@@ -52,3 +52,6 @@ WARP.md
 
 # pyenv
 .python-version
+
+## jscpd duplicate-code report
+.jscpd-report/

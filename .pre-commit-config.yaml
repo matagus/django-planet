@@ -57,3 +57,16 @@ repos:
     hooks:
     - id: pyupgrade
       args: [--py314]
+
+  # Duplicate code detection; tuned in jscpd.json at the repo root.
+  # Runs only on committed sources, never on generated/vendored trees.
+  - repo: https://github.com/kucherenko/jscpd
+    rev: v5.4.3
+    hooks:
+      - id: jscpd
+        name: Copy/paste detection (jscpd)
+        args:
+          - --config
+          - jscpd.json
+        files: ^(planet|tests|project|docs)/
+        exclude: ^(planet/migrations/|site/|dist/|.*\.po$)
