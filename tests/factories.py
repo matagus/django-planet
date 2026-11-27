@@ -65,3 +65,28 @@ class PostAuthorDataFactory(DjangoModelFactory):
 
     post = factory.SubFactory(PostFactory)
     author = factory.SubFactory(AuthorFactory)
+
+
+DEFAULT_POSTS_PER_FEED = 3
+
+
+class FeedWithPostsFactory(FeedFactory):
+    """A feed that owns a batch of posts, for tests needing content under it.
+
+    Usage::
+
+        feed = FeedWithPostsFactory()                    # DEFAULT_POSTS_PER_FEED posts
+        feed = FeedWithPostsFactory(posts__size=5)
+        feed = FeedWithPostsFactory(posts__authors=[author])
+
+    ``posts`` is excluded from the Feed model; every ``posts__*`` kwarg is
+    forwarded to PostFactory.create_batch(). The default count lives at module
+    level because factory_boy resolves declarations against a stub, so the hook
+    cannot read class attributes off ``self``.
+    """
+
+    @factory.post_generation
+    def posts(self, create, extracted, size=DEFAULT_POSTS_PER_FEED, **kwargs):
+        if not create:
+            return
+        PostFactory.create_batch(size=size, feed=self, **kwargs)
