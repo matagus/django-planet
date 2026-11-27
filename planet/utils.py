@@ -1,7 +1,7 @@
 import hashlib
 import logging
+import time
 import urllib.request
-
 from time import mktime
 
 from django.utils import timezone
@@ -64,3 +64,27 @@ def normalize_language(value):
         return
 
     return value.split("-")[0]
+
+
+def hydrate_original_content(posts):
+    """Fetch and store ``original_content`` for each post, honouring settings.
+
+    Shared by the planet_add_feed and planet_update_all_feeds commands, which
+    previously carried an identical inline loop. No-op unless
+    FETCH_ORIGINAL_CONTENT is enabled. Sleeps FETCH_CONTENT_DELAY seconds after
+    each request to avoid hammering source sites.
+
+    Returns the number of posts updated.
+    """
+    if not PLANET_CONFIG["FETCH_ORIGINAL_CONTENT"]:
+        return 0
+
+    delay = PLANET_CONFIG["FETCH_CONTENT_DELAY"]
+    updated = 0
+    for post in posts:
+        post.original_content = fetch_post_content(post.url)
+        post.save(update_fields=["original_content"])
+        updated += 1
+        if delay:
+            time.sleep(delay)
+    return updated

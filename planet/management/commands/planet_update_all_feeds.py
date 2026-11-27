@@ -1,5 +1,4 @@
 import logging
-import time
 
 from django.core.management.base import BaseCommand
 from django.utils.translation import gettext_lazy as _
@@ -7,8 +6,7 @@ from django.db import transaction
 
 from planet.backends import get_post_filter_backend
 from planet.models import Feed, Post
-from planet.settings import PLANET_CONFIG
-from planet.utils import fetch_post_content, parse_feed
+from planet.utils import hydrate_original_content, parse_feed
 
 logger = logging.getLogger(__name__)
 
@@ -68,12 +66,7 @@ class Command(BaseCommand):
 
                 feed.mark_checked(feed_data)
 
-            if PLANET_CONFIG["FETCH_ORIGINAL_CONTENT"]:
-                for post in created_posts:
-                    post.original_content = fetch_post_content(post.url)
-                    post.save(update_fields=["original_content"])
-                    if delay := PLANET_CONFIG["FETCH_CONTENT_DELAY"]:
-                        time.sleep(delay)
+            hydrate_original_content(created_posts)
 
             feeds_checked += 1
             total_posts += new_posts

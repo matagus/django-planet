@@ -5,7 +5,7 @@ from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from planet.models import Author, Feed, Post, PostAuthorData
-from planet.utils import md5_hash
+from planet.utils import hydrate_original_content, md5_hash
 from tests.factories import FeedFactory, PostFactory
 from tests.mocks import _make_feed_data
 
@@ -142,15 +142,51 @@ class UpdateAllFeedsErrorHandlingTest(TestCase):
         patched_config = {"FETCH_ORIGINAL_CONTENT": True, "FETCH_CONTENT_DELAY": 0}
         with (
             patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data),
-            patch("planet.management.commands.planet_update_all_feeds.PLANET_CONFIG", patched_config),
-            patch(
-                "planet.management.commands.planet_update_all_feeds.fetch_post_content",
-                return_value="<p>content</p>",
-            ) as mock_fetch,
+            patch("planet.utils.PLANET_CONFIG", patched_config),
+            patch("planet.utils.fetch_post_content", return_value="<p>content</p>") as mock_fetch,
         ):
             call_command("planet_update_all_feeds")
 
         self.assertEqual(mock_fetch.call_count, Post.objects.count())
+
+
+class HydrateOriginalContentTest(TestCase):
+    """The shared helper used by both feed commands."""
+
+    def setUp(self):
+        self.post = PostFactory()
+
+    def test_noop_when_disabled(self):
+        with patch("planet.utils.PLANET_CONFIG", {"FETCH_ORIGINAL_CONTENT": False, "FETCH_CONTENT_DELAY": 0}):
+            with patch("planet.utils.fetch_post_content") as mock_fetch:
+                self.assertEqual(hydrate_original_content([self.post]), 0)
+        mock_fetch.assert_not_called()
+
+    def test_saves_content_and_returns_count(self):
+        config = {"FETCH_ORIGINAL_CONTENT": True, "FETCH_CONTENT_DELAY": 0}
+        with (
+            patch("planet.utils.PLANET_CONFIG", config),
+            patch("planet.utils.fetch_post_content", return_value="<p>fetched</p>") as mock_fetch,
+        ):
+            self.assertEqual(hydrate_original_content([self.post]), 1)
+
+        self.assertEqual(mock_fetch.call_count, 1)
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.original_content, "<p>fetched</p>")
+
+    def test_sleeps_between_requests_when_delay_set(self):
+        posts = PostFactory.create_batch(size=2)
+        config = {"FETCH_ORIGINAL_CONTENT": True, "FETCH_CONTENT_DELAY": 3}
+        with (
+            patch("planet.utils.PLANET_CONFIG", config),
+            patch("planet.utils.fetch_post_content", return_value="x"),
+            patch("time.sleep") as mock_sleep,
+        ):
+            hydrate_original_content(posts)
+
+        # One sleep per post, using the configured delay.
+        mock_sleep.assert_called_with(3)
+        self.assertEqual(mock_sleep.call_count, 2)
 
 
 class AddFeedCommandTestCase(TestCase):
