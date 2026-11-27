@@ -15,20 +15,15 @@ planet/templates/planet/
 │       └── post_list.html
 ├── blogs/
 │   ├── list.html
-│   ├── detail.html
-│   └── blocks/
-│       └── list.html
+│   └── detail.html
 ├── feeds/
 │   ├── list.html
-│   ├── detail.html
-│   └── blocks/
-│       └── list_for_author.html
-└── authors/
-    ├── list.html
-    ├── detail.html
-    └── blocks/
-        ├── list.html
-        └── list_for_feed.html
+│   └── detail.html
+├── authors/
+│   ├── list.html
+│   └── detail.html
+└── blocks/
+    └── nav_list.html
 ```
 
 ## Overriding Templates
@@ -119,9 +114,23 @@ Returns a comma-separated string of post titles from a queryset.
 | `posts` | *(required)* | A Post queryset |
 | `limit` | `5` | Maximum number of titles to include |
 
+#### attr
+
+Resolves an attribute by name; missing attributes yield an empty string.
+Methods are called if they take no arguments. Output is auto-escaped.
+
+```django
+{% attr obj "title" as label %}
+{{ label }}
+```
+
 ### Inclusion Tags
 
-Inclusion tags render complete HTML blocks using their own templates.
+All four sidebar tags below render the same template,
+`planet/blocks/nav_list.html`: a heading plus one link per item. Each tag picks
+the attribute used as link text (`Author.name`, `Feed.title`, `Post.title`,
+`Blog.title`). To change the markup or labels, override that template in your
+project.
 
 #### authors_for_feed
 
@@ -131,7 +140,7 @@ Renders a list of all authors who have posts in a feed.
 {% authors_for_feed feed %}
 ```
 
-**Template:** `planet/authors/blocks/list_for_feed.html`
+**Template:** `planet/blocks/nav_list.html`
 
 #### feeds_for_author
 
@@ -141,7 +150,7 @@ Renders a list of all feeds an author has contributed to.
 {% feeds_for_author author %}
 ```
 
-**Template:** `planet/feeds/blocks/list_for_author.html`
+**Template:** `planet/blocks/nav_list.html`
 
 #### recent_posts
 
@@ -151,7 +160,7 @@ Renders a list of the most recent posts across all blogs.
 {% recent_posts %}
 ```
 
-**Template:** `planet/posts/blocks/list.html`
+**Template:** `planet/blocks/nav_list.html`
 
 Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` (default: 10).
 
@@ -163,7 +172,7 @@ Renders a list of the most recently added blogs.
 {% recent_blogs %}
 ```
 
-**Template:** `planet/blogs/blocks/list.html`
+**Template:** `planet/blocks/nav_list.html`
 
 Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` (default: 10).
 
