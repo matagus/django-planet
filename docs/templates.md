@@ -23,7 +23,8 @@ planet/templates/planet/
 │   ├── list.html
 │   └── detail.html
 └── blocks/
-    └── nav_list.html
+    ├── nav_list.html
+    └── breadcrumb_blog.html
 ```
 
 ## Overriding Templates
@@ -200,6 +201,15 @@ Pass overrides with the `with` keyword:
 ```
 
 Override this template in your project to change how every post list renders.
+
+#### planet/blocks/breadcrumb_blog.html
+
+Breadcrumb trail to a blog: *Blogs > blog title*. Included by the feed and post
+detail views; requires `blog` in the context.
+
+```django
+{% include "planet/blocks/breadcrumb_blog.html" with blog=post.feed.blog %}
+```
 
 ## Context Processor
 

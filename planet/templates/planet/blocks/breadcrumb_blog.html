@@ -1,0 +1,9 @@
+{% load i18n %}
+{# Breadcrumb trail leading to a feed's owning blog: Blogs > <blog>. #}
+{# Requires `blog` in the context. #}
+<li class="breadcrumb-item">
+    <a class="text-success" href="{% url 'planet:blog-list' %}">{% trans 'Blogs' %}</a>
+</li>
+<li class="breadcrumb-item">
+    <a class="text-success" href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+</li>

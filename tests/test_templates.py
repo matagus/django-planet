@@ -1,7 +1,7 @@
 from django.template import RequestContext, Template
 from django.test import RequestFactory, TestCase
 
-from .factories import FeedWithPostsFactory, PostFactory
+from .factories import FeedFactory, FeedWithPostsFactory, PostFactory
 
 
 class PostListPartialTest(TestCase):
@@ -49,3 +49,25 @@ class PostListPartialTest(TestCase):
 
         self.assertContains(response, "[Archived Version]", count=10)  # 10 per page
         self.assertContains(response, "?page=2")  # {% paginate %} links to the next page
+
+
+class BlogBreadcrumbPartialTest(TestCase):
+    """planet/blocks/breadcrumb_blog.html is shared by the feed and post detail views."""
+
+    def test_feed_detail_links_to_blogs_list_and_owning_blog(self):
+        feed = FeedFactory()
+
+        response = self.client.get(feed.get_absolute_url())
+
+        self.assertContains(response, "/blogs/")
+        self.assertContains(response, feed.blog.get_absolute_url())
+        self.assertContains(response, feed.blog.title)
+
+    def test_post_detail_links_to_blogs_list_and_owning_blog(self):
+        post = PostFactory()
+
+        response = self.client.get(post.get_absolute_url())
+
+        self.assertContains(response, "/blogs/")
+        self.assertContains(response, post.feed.blog.get_absolute_url())
+        self.assertContains(response, post.feed.blog.title)

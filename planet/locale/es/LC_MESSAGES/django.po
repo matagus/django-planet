@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-27 13:19+0000\n"
+"POT-Creation-Date: 2026-11-27 13:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr "Author"
 
 #: admin.py:45 models.py:98 templates/planet/feeds/detail.html:4
 #: templates/planet/feeds/detail.html:7 templates/planet/feeds/detail.html:8
-#: templates/planet/feeds/detail.html:30 templates/planet/feeds/list.html:28
+#: templates/planet/feeds/detail.html:25 templates/planet/feeds/list.html:28
 msgid "Feed"
 msgstr ""
 
@@ -66,7 +66,7 @@ msgid "No authors"
 msgstr "Autores"
 
 #: admin.py:134 admin.py:153 forms.py:10 models.py:99 templates/base.html:35
-#: templates/planet/feeds/detail.html:21 templates/planet/feeds/list.html:4
+#: templates/planet/feeds/detail.html:16 templates/planet/feeds/list.html:4
 #: templates/planet/feeds/list.html:13 templates/planet/feeds/list.html:17
 #: templatetags/planet_tags.py:62
 msgid "Feeds"
@@ -79,14 +79,14 @@ msgid "No feeds"
 msgstr "Feeds"
 
 #: forms.py:7 models.py:182 templates/base.html:33
-#: templates/planet/feeds/detail.html:55 templates/planet/posts/list.html:20
+#: templates/planet/feeds/detail.html:50 templates/planet/posts/list.html:20
 msgid "Posts"
 msgstr "Posts"
 
 #: forms.py:8 models.py:35 templates/base.html:34
+#: templates/planet/blocks/breadcrumb_blog.html:5
 #: templates/planet/blogs/detail.html:22 templates/planet/blogs/list.html:7
 #: templates/planet/blogs/list.html:13 templates/planet/blogs/list.html:19
-#: templates/planet/feeds/detail.html:15 templates/planet/posts/detail.html:17
 msgid "Blogs"
 msgstr "Blogs"
 
@@ -124,7 +124,7 @@ msgstr "Fecha de creación"
 
 #: models.py:34 templates/planet/blogs/detail.html:4
 #: templates/planet/blogs/detail.html:14 templates/planet/blogs/detail.html:30
-#: templates/planet/feeds/detail.html:40
+#: templates/planet/feeds/detail.html:35
 msgid "Blog"
 msgstr "Blog"
 
@@ -284,12 +284,12 @@ msgid ""
 msgstr ""
 
 #: templates/planet/blogs/detail.html:34 templates/planet/blogs/list.html:30
-#: templates/planet/feeds/detail.html:48 templates/planet/feeds/list.html:32
+#: templates/planet/feeds/detail.html:43 templates/planet/feeds/list.html:32
 msgid "web"
 msgstr "sitio web"
 
 #: templates/planet/blogs/detail.html:35 templates/planet/blogs/list.html:30
-#: templates/planet/feeds/detail.html:49 templates/planet/feeds/list.html:33
+#: templates/planet/feeds/detail.html:44 templates/planet/feeds/list.html:33
 msgid "Go to the original blog"
 msgstr "Visitar el blog original"
 
@@ -317,7 +317,7 @@ msgstr "posts recientes"
 msgid "feed"
 msgstr ""
 
-#: templates/planet/blogs/list.html:39 templates/planet/feeds/detail.html:45
+#: templates/planet/blogs/list.html:39 templates/planet/feeds/detail.html:40
 msgid "Subscribe to "
 msgstr ""
 
@@ -325,15 +325,15 @@ msgstr ""
 msgid "RSS"
 msgstr ""
 
-#: templates/planet/feeds/detail.html:41
+#: templates/planet/feeds/detail.html:36
 msgid "See details and posts for blog"
 msgstr ""
 
-#: templates/planet/feeds/detail.html:44
+#: templates/planet/feeds/detail.html:39
 msgid "RSS 2.0 Feed"
 msgstr ""
 
-#: templates/planet/feeds/detail.html:52
+#: templates/planet/feeds/detail.html:47
 msgid "Last Update"
 msgstr ""
 
