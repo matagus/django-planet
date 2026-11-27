@@ -11,7 +11,8 @@ planet/templates/planet/
 │   ├── list.html
 │   ├── detail.html
 │   └── blocks/
-│       └── list.html
+│       ├── list.html
+│       └── post_list.html
 ├── blogs/
 │   ├── list.html
 │   ├── detail.html
@@ -165,6 +166,31 @@ Renders a list of the most recently added blogs.
 **Template:** `planet/blogs/blocks/list.html`
 
 Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` (default: 10).
+
+### Shared Partials
+
+#### planet/posts/blocks/post_list.html
+
+Paginated list of post summaries, included by the blog, feed and author detail
+views and the post list view.
+
+```django
+{% include "planet/posts/blocks/post_list.html" %}
+```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `posts` | *(required)* | Post queryset, paginated 10 per page |
+| `container_class` | `container px-0` | Classes for the wrapper element |
+| `post_wrapper_class` | `post row` | Classes for each post element |
+
+Pass overrides with the `with` keyword:
+
+```django
+{% include "planet/posts/blocks/post_list.html" with container_class="content" %}
+```
+
+Override this template in your project to change how every post list renders.
 
 ## Context Processor
 
