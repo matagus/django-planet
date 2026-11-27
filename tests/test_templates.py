@@ -51,6 +51,34 @@ class PostListPartialTest(TestCase):
         self.assertContains(response, "?page=2")  # {% paginate %} links to the next page
 
 
+class PaginationTemplateTest(TestCase):
+    """planet ships a Bootstrap-styled override of pagination/pagination.html."""
+
+    def test_post_list_renders_bootstrap_pagination(self):
+        FeedWithPostsFactory(posts__size=12)
+
+        response = self.client.get("/posts/")
+
+        self.assertContains(response, '<ul class="pagination pagination-sm justify-content-center flex-wrap">')
+        self.assertContains(response, '<li class="page-item active" aria-current="page">')
+        self.assertContains(response, '<a class="page-link text-success" href="?page=2"')
+
+    def test_current_page_is_active_and_previous_disabled_on_first_page(self):
+        FeedWithPostsFactory(posts__size=12)
+
+        response = self.client.get("/posts/?page=2")
+
+        self.assertContains(response, '<span class="page-link bg-success border-success">2</span>')
+        self.assertContains(response, 'href="?page=1"')
+
+    def test_single_page_renders_no_pagination_nav(self):
+        FeedWithPostsFactory(posts__size=2)
+
+        response = self.client.get("/posts/")
+
+        self.assertNotContains(response, '<ul class="pagination')
+
+
 class BlogBreadcrumbPartialTest(TestCase):
     """planet/blocks/breadcrumb_blog.html is shared by the feed and post detail views."""
 

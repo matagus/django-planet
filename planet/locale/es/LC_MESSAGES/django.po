@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-27 13:25+0000\n"
+"POT-Creation-Date: 2026-11-27 13:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,6 +245,20 @@ msgstr ""
 #: templates/base.html:59
 msgid "Home"
 msgstr "Página Principal"
+
+#: templates/pagination/pagination.html:5
+msgid "Page navigation"
+msgstr "Navegación de páginas"
+
+#: templates/pagination/pagination.html:9
+#: templates/pagination/pagination.html:15
+msgid "previous"
+msgstr "anterior"
+
+#: templates/pagination/pagination.html:37
+#: templates/pagination/pagination.html:43
+msgid "next"
+msgstr "siguiente"
 
 #: templates/planet/authors/detail.html:35
 msgid "Blog Info"

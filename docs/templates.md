@@ -211,6 +211,14 @@ detail views; requires `blog` in the context.
 {% include "planet/blocks/breadcrumb_blog.html" with blog=post.feed.blog %}
 ```
 
+### Pagination
+
+Planet ships a Bootstrap-styled `pagination/pagination.html` that overrides the
+plain default from `django-pagination-py3`, so `{% paginate %}` renders styled
+page links out of the box. To customize it, place your own
+`pagination/pagination.html` in your project's template directory (loaded before
+`APP_DIRS`).
+
 ## Context Processor
 
 The `planet.context_processors.context` processor makes the following variables available in all templates:
