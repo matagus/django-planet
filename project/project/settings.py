@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "planet",
-    "pagination",
+    "pagination",  # keep after planet so its pagination template override wins
     "django_extensions",
 ]
 

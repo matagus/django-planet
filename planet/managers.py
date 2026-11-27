@@ -1,4 +1,5 @@
 import logging
+import time
 from urllib.parse import urlparse
 
 from django.apps import apps
@@ -6,6 +7,7 @@ from django.db import models, transaction
 from django.utils import timezone
 from readability import Document
 
+from planet.settings import PLANET_CONFIG
 from planet.utils import md5_hash, normalize_language, to_datetime
 
 logger = logging.getLogger(__name__)
@@ -80,6 +82,9 @@ class AuthorQuerySet(models.QuerySet):
     def for_blog(self, blog):
         return self.filter(post__feed__blog=blog).distinct()
 
+    def for_feed(self, feed):
+        return self.filter(post__feed=feed).distinct()
+
     def search(self, query):
         return self.filter(name__icontains=query)
 
@@ -104,6 +109,21 @@ class PostQuerySet(models.QuerySet):
     def get_by_url(self, url):
         guid = md5_hash(url)
         return self.get(guid=guid)
+
+    def fetch_original_content(self):
+        """Fetch and store original content for each post in this queryset.
+
+        Sleeps FETCH_CONTENT_DELAY seconds between requests to avoid hammering
+        source sites. Returns the number of posts processed.
+        """
+        delay = PLANET_CONFIG["FETCH_CONTENT_DELAY"]
+        processed = 0
+        for post in self.iterator():
+            post.fetch_original_content()
+            processed += 1
+            if delay:
+                time.sleep(delay)
+        return processed
 
     def create_from(self, entry_data, feed):
         # Extract URL and title with fallbacks

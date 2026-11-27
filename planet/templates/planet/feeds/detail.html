@@ -1,5 +1,5 @@
 {% extends "planet/base.html" %}
-{% load i18n pagination_tags planet_tags %}
+{% load i18n planet_tags %}
 
 {% block head_title %}{% trans "Feed" %}: {{ feed.title }} :: {{ site.name }}{% endblock %}
 
@@ -11,12 +11,7 @@
 {% endblock %}
 
 {% block breadcrumb_section %}
-    <li class="breadcrumb-item">
-        <a class="text-success" href="{% url 'planet:blog-list' %}">{% trans 'Blogs' %}</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a class="text-success" href="{{ feed.blog.get_absolute_url }}">{{ feed.blog.title }}</a>
-    </li>
+    {% include "planet/blocks/breadcrumb_blog.html" with blog=feed.blog %}
     <li class="breadcrumb-item">
         <a class="text-success" href="{% url 'planet:feed-list' %}">{% trans 'Feeds' %}</a>
     </li>
@@ -59,15 +54,7 @@
         </div>
     </div>
 
-    <div class="content">
-    {% autopaginate posts 10 %}
-    {% for post in posts %}
-        <div class="post row">
-            {% include "planet/posts/details.html" %}
-        </div>
-    {% endfor %}
-    {% paginate %}
-    </div>
+    {% include "planet/posts/blocks/post_list.html" with container_class="content" %}
 {% endblock %}
 
 {% block right_column %}

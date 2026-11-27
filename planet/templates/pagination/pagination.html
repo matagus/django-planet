@@ -1,0 +1,49 @@
+{% load i18n %}
+{# Bootstrap-styled override of django-pagination-py3's pagination/pagination.html. #}
+{# Requires "planet" before "pagination" in INSTALLED_APPS (see docs/installation.md). #}
+{# Projects can override it by placing their own pagination/pagination.html earlier in the template search path. #}
+{% if is_paginated %}
+<nav aria-label="{% trans 'Page navigation' %}">
+  <ul class="pagination pagination-sm justify-content-center flex-wrap">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link text-success" href="?page={{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}" aria-label="{% trans 'previous' %}">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link" aria-label="{% trans 'previous' %}">&laquo;</span>
+    </li>
+    {% endif %}
+
+    {% for page in pages %}
+        {% if page %}
+            {% if page == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link bg-success border-success">{{ page }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link text-success" href="?page={{ page }}{{ getvars }}{{ hashtag }}">{{ page }}</a>
+                </li>
+            {% endif %}
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link text-success" href="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}" aria-label="{% trans 'next' %}">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link" aria-label="{% trans 'next' %}">&raquo;</span>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

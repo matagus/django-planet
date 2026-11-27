@@ -1,5 +1,4 @@
 import logging
-import time
 
 from django.core.management.base import CommandError, LabelCommand
 from django.utils.translation import gettext as _t
@@ -9,7 +8,7 @@ from django.db import transaction
 from planet.backends import get_post_filter_backend
 from planet.models import Blog, Feed, Post
 from planet.settings import PLANET_CONFIG
-from planet.utils import fetch_post_content, parse_feed
+from planet.utils import parse_feed
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +34,7 @@ class Command(LabelCommand):
             logger.warning("Feed already exists: %s", feed_url)
             self.stdout.write(_t("Feed for url=%(url)s already exists!") % {"url": feed.url})
         except Feed.DoesNotExist:
-            created_posts = []
+            new_posts = 0
             with transaction.atomic():
                 feed = Feed.objects.create_from(feed_data, blog=blog)
                 post_filter = get_post_filter_backend()
@@ -43,14 +42,10 @@ class Command(LabelCommand):
                 for entry in entries:
                     post = Post.objects.create_with_authors(entry, feed)
                     if post is not None:
-                        created_posts.append(post)
+                        new_posts += 1
 
             if PLANET_CONFIG["FETCH_ORIGINAL_CONTENT"]:
-                for post in created_posts:
-                    post.original_content = fetch_post_content(post.url)
-                    post.save(update_fields=["original_content"])
-                    if delay := PLANET_CONFIG["FETCH_CONTENT_DELAY"]:
-                        time.sleep(delay)
+                Post.objects.for_feed(feed).fetch_original_content()
 
-            logger.info("Feed %s created with %d posts.", feed.url, len(created_posts))
+            logger.info("Feed %s created with %d posts.", feed.url, new_posts)
             self.stdout.write(_t("Feed for url=%(url)s was successfully created!") % {"url": feed.url})

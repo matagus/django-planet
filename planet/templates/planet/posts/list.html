@@ -1,5 +1,5 @@
 {% extends "planet/base.html" %}
-{% load i18n pagination_tags planet_tags %}
+{% load i18n planet_tags %}
 
 {% block head_title %}
   {% trans 'Django Blogs Aggregator' %}{{ block.super }} :: {{ site.name }}
@@ -24,15 +24,7 @@
 
 {% block content %}
     <h1 class="mb-4">{% trans "What's new in Django community blogs?" %}</h1>
-    <div class="content pd-0">
-    {% autopaginate posts 10 %}
-    {% for post in posts %}
-        <div class="row post">
-            {% include "planet/posts/details.html" %}
-        </div>
-    {% endfor %}
-    {% paginate %}
-    </div>
+    {% include "planet/posts/blocks/post_list.html" with container_class="content pd-0" post_wrapper_class="row post" %}
 {% endblock %}
 
 {% block right_column %}
