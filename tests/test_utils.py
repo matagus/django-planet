@@ -1,8 +1,11 @@
 from unittest.mock import MagicMock, patch
 
+from django.template import Context, Template
 from django.test import TestCase
 
+from planet.models import Author, Blog, Feed, Post
 from planet.utils import fetch_post_content, normalize_language, parse_feed
+from .base import PlanetTestCase
 
 
 class ParseFeedTest(TestCase):
@@ -74,3 +77,48 @@ class NormalizeLanguageTest(TestCase):
 
     def test_plain_language_unchanged(self):
         self.assertEqual(normalize_language("es"), "es")
+
+
+class SidebarLabelTest(PlanetTestCase):
+    """Sidebar labels are a template concern, not a model property.
+
+    planet/blocks/nav_list.html resolves `label_field` through the `attr` tag, so
+    a downstream project can relabel the sidebar by overriding the inclusion tag
+    or template without subclassing models or adding UI fields to them.
+    """
+
+    def test_models_expose_no_sidebar_label(self):
+        for model in (Blog, Feed, Post, Author):
+            self.assertFalse(hasattr(model, "sidebar_label"), f"{model.__name__} leaked UI field")
+
+    def test_attr_tag_prefers_first_non_empty_candidate(self):
+        obj = type("X", (), {"display_name": "", "title": "T", "name": "N"})()
+        out = Template('{% load planet_tags %}{% attr obj "display_name,title,name" %}').render(Context({"obj": obj}))
+        self.assertEqual(out.strip(), "T")
+
+    def test_attr_tag_resolves_methods_without_args(self):
+        obj = type("X", (), {"get_absolute_url": lambda self: "/x/"})()
+        out = Template('{% load planet_tags %}{% attr obj "get_absolute_url" %}').render(Context({"obj": obj}))
+        self.assertEqual(out.strip(), "/x/")
+
+    def test_attr_tag_missing_field_is_blank_not_error(self):
+        out = Template('{% load planet_tags %}{% attr obj "nope,also_missing" %}').render(Context({"obj": object()}))
+        self.assertEqual(out.strip(), "")
+
+    def test_custom_label_field_needs_only_a_template_override(self):
+        item = type("X", (), {"nickname": "Nick", "title": "", "get_absolute_url": "/x/"})()
+        out = Template(
+            '{% load planet_tags %}{% include "planet/blocks/nav_list.html" '
+            'with items=items title="T" label_field="nickname,title" %}'
+        ).render(Context({"items": [item]}))
+        self.assertIn("Nick", out)
+        self.assertNotIn(">\n        \n    </a>", out)  # no blank anchor text
+
+    def test_escaping_applies_to_resolved_labels(self):
+        item = type("X", (), {"title": "<script>x</script>", "get_absolute_url": "/x/"})()
+        out = Template(
+            '{% load planet_tags %}{% include "planet/blocks/nav_list.html" '
+            'with items=items title="T" label_field="title" %}'
+        ).render(Context({"items": [item]}))
+        self.assertNotIn("<script>", out)
+        self.assertIn("&lt;script&gt;", out)

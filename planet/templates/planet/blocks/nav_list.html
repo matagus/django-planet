@@ -1,0 +1,18 @@
+{% load i18n planet_tags %}
+{# Shared sidebar nav list: one heading plus a link per item. #}
+{# Requires `items`, `title` and `label_field` in the context; #}
+{# `nav_class` adds classes to the <nav>. `label_field` is a comma-separated #}
+{# list of attribute names tried in order (see the `attr` filter). #}
+{% if items %}
+<nav class="nav flex-column {{ nav_class }}">
+    <h5 class="text-decoration-none">
+        {{ title }}
+    </h5>
+    {% for item in items %}
+    {% attr item label_field as item_label %}
+    <a class="nav-link text-success text-decoration-none px-0" href="{{ item.get_absolute_url }}" title="{{ item_label }}">
+        {{ item_label }}
+    </a>
+    {% endfor %}
+</nav>
+{% endif %}
