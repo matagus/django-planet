@@ -65,7 +65,8 @@ class Command(BaseCommand):
 
                 feed.mark_checked(feed_data)
 
-            if PLANET_CONFIG["FETCH_ORIGINAL_CONTENT"] and new_posts:
+            if PLANET_CONFIG["FETCH_ORIGINAL_CONTENT"]:
+                # Also retries posts whose earlier fetch failed, not just new ones.
                 Post.objects.for_feed(feed).filter(original_content__isnull=True).fetch_original_content()
 
             feeds_checked += 1

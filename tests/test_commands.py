@@ -152,6 +152,26 @@ class UpdateAllFeedsErrorHandlingTest(TestCase):
         self.assertEqual(Post.objects.filter(original_content="<p>content</p>").count(), Post.objects.count())
 
 
+class UpdateAllFeedsRetryArchivingTest(TestCase):
+    def test_retries_posts_missing_original_content_even_without_new_posts(self):
+        feed = FeedFactory(last_checked=timezone.now())
+        post = PostFactory(feed=feed, url="https://example.com/known", guid=md5_hash("https://example.com/known"))
+        feed_data = _make_feed_data()
+        feed_data.entries = [{"link": post.url, "title": "Known post", "authors": []}]
+        patched_config = {"FETCH_ORIGINAL_CONTENT": True, "FETCH_CONTENT_DELAY": 0}
+
+        with (
+            patch("planet.management.commands.planet_update_all_feeds.parse_feed", return_value=feed_data),
+            patch("planet.management.commands.planet_update_all_feeds.PLANET_CONFIG", patched_config),
+            patch("planet.models.fetch_post_content", return_value="<p>retried</p>") as mock_fetch,
+        ):
+            call_command("planet_update_all_feeds")
+
+        mock_fetch.assert_called_once_with(post.url)
+        post.refresh_from_db()
+        self.assertEqual(post.original_content, "<p>retried</p>")
+
+
 class FetchPostContentCommandTest(TestCase):
     def test_backfills_only_posts_missing_original_content(self):
         missing = PostFactory.create_batch(size=2)
