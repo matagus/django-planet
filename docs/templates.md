@@ -11,23 +11,18 @@ planet/templates/planet/
 │   ├── list.html
 │   ├── detail.html
 │   └── blocks/
-│       └── list.html
+│       └── post_list.html
 ├── blogs/
 │   ├── list.html
-│   ├── detail.html
-│   └── blocks/
-│       └── list.html
+│   └── detail.html
 ├── feeds/
 │   ├── list.html
-│   ├── detail.html
-│   └── blocks/
-│       └── list_for_author.html
-└── authors/
-    ├── list.html
-    ├── detail.html
-    └── blocks/
-        ├── list.html
-        └── list_for_feed.html
+│   └── detail.html
+├── authors/
+│   ├── list.html
+│   └── detail.html
+└── blocks/
+    └── nav_list.html
 ```
 
 ## Overriding Templates
@@ -120,7 +115,46 @@ Returns a comma-separated string of post titles from a queryset.
 
 ### Inclusion Tags
 
-Inclusion tags render complete HTML blocks using their own templates.
+Inclusion tags render complete HTML blocks. All four sidebar lists below share a
+single template, `planet/blocks/nav_list.html`, which emits a heading and one link
+per item.
+
+Which attribute becomes the link text is decided by the tag, not by the models:
+each tag passes a `label_field` name that the template resolves through the `attr`
+tag. Planet's own models expose no UI-specific fields for this.
+
+| Tag | Label source |
+|-----|--------------|
+| `authors_for_feed` | `Author.name` |
+| `feeds_for_author` | `Feed.title` |
+| `recent_posts` | `Post.title` |
+| `recent_blogs` | `Blog.title` |
+
+To relabel the sidebar, override `planet/blocks/nav_list.html` in your project, or
+pass a different `label_field`. Comma-separated candidates are tried in order, so
+`"display_name,title,name"` falls back gracefully for custom model subclasses:
+
+```django
+{% include "planet/blocks/nav_list.html" with items=blogs title="Blogs" label_field="display_name,title" %}
+```
+
+#### attr
+
+Resolves an attribute by name at template level, returning the first non-empty
+candidate. Useful when the field to display depends on the model.
+
+```django
+{% attr obj "display_name,title,name" as label %}
+{{ label }}
+```
+
+| Argument | Description |
+|----------|-------------|
+| `obj` | The object to read from |
+| second argument | Comma-separated attribute names, tried in order |
+
+Methods are called if they take no arguments; missing attributes and exceptions
+yield an empty string rather than raising. Output is auto-escaped.
 
 #### authors_for_feed
 
@@ -130,7 +164,7 @@ Renders a list of all authors who have posts in a feed.
 {% authors_for_feed feed %}
 ```
 
-**Template:** `planet/authors/blocks/list_for_feed.html`
+**Template:** `planet/blocks/nav_list.html`
 
 #### feeds_for_author
 
@@ -140,7 +174,7 @@ Renders a list of all feeds an author has contributed to.
 {% feeds_for_author author %}
 ```
 
-**Template:** `planet/feeds/blocks/list_for_author.html`
+**Template:** `planet/blocks/nav_list.html`
 
 #### recent_posts
 
@@ -150,7 +184,7 @@ Renders a list of the most recent posts across all blogs.
 {% recent_posts %}
 ```
 
-**Template:** `planet/posts/blocks/list.html`
+**Template:** `planet/blocks/nav_list.html`
 
 Limit controlled by `PLANET["RECENT_POSTS_LIMIT"]` (default: 10).
 
@@ -162,9 +196,28 @@ Renders a list of the most recently added blogs.
 {% recent_blogs %}
 ```
 
-**Template:** `planet/blogs/blocks/list.html`
+**Template:** `planet/blocks/nav_list.html`
 
 Limit controlled by `PLANET["RECENT_BLOGS_LIMIT"]` (default: 10).
+
+### Shared Partials
+
+#### planet/posts/blocks/post_list.html
+
+Paginated list of post summaries, included by the blog, feed, author and post
+list/detail views instead of repeating the markup per view.
+
+```django
+{% include "planet/posts/blocks/post_list.html" %}
+```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `posts` | *(required)* | A Post queryset, paginated 10 per page |
+| `container_class` | `container px-0` | Classes for the wrapper element |
+| `post_wrapper_class` | `post row` | Classes for each post element |
+
+Override it in your project to change how every post list renders.
 
 ## Context Processor
 

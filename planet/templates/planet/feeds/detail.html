@@ -11,12 +11,7 @@
 {% endblock %}
 
 {% block breadcrumb_section %}
-    <li class="breadcrumb-item">
-        <a class="text-success" href="{% url 'planet:blog-list' %}">{% trans 'Blogs' %}</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a class="text-success" href="{{ feed.blog.get_absolute_url }}">{{ feed.blog.title }}</a>
-    </li>
+    {% include "planet/blocks/breadcrumb_blog.html" with blog=feed.blog %}
     <li class="breadcrumb-item">
         <a class="text-success" href="{% url 'planet:feed-list' %}">{% trans 'Feeds' %}</a>
     </li>
