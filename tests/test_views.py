@@ -1,162 +1,89 @@
-from django.test import TestCase
+from .base import PlanetTestCase
+from .factories import AuthorFactory, BlogFactory, FeedFactory, FeedWithPostsFactory, PostFactory
 
-from .factories import BlogFactory, FeedFactory, PostFactory, AuthorFactory
 
-
-class BlogViewsTest(TestCase):
-
+class BlogViewsTest(PlanetTestCase):
     def setUp(self):
         self.blog = BlogFactory.create(title="Blog-1")
         self.feed = FeedFactory.create(title="Feed-1", blog=self.blog)
 
     def test_list(self):
-        response = self.client.get("/blogs/")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/blogs/")
 
     def test_detail(self):
-        response = self.client.get("/blogs/1/")
-        self.assertEqual(response.status_code, 301)
-
-        response = self.client.get("/blogs/1/blog-1/")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get("/blogs/2/other-blog/")
-        self.assertEqual(response.status_code, 404)
-
-    def tearDown(self):
-        self.blog.delete()
-        self.feed.delete()
+        self.assertSlugUrlWorks(self.blog)
 
 
-class FeedViewsTest(TestCase):
-
-    def setUp(self):
-        self.feed = FeedFactory.create(title="Feed-1")
-
-        self.post = PostFactory.create(feed=self.feed)
-        self.post.tags = "tag1, tag2"
-
-    def test_list(self):
-        response = self.client.get("/feeds/")
-        self.assertEqual(response.status_code, 200)
-
-    def test_detail(self):
-        response = self.client.get("/feeds/1/")
-        self.assertEqual(response.status_code, 301)
-
-        response = self.client.get("/feeds/1/feed-1/")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get("/feeds/2/other-feed/")
-        self.assertEqual(response.status_code, 404)
-
-    def tearDown(self):
-        self.feed.delete()
-        self.post.delete()
-
-
-class PostViewsTest(TestCase):
-
+class FeedViewsTest(PlanetTestCase):
     def setUp(self):
         self.feed = FeedFactory.create(title="Feed-1")
         self.post = PostFactory.create(feed=self.feed)
 
     def test_list(self):
-        response = self.client.get("/posts/")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/feeds/")
 
     def test_detail(self):
-        response = self.client.get("/posts/1/")
-        self.assertEqual(response.status_code, 301)
-
-        response = self.client.get("/posts/1/post-1/")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get("/posts/2/other-post/")
-        self.assertEqual(response.status_code, 404)
-
-    def tearDown(self):
-        self.post.delete()
-        self.feed.delete()
+        self.assertSlugUrlWorks(self.feed)
 
 
-class AuthorViewsTest(TestCase):
+class PostViewsTest(PlanetTestCase):
+    def setUp(self):
+        self.feed = FeedFactory.create(title="Feed-1")
+        self.post = PostFactory.create(title="Post-1", feed=self.feed)
 
+    def test_list(self):
+        self.assertPageOk("/posts/")
+
+    def test_detail(self):
+        self.assertSlugUrlWorks(self.post)
+
+
+class AuthorViewsTest(PlanetTestCase):
     def setUp(self):
         self.feed = FeedFactory.create(title="Feed-1")
         self.author = AuthorFactory.create(name="Author-1")
         self.post_list = PostFactory.create_batch(size=3, feed=self.feed, authors=[self.author])
 
-        post = self.post_list[0]
-        post.tags = "tag1, tag2"
-
     def test_list(self):
-        response = self.client.get("/authors/")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/authors/")
 
     def test_detail(self):
-        response = self.client.get("/authors/1/")
-        self.assertEqual(response.status_code, 301)
-
-        response = self.client.get("/authors/1/author-1/")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get("/authors/2/other-author/")
-        self.assertEqual(response.status_code, 404)
-
-    def tearDown(self):
-        self.author.delete()
-        self.feed.delete()
+        self.assertSlugUrlWorks(self.author)
 
 
-class IndexViewTest(TestCase):
-
+class IndexViewTest(PlanetTestCase):
     def setUp(self):
         self.feed = FeedFactory.create(title="Feed-1")
         self.post = PostFactory.create(feed=self.feed)
 
     def test_index(self):
-        response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
-
-    def tearDown(self):
-        self.post.delete()
-        self.feed.delete()
+        self.assertPageOk("/")
 
 
-class SearchViewTest(TestCase):
-
+class SearchViewTest(PlanetTestCase):
     def setUp(self):
-        self.feed = FeedFactory.create(title="Feed-1")
-        self.post_list = PostFactory.create_batch(size=5, feed=self.feed)
+        self.feed = FeedWithPostsFactory(posts__size=5)
+        self.post_list = list(self.feed.post_set.all())
 
     def test_invalid_search(self):
         response = self.client.get("/search/")
         self.assertEqual(response.status_code, 302)
 
     def test_post_search(self):
-        response = self.client.get("/search/?search=go&q=post&w=posts")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/search/?search=go&q=post&w=posts")
 
     def test_author_search(self):
-        response = self.client.get("/search/?search=go&q=author&w=authors")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/search/?search=go&q=author&w=authors")
 
     def test_feed_search(self):
-        response = self.client.get("/search/?search=go&q=feed&w=feeds")
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk("/search/?search=go&q=feed&w=feeds")
 
     def test_navbar_form_preserves_query_and_selection_after_search(self):
-        response = self.client.get("/search/?q=Adam&w=authors")
-        self.assertEqual(response.status_code, 200)
+        response = self.assertPageOk("/search/?q=Adam&w=authors")
         self.assertContains(response, 'value="Adam"')
         self.assertContains(response, '<option value="authors" selected>')
 
     def test_navbar_form_is_empty_on_non_search_page(self):
-        response = self.client.get("/posts/")
-        self.assertEqual(response.status_code, 200)
+        response = self.assertPageOk("/posts/")
         self.assertContains(response, 'name="q" value=""')
         self.assertNotContains(response, "selected>")
-
-    def tearDown(self):
-        self.feed.delete()

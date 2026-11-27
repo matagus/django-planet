@@ -1,20 +1,16 @@
-from django.contrib.auth.models import User
-from django.test import TestCase
-from django.urls import reverse
-
 from planet.models import Blog, Feed
-from tests.factories import FeedFactory, PostAuthorDataFactory, PostFactory, AuthorFactory
+
+from .base import AdminTestCase
+from .factories import AuthorFactory, FeedFactory, PostAuthorDataFactory, PostFactory
 
 
-class FeedAdminAddViewTest(TestCase):
+class FeedAdminAddViewTest(AdminTestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-        self.add_url = reverse("admin:planet_feed_add")
+        super().setUp()
+        self.add_url = self.admin_url("feed", "add")
 
     def test_add_page_shows_only_url_field(self):
-        response = self.client.get(self.add_url)
-        self.assertEqual(response.status_code, 200)
+        response = self.assertPageOk(self.add_url)
         self.assertIn(b'name="url"', response.content)
         self.assertNotIn(b'name="title"', response.content)
 
@@ -42,132 +38,99 @@ class FeedAdminAddViewTest(TestCase):
 
     def test_change_page_shows_full_fieldsets(self):
         feed = FeedFactory()
-        change_url = reverse("admin:planet_feed_change", args=[feed.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
+        response = self.assertAdminPageOk("feed", "change", feed.pk)
         self.assertIn(b'name="title"', response.content)
         self.assertIn(b'name="url"', response.content)
 
 
-class FeedAdminAuthorsListTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
+class FeedAdminAuthorsListTest(AdminTestCase):
+    def assertFeedChangeContains(self, feed, needle):
+        response = self.assertAdminPageOk("feed", "change", feed.pk)
+        self.assertIn(needle, response.content)
+        return response
 
     def test_authors_list_shows_author_links(self):
         author = AuthorFactory(name="Ada Lovelace")
         post = PostFactory(authors=[author])
-        change_url = reverse("admin:planet_feed_change", args=[post.feed.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Ada Lovelace", response.content)
+        self.assertFeedChangeContains(post.feed, b"Ada Lovelace")
 
     def test_authors_list_shows_no_authors_message(self):
-        feed = FeedFactory()
-        change_url = reverse("admin:planet_feed_change", args=[feed.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b"No authors", response.content)
+        self.assertFeedChangeContains(FeedFactory(), b"No authors")
 
 
-class AuthorAdminFeedsListTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class AuthorAdminFeedsListTest(AdminTestCase):
     def test_feeds_list_shows_feed_links(self):
         author = AuthorFactory()
         post = PostFactory(authors=[author])
-        change_url = reverse("admin:planet_author_change", args=[author.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
+        response = self.assertAdminPageOk("author", "change", author.pk)
         self.assertIn(post.feed.title.encode(), response.content)
 
     def test_feeds_list_shows_no_feeds_message(self):
         author = AuthorFactory()
-        change_url = reverse("admin:planet_author_change", args=[author.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
+        response = self.assertAdminPageOk("author", "change", author.pk)
         self.assertIn(b"No feeds", response.content)
 
 
-class HasPostsFilterTest(TestCase):
+class HasPostsFilterTest(AdminTestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-        self.list_url = reverse("admin:planet_feed_changelist")
+        super().setUp()
+        self.list_url = self.admin_url("feed", "changelist")
+
+    def assertFilteredToSingleFeed(self, value, expected_feed):
+        """Apply the has_posts filter and assert exactly one feed is listed."""
+        response = self.assertPageOk(self.list_url, {"has_posts": value})
+        self.assertContains(response, expected_feed.title)
+        self.assertEqual(response.context["cl"].queryset.count(), 1)
+        return response
 
     def test_filter_yes_returns_feeds_with_posts(self):
         feed_with_post = FeedFactory()
         PostFactory(feed=feed_with_post)
         FeedFactory()  # feed without posts
-        response = self.client.get(self.list_url, {"has_posts": "yes"})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, feed_with_post.title)
-        self.assertEqual(response.context["cl"].queryset.count(), 1)
+        self.assertFilteredToSingleFeed("yes", feed_with_post)
 
     def test_filter_no_returns_feeds_without_posts(self):
         feed_without_post = FeedFactory()
-        feed_with_post = FeedFactory()
-        PostFactory(feed=feed_with_post)
-        response = self.client.get(self.list_url, {"has_posts": "no"})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, feed_without_post.title)
-        self.assertEqual(response.context["cl"].queryset.count(), 1)
+        PostFactory(feed=FeedFactory())  # a second feed that does have a post
+        self.assertFilteredToSingleFeed("no", feed_without_post)
 
 
-class FeedInlineReadOnlyTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
+class FeedInlineReadOnlyTest(AdminTestCase):
+    def blog_change_for(self, feed):
+        """GET the admin change page for the blog owning ``feed``."""
+        return self.assertAdminPageOk("blog", "change", feed.blog.pk)
 
     def test_feed_link_renders_in_blog_change_page(self):
         feed = FeedFactory()
-        change_url = reverse("admin:planet_blog_change", args=[feed.blog.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
-        feed_url = reverse("admin:planet_feed_change", args=[feed.pk])
-        self.assertContains(response, feed_url)
+        response = self.blog_change_for(feed)
+        self.assertContains(response, self.admin_url("feed", "change", feed.pk))
         self.assertContains(response, feed.title)
 
     def test_inline_has_no_add_form(self):
-        feed = FeedFactory()
-        change_url = reverse("admin:planet_blog_change", args=[feed.blog.pk])
-        response = self.client.get(change_url)
-        self.assertEqual(response.status_code, 200)
         # has_add_permission returns False, so no empty add row should appear
-        self.assertNotContains(response, 'id="planet_feed-empty"')
+        self.assertNotContains(self.blog_change_for(FeedFactory()), 'id="planet_feed-empty"')
 
 
-class BlogAdminChangelistTest(TestCase):
+class BlogAdminChangelistTest(AdminTestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-        self.list_url = reverse("admin:planet_blog_changelist")
+        super().setUp()
+        self.list_url = self.admin_url("blog", "changelist")
 
     def test_changelist_loads(self):
         FeedFactory(language="en", is_active=True)
         FeedFactory(language="es", is_active=False)
-        response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, 200)
+        self.assertPageOk(self.list_url)
 
     def test_changelist_filter_by_language(self):
         feed_en = FeedFactory(language="en")
         FeedFactory(language="es")
-        response = self.client.get(self.list_url, {"feed__language": "en"})
-        self.assertEqual(response.status_code, 200)
+        response = self.assertPageOk(self.list_url, {"feed__language": "en"})
         self.assertContains(response, feed_en.blog.title)
 
 
-class PostAuthorDataAdminTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
-        self.client.force_login(self.superuser)
-
+class PostAuthorDataAdminTest(AdminTestCase):
     def test_list_displays_author_name(self):
         author = AuthorFactory(name="Grace Hopper")
         PostAuthorDataFactory(author=author)
-        list_url = reverse("admin:planet_postauthordata_changelist")
-        response = self.client.get(list_url)
-        self.assertEqual(response.status_code, 200)
+        response = self.assertAdminPageOk("postauthordata", "changelist")
         self.assertIn(b"Grace Hopper", response.content)
