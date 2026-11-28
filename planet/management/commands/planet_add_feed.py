@@ -15,8 +15,11 @@ logger = logging.getLogger(__name__)
 
 
 class Command(LabelCommand):
-    help = _("Add a new feed to the database")
     label = "url"
+
+    @property
+    def help(self) -> str:
+        return str(_("Add a new feed to the database"))
 
     def handle_label(self, label, **options):
         feed_url = label

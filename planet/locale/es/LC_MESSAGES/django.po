@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 18:48+0000\n"
+"POT-Creation-Date: 2026-11-28 04:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,23 +91,23 @@ msgstr "Posts"
 msgid "Blogs"
 msgstr "Blogs"
 
-#: management/commands/planet_add_feed.py:18
+#: management/commands/planet_add_feed.py:22
 msgid "Add a new feed to the database"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:16
+#: management/commands/planet_fetch_post_content.py:18
 msgid "Fetch and archive original content for posts where it is missing"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:19
+#: management/commands/planet_fetch_post_content.py:21
 msgid "Only process posts from this feed ID"
 msgstr ""
 
-#: management/commands/planet_fetch_post_content.py:20
+#: management/commands/planet_fetch_post_content.py:22
 msgid "Maximum number of posts to process"
 msgstr ""
 
-#: management/commands/planet_update_all_feeds.py:17
+#: management/commands/planet_update_all_feeds.py:19
 msgid "Update all active feeds"
 msgstr ""
 

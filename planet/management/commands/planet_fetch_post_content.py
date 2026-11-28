@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = _("Fetch and archive original content for posts where it is missing")
+    @property
+    def help(self) -> str:
+        return str(_("Fetch and archive original content for posts where it is missing"))
 
     def add_arguments(self, parser):
-        parser.add_argument("--feed", type=int, help=_("Only process posts from this feed ID"))
-        parser.add_argument("--limit", type=int, help=_("Maximum number of posts to process"))
+        parser.add_argument("--feed", type=int, help=str(_("Only process posts from this feed ID")))
+        parser.add_argument("--limit", type=int, help=str(_("Maximum number of posts to process")))
 
     def handle(self, *args, **options):
         qs = Post.objects.filter(original_content__isnull=True)
