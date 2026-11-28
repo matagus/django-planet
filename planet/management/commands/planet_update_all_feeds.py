@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = _("Update all active feeds")
+    @property
+    def help(self) -> str:
+        return str(_("Update all active feeds"))
 
     def handle(self, *args, **options):
         post_filter = get_post_filter_backend()

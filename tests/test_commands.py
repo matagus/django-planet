@@ -1,13 +1,39 @@
+from contextlib import redirect_stdout
+from io import StringIO
 from unittest.mock import MagicMock, call, patch
 
-from django.core.management import call_command
-from django.test import TestCase, override_settings
-from django.utils import timezone
+from django.core.management import ManagementUtility, call_command
+from django.test import SimpleTestCase, TestCase, override_settings
+from django.utils import timezone, translation
 
 from planet.models import Author, Feed, Post, PostAuthorData
 from planet.utils import md5_hash
 from tests.factories import FeedFactory, PostFactory
 from tests.mocks import _make_feed_data
+
+
+class ManagementCommandHelpTest(SimpleTestCase):
+    def test_help_works_in_both_forms(self):
+        messages = {
+            "planet_add_feed": "Add a new feed to the database",
+            "planet_update_all_feeds": "Update all active feeds",
+            "planet_fetch_post_content": "Fetch and archive original content for posts where it is missing",
+        }
+        with translation.override("en"):
+            for command, description in messages.items():
+                for args in ([command, "--help"], ["help", command]):
+                    with self.subTest(args=args):
+                        stream = StringIO()
+                        with redirect_stdout(stream):
+                            try:
+                                ManagementUtility(["manage.py", *args]).execute()
+                            except SystemExit as error:
+                                self.assertEqual(error.code, 0)
+                        normalized_help = " ".join(stream.getvalue().split())
+                        self.assertIn(description, normalized_help)
+                        if command == "planet_fetch_post_content":
+                            self.assertIn("Only process posts from this feed ID", normalized_help)
+                            self.assertIn("Maximum number of posts to process", normalized_help)
 
 
 class CreateAuthorsForPostTest(TestCase):
