@@ -17,9 +17,12 @@ class Command(BaseCommand):
     help = _("Update all active feeds")
 
     def handle(self, *args, **options):
+        verbosity = options["verbosity"]
         post_filter = get_post_filter_backend()
         total = Feed.objects.active().count()
         logger.info("Starting feed update: %d active feeds.", total)
+        if verbosity >= 2:
+            self.stdout.write(f"Starting feed update: {total} active feeds.")
 
         feeds_checked = 0
         total_posts = 0
@@ -30,17 +33,24 @@ class Command(BaseCommand):
                 feed_data = parse_feed(feed.url, etag=feed.etag, modified=feed.last_modified)
             except Exception as exc:
                 logger.error("Error fetching feed %s: %s", feed.url, exc)
+                self.stderr.write(self.style.ERROR(f"Feed #{feed.pk}: fetch failed; see application log."))
                 errors += 1
                 continue
 
             if getattr(feed_data, "status", None) == 304:
                 logger.info("Feed %s not modified (304), skipping.", feed.url)
+                if verbosity >= 2:
+                    self.stdout.write(f"Feed #{feed.pk} not modified (304).")
                 feed.mark_checked()
                 feeds_checked += 1
                 continue
 
             if feed_data.bozo and not feed_data.entries:
                 logger.warning("Feed %s returned bozo error: %s", feed.url, feed_data.bozo_exception)
+                self.stderr.write(
+                    self.style.ERROR(f"Feed #{feed.pk}: could not parse the empty feed; see application log.")
+                )
+                errors += 1
                 continue
 
             new_posts = 0
@@ -77,6 +87,8 @@ class Command(BaseCommand):
 
             feeds_checked += 1
             total_posts += new_posts
+            if verbosity >= 2:
+                self.stdout.write(f"Feed #{feed.pk}: {new_posts} new post(s).")
             if new_posts > 0:
                 logger.info("Feed %s: %d new post(s).", feed.url, new_posts)
             else:
@@ -85,3 +97,6 @@ class Command(BaseCommand):
         logger.info(
             "Feed update complete: %d feeds checked, %d new posts, %d errors.", feeds_checked, total_posts, errors
         )
+        if verbosity >= 1:
+            summary = f"Feed update complete: {feeds_checked} feeds checked, {total_posts} new posts, {errors} errors."
+            self.stdout.write(self.style.WARNING(summary) if errors else self.style.SUCCESS(summary))
