@@ -143,6 +143,8 @@ Adds a new feed to the database. Creates the Blog (if it doesn't exist), Feed, P
 python manage.py planet_update_all_feeds
 ```
 
+The command prints a summary by default. Use `--verbosity 2` for per-feed results (identified by feed ID) or `--verbosity 0` to suppress normal output. Fetch and parse failures remain visible on stderr, and the application log retains diagnostic details. A failed feed does not stop the remaining feeds. Individual feed failures are reported but do not change the exit status.
+
 Updates all active feeds. Fetches new posts, updates feed metadata (etag, last_checked), and creates new Post and Author entries as needed.
 
 ### planet_fetch_post_content
