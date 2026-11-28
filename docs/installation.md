@@ -138,3 +138,11 @@ PLANET = {
 ```
 
 See the [Configuration Reference](configuration.md) for all available settings, including post filter backends and content archiving.
+
+## Check the configuration
+
+Run `python manage.py check` after changing application, middleware, template, or site settings.
+Planet reports a missing pagination app as an error. App template discovery order, pagination
+middleware, the Planet context processor, and the default Sites configuration produce advisory
+warnings with a fix. If an intentional custom setup makes a warning irrelevant, add that check's
+ID to Django's `SILENCED_SYSTEM_CHECKS`.
